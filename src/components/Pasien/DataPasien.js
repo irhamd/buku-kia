@@ -18,11 +18,15 @@ import { AreaChartOutlined, CalendarOutlined, DeploymentUnitOutlined, FieldTimeO
 import { _Cache } from 'services/Cache'
 import { dataPegawai } from 'services/Text/GlobalText'
 import { useHistory } from 'react-router'
+import RiwayatKunjungan from './Riwayat/RiwayatKunjungan'
 
 
 function DataPasien() {
 
     const [dataPasien, setdataPasien] = useState(null)
+    const [showRiwayat, setshowRiwayat] = useState(false)
+    const [dataRiwayat, setdataRiwayat] = useState([]);
+    const [loading, setloading] = useState(false);
 
     const history = useHistory()
 
@@ -35,18 +39,29 @@ function DataPasien() {
 
     const prosesPasien = (id_pasien) => {
         _Cache.set('id_pasien', id_pasien)
-        alert(id_pasien)
+        history.push("/admin/InputKunjungan")
+
     }
     const dataKehamilan = (id_pasien) => {
-        _Cache.set('id_pasien', id_pasien)
-        history.push("/admin/InputKehamilanSaatIni")
+        // _Cache.set('id_pasien', id_pasien)
+        history.push("/admin/InputKehamilanSaatIni?id_pasien=" + id_pasien)
 
     }
 
-    const riwayatPasien = () => {
-        alert(_Cache.get('id_pasien'))
-    }
+    const riwayatPasien = async (data) => {
+        setshowRiwayat(true)
+        setdataRiwayat([])
+        // console.log(data)
+        _Cache.set('x-pacient', JSON.stringify(data))
+        setloading(true)
+        await _Api.get("getKunjunganByPasien?id_pasien=" + data.id).then(res => {
+            setdataRiwayat(res.data.data)
 
+            console.log(res.data.data)
+            setloading(false)
+
+        })
+    }
 
     const renderPasien = dataPasien && dataPasien.map((item, i) => {
         return (
@@ -70,8 +85,8 @@ function DataPasien() {
                                 <_Row>
                                     <_Button label="Proses" block sm={2} color="#da2b8b" onClick={() => prosesPasien(item.id)} icon={<DeploymentUnitOutlined />} />
                                     <_Button label="Pertumbuhan Janin" color="#da2b8b" icon={<AreaChartOutlined />} block sm={3} />
-                                    <_Button label="Riwayat" icon={<FieldTimeOutlined />} color="orangered" onClick={riwayatPasien} block sm={2} />
-                                    <_Button label="Data Kehamilan" icon={<NodeIndexOutlined />} color="orangered" onClick={() => dataKehamilan(item.id)} block sm={2} />
+                                    <_Button label="Riwayat" icon={<FieldTimeOutlined />} color="orangered" onClick={() => riwayatPasien(item)} block sm={2} />
+                                    <_Button label="Kehamilan" icon={<NodeIndexOutlined />} color="orangered" onClick={() => dataKehamilan(item.id)} block sm={2} />
                                     <_Button label="Jadwal Kunjungan" icon={<CalendarOutlined />} color="orangered" block sm={3} />
 
                                 </_Row>
@@ -96,6 +111,7 @@ function DataPasien() {
                     <br />
                     <Spin spinning={dataPasien ? false : true} size="large" tip="Loading..." >
                         <GridContainer>
+                            {dataRiwayat && <RiwayatKunjungan loading={loading} dataRiwayat={dataRiwayat} visible={showRiwayat} onClose={() => setshowRiwayat(false)} />}
                             {renderPasien}
                         </GridContainer>
                     </Spin>

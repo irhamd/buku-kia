@@ -76,7 +76,7 @@ function InputKunjungan() {
         return (
             <>
                 <label className="containerc" key={item.id} style={{ fontSize: "15px", fontWeight: "bold", height: "30px" }}>
-                    <span className="checkboxC" style={{ color: item.isrujuk == 1 ? 'maroon' : '#6d5959' }}> {index + 1}. {item.keluhan}
+                    <span className="checkboxC" style={{ color: item.isrujuk == 1 ? 'maroon' : '#000000b3' }}> {index + 1}. {item.keluhan}
                         {item.isrujuk == 1 ? <Warning /> : ""}
                     </span>
                     <input type="checkbox" value={item.id} onChange={changeKeluhan} />
@@ -89,7 +89,7 @@ function InputKunjungan() {
     const renderLetakJanin = letakJanin.map(item => {
         return (
             <label className="containerc" key={item.id} style={{ fontSize: "15px", fontWeight: "bold", height: "30px" }}>
-                <span className="radioR" style={{ color: item.isrujuk == 1 ? 'maroon' : '#6d5959' }}> {item.letakjanin}
+                <span className="radioR" style={{ color: item.isrujuk == 1 ? 'maroon' : '#000000b3' }}> {item.letakjanin}
                     {item.isrujuk == 1 ? <Warning /> : ""}
                 </span>
                 <input name="radioLetakJanin" type="radio" className="idletakjanin" value={item.id} onChange={changeLetakJanin} />
@@ -102,7 +102,7 @@ function InputKunjungan() {
     const renderHasilLab = hasilLab.map(item => {
         return (
             <label className="containerc" key={item.id} style={{ fontSize: "15px", fontWeight: "bold", height: "30px" }}>
-                <span className="checkboxC" style={{ color: item.isrujuk == 1 ? 'maroon' : '#6d5959' }}> {item.hasillab}
+                <span className="checkboxC" style={{ color: item.isrujuk == 1 ? 'maroon' : '#000000b3' }}> {item.hasillab}
                     {item.isrujuk == 1 ? <Warning /> : ""}
                 </span>
                 <input type="checkbox" value={item.id} onChange={changeHasilLab} />

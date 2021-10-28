@@ -34,7 +34,8 @@ export const formatNumber = (x) => {
 }
 
 export const formatTgl = (x) => {
-    return moment(x).format("DD-MM-YYYY")
+    var tgl = moment(x).format("DD-MM-YYYY")
+    return tgl == 'Invalid date' ? "-" : tgl
 }
 export const formatTglWaktu = (x) => {
     return moment(x).format("DD-MM-YYYY HH:mm")

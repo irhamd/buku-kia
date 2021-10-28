@@ -199,7 +199,7 @@ export const _Label = ({ span, label, onChange, defaultValue, number, max, min, 
         <ColB sm={sm ? sm : 12}>
             <Form.Item name={name} label={" "} style={{ marginBottom: "10px" }}>
                 <Input
-                    style={{ background: "#4eaef2", color: "black", fontWeight: "bolder" }}
+                    style={{ background: "#f3c363", borderColor :"#f3c363", color: "black", fontWeight: "bold" }}
                     disabled
                     defaultValue={label}
                 />

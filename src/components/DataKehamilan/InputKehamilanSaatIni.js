@@ -22,26 +22,41 @@ import { _Cache } from 'services/Cache'
 import Swal from 'sweetalert2'
 import { _Swall } from 'services/Toastr/Notify/_Toastr'
 import { DownloadOutlined, RollbackOutlined } from '@ant-design/icons'
+import { useLocation } from 'react-router'
+import queryString from 'query-string'
 
-
-function InputKehamilanSaatIni() {
+function InputKehamilanSaatIni(pr) {
 
     const [kontrasepsi, setkontrasepsi] = useState([])
     const [tidaktahu, settidaktahu] = useState(false)
     const [loading, setloading] = useState(false)
+    const [kehamilan, setkehamilan] = useState([])
 
+    const { search } = useLocation()
+    // console.log(search)
+    // alert(location)
+    const query = queryString.parse(search ? search : "{}")
+    // console.log(query)
+    const [formKehamilan] = Form.useForm();
 
     useEffect(() => {
-        // _Api.get("getDataPasien").then(res => {
-        //     setdataPasien(res.data)
-        //     console.log(res.data)
-        // })
-
         getData()
+
+        _Api.get("getDataKehamilanSaatIni?id_pasien=" + query.id_pasien).then(res => {
+            var data = res.data.data
+            console.log(data)
+            setkehamilan(data)
+            var obj = {
+                ...data,
+                htp: data ? moment(data.htp) : null,
+                hpht: data ? moment(data.hpht) : null
+            }
+            // console.log(obj)
+            formKehamilan.setFieldsValue(obj);
+        })
     }, [])
 
 
-    const [formKehamilan] = Form.useForm();
 
     const onFinish = (val) => {
 
@@ -49,6 +64,7 @@ function InputKehamilanSaatIni() {
         let id_pasien = _Cache.get('id_pasien')
         var obj = {
             ...val,
+            id: kehamilan ? kehamilan.id : null,
             id_pasien: id_pasien,
             htp: val.htp ? moment(val.htp).format('YYYY-MM-DD') : val.htp,
             hpht: val.hpht ? moment(val.hpht).format('YYYY-MM-DD') : val.hpht
@@ -71,11 +87,11 @@ function InputKehamilanSaatIni() {
         })
     }
 
-    const cekHTP = (e, tgl) => {
 
+
+    const cekHTP = (e, tgl) => {
         // var tgl = e.target.value
         var hpht = moment(e).format('YYYY-MM-DD');
-
         settidaktahu(false)
         var htp = moment(hpht).add(8, 'month').add(10, 'days').format("YYYY-MM-DD");
         formKehamilan.setFieldsValue({
@@ -124,7 +140,7 @@ function InputKehamilanSaatIni() {
                         <_Select label="Penggunaan Kontrasepsi Sebelum Hamil" option={kontrasepsi} val="id" caption="kontrasepsi" name="penggunaankontrasepsi" style={{ fontWeight: "bold" }} />
                         <_Input label="Riwayat Penyakit Yang diderita Ibu" required name="riwayatpenyakit" multiline />
                         <_Input label="Riwayat Alergi" multiline name="riwayatalergi" />
-                        <_Input label="Status Imunisasi Tetanus (T) terakhir" name="tetanustrakhir" />
+                        <_Input label="Status Imunisasi Tetanus (T) terakhir" required name="tetanustrakhir" />
                         <_Input label="Tinggi Badan" required addonAfter="cm" name="tb" />
                         <br />
                         <_Row>

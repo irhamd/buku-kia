@@ -37,8 +37,8 @@ module.exports = {
                             '@btn-disable-bg': '@disabled-color',
                             '@btn-disable-border': '@disabled-color',
                             // @table-bg: @component-background;
-                            '@table-header-bg': '#71bdfbd9',
-                            '@table-header-color': '#001529', // thead table bg
+                            '@table-header-bg': '#961f60',
+                            '@table-header-color': '#eaf0f5', // thead table bg
                             '@table-header-sort-bg': '#86c6fbd9',
                             '@table-body-sort-bg': '#fafafa',
                             '@table-row-hover-bg': '#ffcab0',
