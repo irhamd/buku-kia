@@ -1,4 +1,6 @@
 import moment from "moment"
+import { _Cache } from "services/Cache"
+import { ubahText } from "services/Crypto"
 
 export const globalText = {
     'x_auth_user': 'x-auth-user',
@@ -72,3 +74,5 @@ export const getDateTime = moment().format('YYYY-MM-DD HH:mm:ss')
 export const getDate = moment().format('YYYY-MM-DD')
 
 
+var dat = ubahText(_Cache.get(globalText.x_auth_resu))
+export var dataPegawai = JSON.parse(dat ? dat : "{}")

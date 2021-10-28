@@ -13,10 +13,10 @@ import avatar from "assets/img/faces/logo.png";
 import { _Row } from 'services/Forms/LayoutBootstrap';
 import { _Col } from 'services/Forms/LayoutBootstrap';
 import { _Input } from 'services/Forms/Forms';
-import { UserSwitchOutlined, KeyOutlined, GooglePlusOutlined, LoginOutlined } from '@ant-design/icons';
+import { UserSwitchOutlined, KeyOutlined, GooglePlusOutlined, LoginOutlined, UnlockOutlined } from '@ant-design/icons';
 import { _Button } from 'services/Forms/Forms';
 import _Api from 'services/Api/_Api';
-import Footer from 'components/Footer/Footer';
+import Footer from 'components/Footer/Footer';    
 import { _Toastr } from 'services/Toastr/Notify/_Toastr';
 import Swal from 'sweetalert2';
 import { Cache } from 'services/Cache';
@@ -37,6 +37,8 @@ function AttemptLogin() {
         setloading(true)
         _Api.post("loginRev", e).then(res => {
             var data = res.data
+
+            console.log(res.data)
             var pegawai = JSON.stringify(data.pegawai)
             var user = JSON.stringify(data.user)
 
@@ -82,7 +84,7 @@ function AttemptLogin() {
                             <_Col sm={2} />
 
                             {/* <_Col sm={2} /> */}
-                            <_Button block sm={3} submit label="Login" loading={loading} icon={<LoginOutlined />} color="#ff4500d6" />
+                            <_Button block sm={3} submit label="Login" loading={loading} icon={<UnlockOutlined />} color="#ff4500d6" />
                             <_Button block sm={6} icon={<GooglePlusOutlined />} label="Login dengan google" color="#096dd9ba" />
                             <br />
                         </_Row>

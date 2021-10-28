@@ -18,12 +18,17 @@ import { _Row } from 'services/Forms/LayoutBootstrap'
 import { _Button } from 'services/Forms/Forms'
 import { _Col } from 'services/Forms/LayoutBootstrap'
 import moment from 'moment'
+import { _Cache } from 'services/Cache'
+import Swal from 'sweetalert2'
+import { _Swall } from 'services/Toastr/Notify/_Toastr'
+import { DownloadOutlined, RollbackOutlined } from '@ant-design/icons'
 
 
 function InputKehamilanSaatIni() {
 
     const [kontrasepsi, setkontrasepsi] = useState([])
     const [tidaktahu, settidaktahu] = useState(false)
+    const [loading, setloading] = useState(false)
 
 
     useEffect(() => {
@@ -37,8 +42,26 @@ function InputKehamilanSaatIni() {
 
 
     const [formKehamilan] = Form.useForm();
-    const onFinish = (values) => {
-        console.log('Success:', values);
+
+    const onFinish = (val) => {
+
+        setloading(true)
+        let id_pasien = _Cache.get('id_pasien')
+        var obj = {
+            ...val,
+            id_pasien: id_pasien,
+            htp: val.htp ? moment(val.htp).format('YYYY-MM-DD') : val.htp,
+            hpht: val.hpht ? moment(val.hpht).format('YYYY-MM-DD') : val.hpht
+        }
+        _Api.post('simpanDataKehamilanSaatIni', obj).then(res => {
+            _Swall.success("Suksess ...!")
+            formKehamilan.resetFields()
+            setloading(false)
+        }).catch(err => {
+            setloading(false)
+            _Swall.error("Gagal ...")
+        })
+
     };
 
     const getData = () => {
@@ -105,7 +128,7 @@ function InputKehamilanSaatIni() {
                         <_Input label="Tinggi Badan" required addonAfter="cm" name="tb" />
                         <br />
                         <_Row>
-                            <_Input sm={3} label="Gravidalum" addonAfter="G" name="p" />
+                            <_Input sm={3} label="Gravidalum" addonAfter="G" name="g" />
                             <_Input sm={3} label="Paritas" addonAfter="P" name="p" />
                             <_Input sm={3} label="Abortion" addonAfter="A" name="a" />
                             <_Input sm={3} label="O (Anak Hidup)" addonAfter="O" name="o" />
@@ -114,8 +137,8 @@ function InputKehamilanSaatIni() {
                         <hr />
                         <_Row>
                             <_Col sm="5" />
-                            <_Button label="Simpan" submit block sm={3} />
-                            <_Button label="Batal" danger block sm={3} />
+                            <_Button label="Simpan" loading={loading} icon={<DownloadOutlined />} submit block sm={3} />
+                            <_Button label="Batal" icon={<RollbackOutlined />} danger block sm={3} />
                         </_Row>
 
                     </Form>

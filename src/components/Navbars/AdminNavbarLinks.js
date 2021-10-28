@@ -22,6 +22,11 @@ import Button from "components/CustomButtons/Button.js";
 import styles from "assets/jss/material-dashboard-react/components/headerLinksStyle.js";
 import { logOut } from "services/Route/ProtectedRoute";
 import { useHistory } from "react-router";
+import { _Cache } from "services/Cache";
+import { globalText } from "services/Text/GlobalText";
+import { ubahText } from "services/Crypto";
+import { dataPegawai } from "services/Text/GlobalText";
+
 
 const useStyles = makeStyles(styles);
 
@@ -47,9 +52,11 @@ export default function AdminNavbarLinks() {
       logOut()
       history.push('/login')
     } catch (error) {
-      
+
     }
   }
+
+
 
   const handleClickProfile = (event) => {
     if (openProfile && openProfile.contains(event.target)) {
@@ -64,7 +71,7 @@ export default function AdminNavbarLinks() {
   return (
     <div>
       <div className={classes.searchWrapper}>
-        <b> FAIZARD HAFIZ </b>
+        <b>{dataPegawai.namapegawai} </b>
       </div>
       <Button
         color={window.innerWidth > 959 ? "transparent" : "white"}

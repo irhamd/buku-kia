@@ -15,11 +15,16 @@ import { _Col } from 'services/Forms/LayoutBootstrap'
 import { _Button } from 'services/Forms/Forms'
 import { BarChartOutlined, HistoryOutlined } from '@material-ui/icons'
 import { AreaChartOutlined, CalendarOutlined, DeploymentUnitOutlined, FieldTimeOutlined, NodeIndexOutlined } from '@ant-design/icons'
+import { _Cache } from 'services/Cache'
+import { dataPegawai } from 'services/Text/GlobalText'
+import { useHistory } from 'react-router'
 
 
 function DataPasien() {
 
     const [dataPasien, setdataPasien] = useState(null)
+
+    const history = useHistory()
 
     useEffect(() => {
         _Api.get("getDataPasien").then(res => {
@@ -27,6 +32,21 @@ function DataPasien() {
             console.log(res.data)
         })
     }, [])
+
+    const prosesPasien = (id_pasien) => {
+        _Cache.set('id_pasien', id_pasien)
+        alert(id_pasien)
+    }
+    const dataKehamilan = (id_pasien) => {
+        _Cache.set('id_pasien', id_pasien)
+        history.push("/admin/InputKehamilanSaatIni")
+
+    }
+
+    const riwayatPasien = () => {
+        alert(_Cache.get('id_pasien'))
+    }
+
 
     const renderPasien = dataPasien && dataPasien.map((item, i) => {
         return (
@@ -45,14 +65,14 @@ function DataPasien() {
                         <_Col sm={9}>
                             <div style={{ margin: "20px 10px 10px 40px" }}>
                                 <p className="title-b">{item.nobuku}</p>
-                                <p className="title-a">{item.nama}</p>
+                                <p className="title-a">{item.nama && item.nama.toUpperCase()}</p>
                                 <p> {item.alamat} </p>
                                 <_Row>
-                                    <_Button label="Proses" block sm={2} color="#da2b8b" icon={<DeploymentUnitOutlined />} />
+                                    <_Button label="Proses" block sm={2} color="#da2b8b" onClick={() => prosesPasien(item.id)} icon={<DeploymentUnitOutlined />} />
                                     <_Button label="Pertumbuhan Janin" color="#da2b8b" icon={<AreaChartOutlined />} block sm={3} />
-                                    <_Button label="Riwayat"  icon={<FieldTimeOutlined />} block sm={2} />
-                                    <_Button label="Data Kehamilan"  icon={<NodeIndexOutlined />} block sm={2} />
-                                    <_Button label="Jadwal Kunjungan"  icon={<CalendarOutlined />} block sm={3} />
+                                    <_Button label="Riwayat" icon={<FieldTimeOutlined />} color="orangered" onClick={riwayatPasien} block sm={2} />
+                                    <_Button label="Data Kehamilan" icon={<NodeIndexOutlined />} color="orangered" onClick={() => dataKehamilan(item.id)} block sm={2} />
+                                    <_Button label="Jadwal Kunjungan" icon={<CalendarOutlined />} color="orangered" block sm={3} />
 
                                 </_Row>
                             </div>
@@ -70,7 +90,7 @@ function DataPasien() {
             <Card>
                 <CardHeader color="primary">
                     <p style={{ fontSize: "24px", fontWeight: "bold", marginBottom: "-6px" }}> DATA PASIEN </p>
-                    <p>Complete your profile</p>
+                    <p>Data pasien pada {dataPegawai.unitkerja}</p>
                 </CardHeader>
                 <CardBody>
                     <br />

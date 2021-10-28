@@ -69,14 +69,14 @@ function InputPasienBaru() {
                     <Form layout="vertical" form={form} onFinish={simpanPasien} size="large" style={{ marginBottom: "10%" }}>
                         <_Row>
                             <_Col sm={7}>
-                                <_Search name="nik" label="NIK" />
-                                <_Number name="nobuku" label="Nomor Buku" />
+                                <_Search name="nik" required label="NIK" />
+                                <_Number name="nobuku" required label="Nomor Buku" />
                                 <_Row>
-                                    <_Input name="tempatlahir" sm={8} label="Tempat Lahir" />
-                                    <_Date name="tgllahir" sm={4} label="Tanggal Lahir (DD-MM-YYYY)" format={"DD-MM-YYYY"} />
+                                    <_Input name="tempatlahir" required sm={8} label="Tempat Lahir" />
+                                    <_Date name="tgllahir" sm={4} required label="Tanggal Lahir (DD-MM-YYYY)" format={"DD-MM-YYYY"} />
                                 </_Row>
-                                <_Input name="nama" label="Nama Lengkap" />
-                                <_Input multiline name="alamat" label="Alamat Lengkap" />
+                                <_Input name="nama" label="Nama Lengkap"required />
+                                <_Input multiline name="alamat" label="Alamat Lengkap" required />
                                 <_Number name="nojkn" label="No. JKN" />
                                 <_Input name="faskestk1" label="Faskes Pertama" />
 

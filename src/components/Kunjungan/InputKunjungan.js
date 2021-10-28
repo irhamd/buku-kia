@@ -21,6 +21,8 @@ import { Cache } from 'services/Cache'
 import { useHistory } from 'react-router'
 import PushArray from 'services/array/PushArray'
 import warning from 'assets/img/warning.png'
+import $ from "jquery"
+import { IssuesCloseOutlined, SettingOutlined } from '@ant-design/icons'
 
 
 function Warning() {
@@ -40,7 +42,6 @@ function InputKunjungan() {
     const [dataPasien, setdataPasien] = useState(1)
 
     const [isHB, setisHB] = useState(false)
-
 
     const history = useHistory();
     const { Panel } = Collapse;
@@ -88,11 +89,11 @@ function InputKunjungan() {
     const renderLetakJanin = letakJanin.map(item => {
         return (
             <label className="containerc" key={item.id} style={{ fontSize: "15px", fontWeight: "bold", height: "30px" }}>
-                <span className="radioR" style={{ color: item.isrujuk == 1 ? 'maroon' : '' }}> {item.letakjanin}
+                <span className="radioR" style={{ color: item.isrujuk == 1 ? 'maroon' : '#6d5959' }}> {item.letakjanin}
                     {item.isrujuk == 1 ? <Warning /> : ""}
                 </span>
-                <input name="radio" type="radio" value={item.id} onChange={changeLetakJanin} />
-                <span className="checkmark" style={{ width: "30px"}} />
+                <input name="radioLetakJanin" type="radio" className="idletakjanin" value={item.id} onChange={changeLetakJanin} />
+                <span className="checkmark" style={{ width: "30px" }} />
             </label>
         )
     })
@@ -101,7 +102,7 @@ function InputKunjungan() {
     const renderHasilLab = hasilLab.map(item => {
         return (
             <label className="containerc" key={item.id} style={{ fontSize: "15px", fontWeight: "bold", height: "30px" }}>
-                <span className="checkboxC" style={{ color: item.isrujuk == 1 ? 'maroon' : '' }}> {item.hasillab}
+                <span className="checkboxC" style={{ color: item.isrujuk == 1 ? 'maroon' : '#6d5959' }}> {item.hasillab}
                     {item.isrujuk == 1 ? <Warning /> : ""}
                 </span>
                 <input type="checkbox" value={item.id} onChange={changeHasilLab} />
@@ -140,6 +141,22 @@ function InputKunjungan() {
 
         })
     }
+
+    const extraLetakJanin = () => (
+        <_Button label="Clear" size="small" onClick={event => {
+            // $(".idletakjanin").val("")
+            // $('input[name="radioLetakJanin"]').attr('checked', false);
+            // $('input[name="radioLetakJanin"]').attr('value',"");
+            $("[name=radioLetakJanin]").removeAttr("checked");
+            event.stopPropagation();
+            // alert("kosong")
+        }} />
+    );
+    const extraHasilLab = () => (
+        <_Button label="x" size="small" onClick={event => {
+            event.stopPropagation();
+        }} />
+    );
 
 
 
@@ -194,7 +211,7 @@ function InputKunjungan() {
                                 <_Col sm="6">
 
                                     <Collapse defaultActiveKey={['1']} size="small">
-                                        <Panel header="KELUHAN PASIEN" key="1">
+                                        <Panel header="HASIL LAB" key="1">
                                             <br />
                                             {renderHasilLab}
                                         </Panel>
@@ -203,10 +220,9 @@ function InputKunjungan() {
                                 </_Col>
                                 <_Col sm="4">
                                     <Collapse defaultActiveKey={['1']} size="small">
-                                        <Panel header="KELUHAN PASIEN" key="1">
+                                        <Panel header="LETAK JANIN" key="1">
                                             <br />
                                             {renderLetakJanin}
-
                                         </Panel>
 
                                     </Collapse>,
