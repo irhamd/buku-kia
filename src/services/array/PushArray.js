@@ -1,11 +1,9 @@
-import React from 'react'
-
 export default (tg,arr)=>{
     if(tg.target.checked == true) {
-        arr.push(tg.target.value)
+        arr.push(tg.target.defaultValue)
     }
     else{
-        const i = arr.findIndex(dat => dat ===tg.target.value)
+        const i = arr.findIndex(dat => dat ===tg.target.defaultValue)
         if(i >=0) arr.splice(i,1)
     }
 

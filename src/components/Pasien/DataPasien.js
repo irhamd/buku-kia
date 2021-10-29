@@ -33,17 +33,19 @@ function DataPasien() {
     useEffect(() => {
         _Api.get("getDataPasien").then(res => {
             setdataPasien(res.data)
-            console.log(res.data)
         })
+        _Cache.remove('x-pacient')
     }, [])
 
-    const prosesPasien = (id_pasien) => {
-        _Cache.set('id_pasien', id_pasien)
-        history.push("/admin/InputKunjungan")
-    }
-    const dataKehamilan = (id_pasien) => {
+    const prosesPasien = (data) => {
+        console.log(data)
         // _Cache.set('id_pasien', id_pasien)
-        history.push("/admin/InputKehamilanSaatIni?id_pasien=" + id_pasien)
+        // _Cache.set('x-pacient', JSON.stringify(data))
+        // history.push("/admin/InputKunjungan")
+    }
+    const dataKehamilan = (data) => {
+        _Cache.set('x-pacient', JSON.stringify(data))
+        history.push("/admin/InputKehamilanSaatIni?id_pasien=" + data.id)
 
     }
 
@@ -56,7 +58,7 @@ function DataPasien() {
         await _Api.get("getKunjunganByPasien?id_pasien=" + data.id).then(res => {
             setdataRiwayat(res.data.data)
 
-            console.log(res.data.data)
+            // console.log(res.data.data)
             setloading(false)
 
         })
@@ -87,10 +89,10 @@ function DataPasien() {
                                 <p className="title-a">{item.nama && item.nama.toUpperCase()}</p>
                                 <p> {item.alamat} </p>
                                 <_Row>
-                                    <_Button label="Proses" block sm={2} color="#da2b8b" onClick={() => prosesPasien(item.id)} icon={<DeploymentUnitOutlined />} />
+                                    <_Button label="Proses" block sm={2} color="#da2b8b" onClick={() => prosesPasien(item)} icon={<DeploymentUnitOutlined />} />
                                     <_Button label="Pertumbuhan Janin" color="#da2b8b" icon={<AreaChartOutlined />} block sm={3} />
                                     <_Button label="Riwayat" icon={<FieldTimeOutlined />} color="orangered" onClick={() => riwayatPasien(item)} block sm={2} />
-                                    <_Button label="Kehamilan" icon={<NodeIndexOutlined />} color="orangered" onClick={() => dataKehamilan(item.id)} block sm={2} />
+                                    <_Button label="Kehamilan" icon={<NodeIndexOutlined />} color="orangered" onClick={() => dataKehamilan(item)} block sm={2} />
                                     <_Button label="Jadwal Kunjungan" icon={<CalendarOutlined />} color="orangered" block sm={3} onClick={() => jadwalKunjungan(item)} />
 
                                 </_Row>

@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
 import { Route, Redirect, useHistory } from "react-router-dom"
+import { _Cache } from 'services/Cache';
 import { ubahText } from '../Crypto';
 import { globalText } from '../Text/GlobalText';
 
@@ -8,14 +9,9 @@ import { globalText } from '../Text/GlobalText';
 
 
 function ProtectedRoute({ component: Component, ...rest }) {
-
-    // var author = sessionStorage.getItem(globalText.y_auth_fhdev) != null ? true : false;
-    // var author = sessionStorage.getItem(globalText.x_auth_resu) != null ? true : false;
     var author = true;
-
     Object.values(globalText).forEach(val => {
         var cek = sessionStorage.getItem(val) != null ? true : author = false;
-        console.log(cek)
     });
     const [Auth] = useState(author)
 
@@ -42,23 +38,10 @@ function ProtectedRoute({ component: Component, ...rest }) {
 
 export default ProtectedRoute
 
-
-
 export const logOut = () => {
-
-
     Object.values(globalText).forEach(val => {
         sessionStorage.removeItem(val)
     });
-    // var author = true;
-    // Object.values(globalText).forEach(val => {
-    //     sessionStorage.getItem(val) != null ? true : author = false;
-    // });
-
-    // if (author) {
-    //     // his.push('/login')
-    // }
-
-
+    _Cache.remove('x-pacient')
 }
 

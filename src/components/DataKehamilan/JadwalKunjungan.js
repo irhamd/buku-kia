@@ -91,25 +91,18 @@ function JadwalKunjungan() {
                     <p>
                         <_Button label="USG" />
                     </p>
-
-                    {/* <div className="clearfix"> </div> */}
                 </div>
                 <div className="header-bottom" style={{ overflow: "auto", height: "800px" }}>
-                    {/* <Loading loading={loading} /> */}
                     <br />
                     <DetailPasien />
                     <div style={{ padding: "20px" }}>
-                        {/* <Divider orientation="left" plain> <h3> <b> JADWAL KUNJUNGAN </b> </h3>  </Divider> */}
                         <_Label label="JADWAL KUNJUNGAN" />
                         <GetJadwal dataJadwal={dataJadwal} />
-
                     </div>
-
                 </div>
                 <br />
                 <br />
                 <br />
-                <div className="clearfix"> </div>
             </div>
         </Spin>
 

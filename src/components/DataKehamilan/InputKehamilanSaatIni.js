@@ -22,8 +22,9 @@ import { _Cache } from 'services/Cache'
 import Swal from 'sweetalert2'
 import { _Swall } from 'services/Toastr/Notify/_Toastr'
 import { DownloadOutlined, RollbackOutlined } from '@ant-design/icons'
-import { useLocation } from 'react-router'
+import { useHistory, useLocation } from 'react-router'
 import queryString from 'query-string'
+import DetailPasien from 'components/Pasien/DetailPasien'
 
 function InputKehamilanSaatIni(pr) {
 
@@ -33,27 +34,39 @@ function InputKehamilanSaatIni(pr) {
     const [kehamilan, setkehamilan] = useState([])
 
     const { search } = useLocation()
-    const query = queryString.parse(search ? search : "{}")
+    const history = useHistory()
+    var query = ""
     // console.log(query)
     const [formKehamilan] = Form.useForm();
+
+    var cekPas = _Cache.get('x-pacient');
+    if (cekPas) {
+        query = JSON.parse(cekPas)
+    }
 
     useEffect(() => {
         getData()
         setloading(true)
-        _Api.get("getDataKehamilanSaatIni?id_pasien=" + query.id_pasien).then(res => {
+        _Api.get("getDataKehamilanSaatIni?id_pasien=" + query.id).then(res => {
             var data = res.data.data
             setloading(false)
             setkehamilan(data)
             var obj = {
                 ...data,
                 htp: data ? moment(data.htp) : null,
-                hpht: data ? moment(data.hpht) : null
+                hpht: data ? moment(data.hpht) : null,
+                id: data ? data.id : ""
             }
             // console.log(obj)
             formKehamilan.setFieldsValue(obj);
         })
     }, [])
 
+
+    const batal = () => {
+            history.goBack()
+    }
+    
 
 
     const onFinish = (val) => {
@@ -62,7 +75,7 @@ function InputKehamilanSaatIni(pr) {
         var obj = {
             ...val,
             id: kehamilan ? kehamilan.id : null,
-            id_pasien: query.id_pasien,
+            id_pasien: query.id,
             htp: val.htp ? moment(val.htp).format('YYYY-MM-DD') : val.htp,
             hpht: val.hpht ? moment(val.hpht).format('YYYY-MM-DD') : val.hpht
         }
@@ -83,6 +96,8 @@ function InputKehamilanSaatIni(pr) {
             console.log(res.data)
         })
     }
+
+
 
 
 
@@ -120,8 +135,9 @@ function InputKehamilanSaatIni(pr) {
                     <p>Input Data Kehamilaan Saat Ini</p>
                 </CardHeader>
                 <CardBody>
-                    <br />
                     <Spin spinning={loading} >
+
+                        <DetailPasien />
 
                         <Form size="large"
                             labelCol={{
@@ -152,8 +168,8 @@ function InputKehamilanSaatIni(pr) {
                             <hr />
                             <_Row>
                                 <_Col sm="5" />
-                                <_Button label="Simpan" loading={loading} icon={<DownloadOutlined />} submit block sm={3} />
-                                <_Button label="Batal" icon={<RollbackOutlined />} danger block sm={2} />
+                                <_Button label="Simpan" color="#096dd9bd" loading={loading} icon={<DownloadOutlined />} submit block sm={3} />
+                                <_Button label="Batal" icon={<RollbackOutlined />} onClick={batal} danger block sm={2} />
                             </_Row>
 
                         </Form>

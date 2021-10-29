@@ -2,9 +2,9 @@ import React, { useState, useEffect } from 'react';
 
 import { Table, Tag, Space, Form, Input, Button, Drawer, List } from 'antd';
 import _Api from 'services/Api/_Api';
-import moment from 'moment';
 import { formatTgl } from 'services/Text/GlobalText';
 import DetailPasien from '../DetailPasien.js';
+import { _Label, _Button } from 'services/Forms/Forms.js';
 
 function RiwayatKunjungan(pr) {
 
@@ -144,15 +144,18 @@ function RiwayatKunjungan(pr) {
                 style={{ margin: "-10px" }}
                 headerStyle={{ background: "#f19ecf", height: "76px" }}
                 onClose={pr.onClose}
-                height={700}
+                height={1200}
                 visible={pr.visible}
                 getContainer={false}
             >
-                <_Label label="Riwayat Registrasi" />
+                <_Label label="Riwayat Kunjungan" />
 
                 <DetailPasien />
-                <Table loading={pr.loading} bordered
+                <Table loading={pr.loading} bordered pagination={{ position: ['bottomCenter'] }}
                     rowKey="id" dataSource={pr.dataRiwayat && pr.dataRiwayat} columns={columns} scroll={{ x: 3100 }} />;
+
+                <hr />
+                <_Button label="Tutup" block sm={2} onClick={pr.onClose} cancel />
             </Drawer>
         </>
     );

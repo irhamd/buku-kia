@@ -23,6 +23,9 @@ import PushArray from 'services/array/PushArray'
 import warning from 'assets/img/warning.png'
 import $ from "jquery"
 import { IssuesCloseOutlined, SettingOutlined } from '@ant-design/icons'
+import { _Cache } from 'services/Cache'
+import moment from 'moment'
+import DetailPasien from 'components/Pasien/DetailPasien'
 
 
 function Warning() {
@@ -39,7 +42,7 @@ function InputKunjungan() {
     const [letakJanin, setletakJanin] = useState([])
     const [masukpanggul, setmasukpanggul] = useState(false)
     // const data = JSON.parse(Cache.get("datapasien"))
-    const [dataPasien, setdataPasien] = useState(1)
+    // const [dataPasien, setdataPasien] = useState(1)
 
     const [isHB, setisHB] = useState(false)
 
@@ -54,6 +57,12 @@ function InputKunjungan() {
         getData()
     }, [])
 
+    var data = _Cache.get('x-pacient')
+    var dataPasien = {}
+    if (data) {
+        dataPasien = JSON.parse(data)
+    } else history.push("/admin/DataPasien")
+
     const changeKeluhan = (e) => {
         PushArray(e, arr.keluhan)
     };
@@ -62,14 +71,57 @@ function InputKunjungan() {
         arr.letakjanin = e.target.value
     };
 
-    const changeHasilLab = (e) => {
-        if (e.target.checked && e.target.value == 4)
-            setisHB(true)
-        else
-            setisHB(false)
+    const changeHasilLab = async (e) => {
+        // console.log(e.target.defaultValue)
+        // if (e.target.checked && e.target.value == 4)
+        //     setisHB(true)
+        // else
+        //     setisHB(false)
         // setisHB(e.target.checked ? true : false)
-        PushArray(e, arr.hasillab)
+        await PushArray(e, arr.hasillab)
+
+        // console.log(arr.hasillab)
     };
+
+    const onFinish = (val) => {
+        var obj = {
+            ...val,
+            tanggal: moment(val.tanggal).format('YYYY-MM-DD'),
+            listKeluhan: arr.keluhan.toString(),
+            listHasilLab: arr.hasillab.toString(),
+            id_pasien: data.id,
+            id_pasien: dataPasien.id,
+        masukpanggul: val.masukpanggul ? 1 : 0,
+            letakjanin: arr.letakjanin,
+            kunjunganke: "",
+            umurkehamilan1: "",
+            hb: ""
+
+        }
+        // console.log('Success:', val);
+        console.log(obj)
+    };
+
+
+
+    const getData = () => {
+        _Api.post("getMasterData", { "masterData": "keluhan_m", "limit": "100" }).then(res => {
+            setKeluhan(res.data)
+        })
+
+        _Api.post("getMasterData", { "masterData": "letakjanin_m", "limit": "100" }).then(res => {
+            setletakJanin(res.data)
+        })
+        _Api.post("getMasterData", { "masterData": "hasillab_m", "limit": "100" }).then(res => {
+            sethasilLab(res.data)
+
+            // if ($("#umurkehamilan").val() == "") {
+            //     history.push("InputKehamilanSaatIni")
+            //     return
+            // }
+
+        })
+    }
 
 
     const renderKeluhan = keluhan.map((item, index) => {
@@ -112,80 +164,32 @@ function InputKunjungan() {
     })
 
 
-
-
-
-    const onFinish = (values) => {
-        console.log('Success:', values);
-    };
-
-    const onFinishFailed = (errorInfo) => {
-        console.log('Failed:', errorInfo);
-    };
-
-    const getData = () => {
-        _Api.post("getMasterData", { "masterData": "keluhan_m", "limit": "100" }).then(res => {
-            setKeluhan(res.data)
-        })
-
-        _Api.post("getMasterData", { "masterData": "letakjanin_m", "limit": "100" }).then(res => {
-            setletakJanin(res.data)
-        })
-        _Api.post("getMasterData", { "masterData": "hasillab_m", "limit": "100" }).then(res => {
-            sethasilLab(res.data)
-
-            // if ($("#umurkehamilan").val() == "") {
-            //     history.push("InputKehamilanSaatIni")
-            //     return
-            // }
-
-        })
-    }
-
-    const extraLetakJanin = () => (
-        <_Button label="Clear" size="small" onClick={event => {
-            // $(".idletakjanin").val("")
-            // $('input[name="radioLetakJanin"]').attr('checked', false);
-            // $('input[name="radioLetakJanin"]').attr('value',"");
-            $("[name=radioLetakJanin]").removeAttr("checked");
-            event.stopPropagation();
-            // alert("kosong")
-        }} />
-    );
-    const extraHasilLab = () => (
-        <_Button label="x" size="small" onClick={event => {
-            event.stopPropagation();
-        }} />
-    );
-
-
-
     return (
         <div>
             <Card>
                 <CardHeader color="primary">
                     <p style={{ fontSize: "24px", fontWeight: "bold", marginBottom: "-6px" }}> INPUT KUNJUNGAN </p>
-                    <p>Input kunjungan pasien saat ini</p>
+                    <p>Input data kunjungan pasien saat ini </p>
                 </CardHeader>
                 <CardBody>
-                    <br />
+                    <DetailPasien />
                     <Spin spinning={dataPasien ? false : true} size="large" tip="Loading..." >
                         <Form size="large" onFinish={onFinish} autoComplete="off"
                             labelCol={{ span: 8 }}
                             wrapperCol={{ span: 12 }}
                         >
-                            <_Date label="Tanggal" name="hpht" format="DD / MM / YYYY" required />
-                            <_Input label="Berat Badan (BB)" name="riwayatalergi" addonAfter="kg" required />
-                            <_Input label="Tekanan Darah (T.D )" name="riwayatalergi" addonAfter="(mmHg)" required />
+                            <_Date label="Tanggal" name="tanggal" format="DD / MM / YYYY" required />
+                            <_Input label="Berat Badan (BB)" name="beratbadan" addonAfter="kg" required />
+                            <_Input label="Tekanan Darah (T.D )" name="tekanandarah" addonAfter="(mmHg)" required />
                             <_Input label="LILA" name="lila" addonAfter="(cm)" required />
-                            <_Input label="Tinggi Fundus" name="lila1" addonAfter="(cm)" required />
-                            <_Switch label="Masuk Panggul" name="tt" titleCheck="Sudah" titleUnCheck="Belum" />
-                            <_Input label="Perkiraan Berat Janin" disabled name="lila1" addonAfter="gram" />
-                            <_Input label="Imunisasi" name="lila1" />
-                            <_Input label="Tablet Tambah Darah" name="lila1" addonAfter="transfusi" />
-                            <_Input label="Analisa" multiline name="lila1" />
-                            <_Input label="Tata Laksana" multiline name="lila1" />
-                            <_Input label="Konseling" name="lila1" />
+                            <_Input label="Tinggi Fundus" name="tinggifundus" addonAfter="(cm)" required />
+                            <_Switch label="Masuk Panggul" name="masukpanggul" titleCheck="Sudah" titleUnCheck="Belum" />
+                            <_Input label="Perkiraan Berat Janin" disabled name="beratjanin" addonAfter="gram" />
+                            <_Input label="Imunisasi" name="imunisasi" />
+                            <_Input label="Tablet Tambah Darah" name="tablettambahdarah" addonAfter="transfusi" />
+                            <_Input label="Analisa" multiline name="analisa" />
+                            <_Input label="Tata Laksana" multiline name="tatalaksana" />
+                            <_Input label="Konseling" name="konseling" />
 
                             {/* <_Date label="Hari Taksiran Persalinan (HTP)" name="htp" format="DD / MM / YYYY" />
                             <_Select label="Penggunaan Kontrasepsi Sebelum Hamil" required name="penggunaankontrasepsi" style={{ fontWeight: "bold" }} />
@@ -198,12 +202,11 @@ function InputKunjungan() {
 
                             <Collapse defaultActiveKey={['1']} size="small">
                                 <Panel header="KELUHAN PASIEN" key="1">
-                                    <br />
+                                    <small> Silahkan centang salah satu keluhan pasien  </small>
+                                    <br /> <br />
                                     {renderKeluhan}
-
                                 </Panel>
-
-                            </Collapse>,
+                            </Collapse>
 
 
                             <hr />
@@ -213,6 +216,7 @@ function InputKunjungan() {
                                     <Collapse defaultActiveKey={['1']} size="small">
                                         <Panel header="HASIL LAB" key="1">
                                             <br />
+                                            <_Number label="Hemoglobin (HB)" />
                                             {renderHasilLab}
                                         </Panel>
 
