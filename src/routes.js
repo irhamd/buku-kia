@@ -24,6 +24,7 @@ import ShowWebcam from "services/WebCam/ShowWebcam";
 import InputKehamilanSaatIni from "components/DataKehamilan/InputKehamilanSaatIni";
 import InputKunjungan from "components/Kunjungan/InputKunjungan";
 import AttemptLogin from "components/Auth/AttemptLogin";
+import JadwalKunjungan from "components/DataKehamilan/JadwalKunjungan";
 
 const dashboardRoutes = [
 
@@ -92,6 +93,14 @@ const dashboardRoutes = [
     rtlName: "قائمة الجدول",
     icon: PersonAdd,
     component: InputKunjungan,
+    layout: "/admin",
+  },
+  {
+    path: "/JadwalKunjungan",
+    name: "Jadwal Kunjungan",
+    rtlName: "قائمة الجدول",
+    icon: PersonAdd,
+    component: JadwalKunjungan,
     layout: "/admin",
   },
 ];

@@ -40,7 +40,6 @@ function DataPasien() {
     const prosesPasien = (id_pasien) => {
         _Cache.set('id_pasien', id_pasien)
         history.push("/admin/InputKunjungan")
-
     }
     const dataKehamilan = (id_pasien) => {
         // _Cache.set('id_pasien', id_pasien)
@@ -61,6 +60,11 @@ function DataPasien() {
             setloading(false)
 
         })
+    }
+
+    const jadwalKunjungan = async (data) => {
+        _Cache.set('x-pacient', JSON.stringify(data))
+        history.push("/admin/JadwalKunjungan?key=" + data.id)
     }
 
     const renderPasien = dataPasien && dataPasien.map((item, i) => {
@@ -87,7 +91,7 @@ function DataPasien() {
                                     <_Button label="Pertumbuhan Janin" color="#da2b8b" icon={<AreaChartOutlined />} block sm={3} />
                                     <_Button label="Riwayat" icon={<FieldTimeOutlined />} color="orangered" onClick={() => riwayatPasien(item)} block sm={2} />
                                     <_Button label="Kehamilan" icon={<NodeIndexOutlined />} color="orangered" onClick={() => dataKehamilan(item.id)} block sm={2} />
-                                    <_Button label="Jadwal Kunjungan" icon={<CalendarOutlined />} color="orangered" block sm={3} />
+                                    <_Button label="Jadwal Kunjungan" icon={<CalendarOutlined />} color="orangered" block sm={3} onClick={() => jadwalKunjungan(item)} />
 
                                 </_Row>
                             </div>

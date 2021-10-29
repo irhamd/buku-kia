@@ -148,6 +148,8 @@ function RiwayatKunjungan(pr) {
                 visible={pr.visible}
                 getContainer={false}
             >
+                <_Label label="Riwayat Registrasi" />
+
                 <DetailPasien />
                 <Table loading={pr.loading} bordered
                     rowKey="id" dataSource={pr.dataRiwayat && pr.dataRiwayat} columns={columns} scroll={{ x: 3100 }} />;

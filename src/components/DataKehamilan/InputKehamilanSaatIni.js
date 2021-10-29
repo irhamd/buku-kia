@@ -6,7 +6,7 @@ import GridItem from 'components/Grid/GridItem'
 import React, { useEffect, useState } from 'react'
 import avatar from "assets/img/faces/marc.jpg";
 import GridContainer from 'components/Grid/GridContainer'
-import { Form, Input, Button, Checkbox, Spin } from 'antd';
+import { Form, Input, Button, Checkbox, Spin, InputNumber } from 'antd';
 import _Api from 'services/Api/_Api'
 import src from "assets/img/no_image.jpg"
 import { _Input } from 'services/Forms/Forms'
@@ -33,18 +33,16 @@ function InputKehamilanSaatIni(pr) {
     const [kehamilan, setkehamilan] = useState([])
 
     const { search } = useLocation()
-    // console.log(search)
-    // alert(location)
     const query = queryString.parse(search ? search : "{}")
     // console.log(query)
     const [formKehamilan] = Form.useForm();
 
     useEffect(() => {
         getData()
-
+        setloading(true)
         _Api.get("getDataKehamilanSaatIni?id_pasien=" + query.id_pasien).then(res => {
             var data = res.data.data
-            console.log(data)
+            setloading(false)
             setkehamilan(data)
             var obj = {
                 ...data,
@@ -61,17 +59,16 @@ function InputKehamilanSaatIni(pr) {
     const onFinish = (val) => {
 
         setloading(true)
-        let id_pasien = _Cache.get('id_pasien')
         var obj = {
             ...val,
             id: kehamilan ? kehamilan.id : null,
-            id_pasien: id_pasien,
+            id_pasien: query.id_pasien,
             htp: val.htp ? moment(val.htp).format('YYYY-MM-DD') : val.htp,
             hpht: val.hpht ? moment(val.hpht).format('YYYY-MM-DD') : val.hpht
         }
         _Api.post('simpanDataKehamilanSaatIni', obj).then(res => {
             _Swall.success("Suksess ...!")
-            formKehamilan.resetFields()
+            // formKehamilan.resetFields()
             setloading(false)
         }).catch(err => {
             setloading(false)
@@ -124,42 +121,46 @@ function InputKehamilanSaatIni(pr) {
                 </CardHeader>
                 <CardBody>
                     <br />
-                    <Form size="large"
-                        labelCol={{
-                            span: 8,
-                        }}
-                        wrapperCol={{
-                            span: 12,
-                        }}
-                        onFinish={onFinish} form={formKehamilan}
-                        autoComplete="off"
-                    >
-                        <_Switch checked={tidaktahu} label="HPHT Terakhir" name="tt" titleCheck="Tidak Tahu" titleUnCheck="Tahu" onChange={tidakTahuHPHT} />
-                        <_Date label="(Hari Pertama Haid Terakhir (HPHT))" name="hpht" format="DD / MM / YYYY" onChange={cekHTP} />
-                        <_Date label="Hari Taksiran Persalinan (HTP)" name="htp" format="DD / MM / YYYY" />
-                        <_Select label="Penggunaan Kontrasepsi Sebelum Hamil" option={kontrasepsi} val="id" caption="kontrasepsi" name="penggunaankontrasepsi" style={{ fontWeight: "bold" }} />
-                        <_Input label="Riwayat Penyakit Yang diderita Ibu" required name="riwayatpenyakit" multiline />
-                        <_Input label="Riwayat Alergi" multiline name="riwayatalergi" />
-                        <_Input label="Status Imunisasi Tetanus (T) terakhir" required name="tetanustrakhir" />
-                        <_Input label="Tinggi Badan" required addonAfter="cm" name="tb" />
+                    <Spin spinning={loading} >
+
+                        <Form size="large"
+                            labelCol={{
+                                span: 8,
+                            }}
+                            wrapperCol={{
+                                span: 12,
+                            }}
+                            onFinish={onFinish} form={formKehamilan}
+                            autoComplete="off"
+                        >
+                            <_Switch checked={tidaktahu} label="HPHT Terakhir" name="tt" titleCheck="Tidak Tahu" titleUnCheck="Tahu" onChange={tidakTahuHPHT} />
+                            <_Date label="(Hari Pertama Haid Terakhir (HPHT))" name="hpht" format="DD / MM / YYYY" onChange={cekHTP} />
+                            <_Date label="Hari Taksiran Persalinan (HTP)" name="htp" format="DD / MM / YYYY" />
+                            <_Select label="Penggunaan Kontrasepsi Sebelum Hamil" option={kontrasepsi} val="id" caption="kontrasepsi" name="penggunaankontrasepsi" style={{ fontWeight: "bold" }} />
+                            <_Input label="Riwayat Penyakit Yang diderita Ibu" name="riwayatpenyakit" multiline />
+                            <_Input label="Riwayat Alergi" multiline name="riwayatalergi" />
+                            <_Input label="Status Imunisasi Tetanus (T) terakhir" required name="tetanustrakhir" />
+                            <_Input label="Tinggi Badan" required addonAfter="cm" name="tb" />
+
+                            <br />
+                            <_Row>
+                                <_Input sm={3} label="Gravidalum" addonAfter="G" name="g" />
+                                <_Input sm={3} label="Paritas" addonAfter="P" name="p" />
+                                <_Input sm={3} label="Abortion" addonAfter="A" name="a" />
+                                <_Input sm={3} label="O (Anak Hidup)" addonAfter="O" name="o" />
+                            </_Row>
+                            <hr />
+                            <_Row>
+                                <_Col sm="5" />
+                                <_Button label="Simpan" loading={loading} icon={<DownloadOutlined />} submit block sm={3} />
+                                <_Button label="Batal" icon={<RollbackOutlined />} danger block sm={2} />
+                            </_Row>
+
+                        </Form>
                         <br />
-                        <_Row>
-                            <_Input sm={3} label="Gravidalum" addonAfter="G" name="g" />
-                            <_Input sm={3} label="Paritas" addonAfter="P" name="p" />
-                            <_Input sm={3} label="Abortion" addonAfter="A" name="a" />
-                            <_Input sm={3} label="O (Anak Hidup)" addonAfter="O" name="o" />
-                        </_Row>
+                        <br />
+                    </Spin>
 
-                        <hr />
-                        <_Row>
-                            <_Col sm="5" />
-                            <_Button label="Simpan" loading={loading} icon={<DownloadOutlined />} submit block sm={3} />
-                            <_Button label="Batal" icon={<RollbackOutlined />} danger block sm={3} />
-                        </_Row>
-
-                    </Form>
-                    <br />
-                    <br />
                 </CardBody>
             </Card >
         </div >

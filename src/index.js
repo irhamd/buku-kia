@@ -16,7 +16,12 @@ import "assets/css/style.css";
 import "./App.less"
 import AttemptLogin from "components/Auth/AttemptLogin";
 import ProtectedRoute from "services/Route/ProtectedRoute";
+import moment from "moment";
 // import ProtectedRoute from "services/Route/ProtectedRoute";
+
+var idLocale = require('moment/locale/id');
+moment.locale('id', idLocale);
+
 
 ReactDOM.render(
   <BrowserRouter>

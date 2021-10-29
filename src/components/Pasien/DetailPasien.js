@@ -18,7 +18,6 @@ function DetailPasien() {
 
     return (
         <div>
-            <_Label label="Riwayat Registrasi" />
             <Descriptions
                 bordered
                 size={"small"}

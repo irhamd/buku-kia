@@ -80,18 +80,21 @@ export const _Number = (r) => {
                 name={r.name} hidden={r.hidden}
                 fieldKey={r.fieldKey}
                 restField={r.restField}
-                rules={[{ required: r.required, message: r.message ? r.message : errMessage, type: 'number' }]}
+                rules={[{ required: r.required, message: r.message ? r.message : errMessage, type: 'number', min: 0, max: 9999999999999 }]}
             >
-                <InputNumber min={!r.min && 0} max={r.max}
-                    onChange={r.onChange}
+                <Input
                     value={r.value}
-                    addonAfter={"CM"}
-                    disabled={r.disabled} size={r.size}
-                    formatter={value => r.format && !r.number && `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
-                    parser={value => r.format && !r.number ? value.replace(/\$\s?|(,*)/g, '') : value}
-
-                    style={{ ...r.style, width: "100%" }}
-                    defaultValue={r.defaultValue} />
+                    // bordered={false}
+                    suffix={r.suffix} size={r.size}
+                    disabled={r.disabled}
+                    onChange={r.onChange}
+                    placeholder={r.placeholder}
+                    addonAfter={r.addonAfter}
+                    maxLength={r.maxLength}
+                    addonBefore={r.addonBefore}
+                    style={{ ...r.style }}
+                    defaultValue={r.defaultValue}
+                />
             </Form.Item>
         </ColB>
     )
@@ -199,7 +202,7 @@ export const _Label = ({ span, label, onChange, defaultValue, number, max, min, 
         <ColB sm={sm ? sm : 12}>
             <Form.Item name={name} label={" "} style={{ marginBottom: "10px" }}>
                 <Input
-                    style={{ background: "#f3c363", borderColor :"#f3c363", color: "black", fontWeight: "bold" }}
+                    style={{ background: "#f3c363", borderColor: "#f3c363", color: "black", fontWeight: "bold" }}
                     disabled
                     defaultValue={label}
                 />
