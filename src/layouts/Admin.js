@@ -19,6 +19,7 @@ import bgImage from "assets/img/sidebar-2.jpg";
 import logo from "assets/img/bukukia.png";
 import { BackTop } from "antd";
 import ProtectedRoute from "services/Route/ProtectedRoute";
+import { _Button } from "services/Forms/Forms";
 
 let ps;
 
@@ -118,7 +119,7 @@ export default function Admin({ ...rest }) {
         color={color}
         {...rest}
       />
-      <div className={classes.mainPanel} ref={mainPanel} style={{ background: "#ab47bc52", padding: "30px 10px 0 10px" }}>
+      <div className={classes.mainPanel} ref={mainPanel} style={{ background: "#ab47bc52", padding: "30px 20px 0 20px" }}>
         <Navbar
           routes={routes}
           handleDrawerToggle={handleDrawerToggle}
@@ -142,7 +143,7 @@ export default function Admin({ ...rest }) {
           fixedClasses={fixedClasses}
         />
         <BackTop>
-          <div style={style}>UP</div>
+          <_Button label="Up" />
         </BackTop>
       </div>
 

@@ -19,6 +19,7 @@ import { _Cache } from 'services/Cache'
 import { dataPegawai } from 'services/Text/GlobalText'
 import { useHistory } from 'react-router'
 import RiwayatKunjungan from './Riwayat/RiwayatKunjungan'
+import { _Search } from 'services/Forms/Forms'
 
 
 function DataPasien() {
@@ -29,22 +30,21 @@ function DataPasien() {
     const [loading, setloading] = useState(false);
 
     const history = useHistory()
+    const pacient = 'x-pacient';
 
     useEffect(() => {
-        _Api.get("getDataPasien").then(res => {
-            setdataPasien(res.data)
-        })
-        _Cache.remove('x-pacient')
+        cariPasien("")
+        _Cache.remove(pacient)
     }, [])
 
     const prosesPasien = (data) => {
         console.log(data)
         // _Cache.set('id_pasien', id_pasien)
-        // _Cache.set('x-pacient', JSON.stringify(data))
-        // history.push("/admin/InputKunjungan")
+        _Cache.set(pacient, JSON.stringify(data))
+        history.push("/admin/InputKunjungan")
     }
     const dataKehamilan = (data) => {
-        _Cache.set('x-pacient', JSON.stringify(data))
+        _Cache.set(pacient, JSON.stringify(data))
         history.push("/admin/InputKehamilanSaatIni?id_pasien=" + data.id)
 
     }
@@ -53,7 +53,7 @@ function DataPasien() {
         setshowRiwayat(true)
         setdataRiwayat([])
         // console.log(data)
-        _Cache.set('x-pacient', JSON.stringify(data))
+        _Cache.set(pacient, JSON.stringify(data))
         setloading(true)
         await _Api.get("getKunjunganByPasien?id_pasien=" + data.id).then(res => {
             setdataRiwayat(res.data.data)
@@ -64,8 +64,18 @@ function DataPasien() {
         })
     }
 
+    const cariPasien = (nobuku) => {
+        setloading(true)
+        _Api.get("getDataPasien?nobuku=" + nobuku).then(res => {
+            setdataPasien(res.data)
+            console.log(res.data)
+            setloading(false)
+        })
+    }
+
+
     const jadwalKunjungan = async (data) => {
-        _Cache.set('x-pacient', JSON.stringify(data))
+        _Cache.set(pacient, JSON.stringify(data))
         history.push("/admin/JadwalKunjungan?key=" + data.id)
     }
 
@@ -115,12 +125,14 @@ function DataPasien() {
                 </CardHeader>
                 <CardBody>
                     <br />
-                    <Spin spinning={dataPasien ? false : true} size="large" tip="Loading..." >
-                        <GridContainer>
-                            {dataRiwayat && <RiwayatKunjungan loading={loading} dataRiwayat={dataRiwayat} visible={showRiwayat} onClose={() => setshowRiwayat(false)} />}
-                            {renderPasien}
-                        </GridContainer>
-                    </Spin>
+                    <_Search placeholder="Cari nomor buku  ...." loading={loading} onSearch={cariPasien} sm={6} size="large" />
+                    <br /> <br />
+                    {/* <Spin spinning={loading} size="large" tip="Loading..." > */}
+                    <GridContainer>
+                        {dataRiwayat && <RiwayatKunjungan loading={loading} dataRiwayat={dataRiwayat} visible={showRiwayat} onClose={() => setshowRiwayat(false)} />}
+                        {renderPasien}
+                    </GridContainer>
+                    {/* </Spin> */}
                     <br />
                     <br />
                 </CardBody>

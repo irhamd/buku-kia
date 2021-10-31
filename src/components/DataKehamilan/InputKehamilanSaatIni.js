@@ -64,9 +64,9 @@ function InputKehamilanSaatIni(pr) {
 
 
     const batal = () => {
-            history.goBack()
+        history.goBack()
     }
-    
+
 
 
     const onFinish = (val) => {
@@ -97,6 +97,14 @@ function InputKehamilanSaatIni(pr) {
         })
     }
 
+
+    // const setkontrasepsi = [
+    //     {id : 7 , kontrasepsi : "Pil KB"},
+    //     {id : 6 , kontrasepsi : "Suntik"},
+    //     {id : 2 , kontrasepsi : "Implan"},
+    //     {id : 3 , kontrasepsi : "Kondom"},
+    //     {id : 1 , kontrasepsi : "-"},
+    // ]
 
 
 

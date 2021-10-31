@@ -77,3 +77,6 @@ export const getDate = moment().format('YYYY-MM-DD')
 
 var dat = ubahText(_Cache.get(globalText.x_auth_resu))
 export var dataPegawai = JSON.parse(dat ? dat : "{}")
+
+var user = ubahText(_Cache.get(globalText.x_auth_user))
+export var userLogin = JSON.parse(user ? user : "{}")

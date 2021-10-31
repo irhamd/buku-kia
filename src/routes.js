@@ -25,7 +25,14 @@ import InputKehamilanSaatIni from "components/DataKehamilan/InputKehamilanSaatIn
 import InputKunjungan from "components/Kunjungan/InputKunjungan";
 import AttemptLogin from "components/Auth/AttemptLogin";
 import JadwalKunjungan from "components/DataKehamilan/JadwalKunjungan";
+import DataPasienRujuk from "components/Pasien/Rujukan/DataPasienRujuk";
+import PemeriksaanDokter from "components/Pasien/PemeriksaanDokter/PemeriksaanDokter";
+import { _Cache } from "services/Cache";
+import { dataPegawai, userLogin } from "services/Text/GlobalText";
 
+// var role =  _Cache.get(globalText.x_auth_resu)
+
+console.log(`role`, userLogin)
 const dashboardRoutes = [
 
   {
@@ -36,22 +43,22 @@ const dashboardRoutes = [
     component: DashboardPage,
     layout: "/admin",
   },
-  {
-    path: "/user",
-    name: "User Profile",
-    rtlName: "ملف تعريفي للمستخدم",
-    icon: Person,
-    component: UserProfile,
-    layout: "/admin",
-  },
-  {
-    path: "/table",
-    name: "Table List",
-    rtlName: "قائمة الجدول",
-    icon: "content_paste",
-    component: TableList,
-    layout: "/admin",
-  },
+  // {
+  //   path: "/user",
+  //   name: "User Profile",
+  //   rtlName: "ملف تعريفي للمستخدم",
+  //   icon: Person,
+  //   component: UserProfile,
+  //   layout: "/admin",
+  // },
+  // {
+  //   path: "/table",
+  //   name: "Table List",
+  //   rtlName: "قائمة الجدول",
+  //   icon: "content_paste",
+  //   component: TableList,
+  //   layout: "/admin",
+  // },
   {
     path: "/dataPasien",
     name: "Data Pasien",
@@ -67,15 +74,6 @@ const dashboardRoutes = [
     rtlName: "قائمة الجدول",
     icon: PersonAdd,
     component: InputPasienBaru,
-    layout: "/admin",
-  },
-
-  {
-    path: "/ShowWebcam",
-    name: "Webcam",
-    rtlName: "قائمة الجدول",
-    icon: PersonAdd,
-    component: ShowWebcam,
     layout: "/admin",
   },
   {
@@ -101,6 +99,21 @@ const dashboardRoutes = [
     rtlName: "قائمة الجدول",
     icon: PersonAdd,
     component: JadwalKunjungan,
+    layout: "/admin",
+  },
+  {
+    path: "/DataPasienRujuk",
+    name: "Data Pasien Di Rujuk",
+    // rtlName: "قائمة الجدول",
+    icon: PersonAdd,
+    component: DataPasienRujuk,
+    layout: "/admin",
+  },
+  {
+    path: "/PemeriksaanDokter",
+    name: "Pemeriksaan Dokter",
+    icon: PersonAdd,
+    component: PemeriksaanDokter,
     layout: "/admin",
   },
 ];

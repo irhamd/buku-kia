@@ -26,6 +26,8 @@ import { IssuesCloseOutlined, SettingOutlined } from '@ant-design/icons'
 import { _Cache } from 'services/Cache'
 import moment from 'moment'
 import DetailPasien from 'components/Pasien/DetailPasien'
+import { fitrah } from 'services/Text/GlobalText'
+import { _Swall } from 'services/Toastr/Notify/_Toastr'
 
 
 function Warning() {
@@ -44,11 +46,11 @@ function InputKunjungan() {
     // const data = JSON.parse(Cache.get("datapasien"))
     // const [dataPasien, setdataPasien] = useState(1)
 
-    const [isHB, setisHB] = useState(false)
 
     const history = useHistory();
     const { Panel } = Collapse;
-    const arr = {
+    const [form] = Form.useForm()
+    var arr = {
         keluhan: [],
         hasillab: [],
         letakjanin: ""
@@ -89,18 +91,67 @@ function InputKunjungan() {
             tanggal: moment(val.tanggal).format('YYYY-MM-DD'),
             listKeluhan: arr.keluhan.toString(),
             listHasilLab: arr.hasillab.toString(),
-            id_pasien: data.id,
             id_pasien: dataPasien.id,
-        masukpanggul: val.masukpanggul ? 1 : 0,
+            masukpanggul: val.masukpanggul ? 1 : 0,
             letakjanin: arr.letakjanin,
-            kunjunganke: "",
-            umurkehamilan1: "",
-            hb: ""
-
+            kunjunganke: dataPasien.kunjunganke + 1,
+            umurkehamilan1: fitrah.getUmur(dataPasien.hpht),
         }
         // console.log('Success:', val);
-        console.log(obj)
+        // console.log(obj)
+        // console.log(`arr`, arr)
+
+        _Api.post("saveKunjungan", obj).then(res => {
+            if (res.data.sts == 1) {
+                _Swall.success("Suksess .")
+                console.log(obj)
+                _Api.get("checkPasienDiRujuk?id_pasien=" + dataPasien.id
+                    + "&id_kunjungan=" + res.data.id_kunjungan
+                    + "&tinggifundus=" + val.tinggifundus
+                    + "&tablettambahdarah=" + val.tablettambahdarah
+                    + "&hb=" + val.hb).then(res => { })
+            }
+            else _Swall.error(res.data.msg)
+
+            // form.resetFields()
+
+        }).cath(err => {
+            _Swall.error("Gagal ...")
+
+        })
+
+
+
     };
+
+    // const cekBeratJanin = (e) => {
+    //     var kj = $("#masukpanggul").is(':checked') ? 11 : 12
+    //     var tf = e.target.value
+    //     let berat = (tf - kj) * 155;
+    //     $("#beratjanin").val(berat > 0 ? berat : 0)
+    // }
+
+
+    const cekBeratJanin = (e) => {
+
+        var tf = form.getFieldValue("tinggifundus")
+        if (e == "-") {
+            var kj = masukpanggul ? 11 : 12
+        } else {
+            var kj = e ? 11 : 12
+            setmasukpanggul(e)
+        }
+        let berat = (parseInt(tf) - kj) * 155;
+
+        var beratjanin = berat > 0 ? berat : 0
+        form.setFieldsValue({
+            beratjanin: beratjanin.toString()
+        })
+        // console.log(tf.target.defaultValue)
+
+        // $("#beratjanin").val(berat > 0 ? berat : 0)
+    }
+
 
 
 
@@ -174,7 +225,7 @@ function InputKunjungan() {
                 <CardBody>
                     <DetailPasien />
                     <Spin spinning={dataPasien ? false : true} size="large" tip="Loading..." >
-                        <Form size="large" onFinish={onFinish} autoComplete="off"
+                        <Form size="large" onFinish={onFinish} autoComplete="off" form={form}
                             labelCol={{ span: 8 }}
                             wrapperCol={{ span: 12 }}
                         >
@@ -182,9 +233,9 @@ function InputKunjungan() {
                             <_Input label="Berat Badan (BB)" name="beratbadan" addonAfter="kg" required />
                             <_Input label="Tekanan Darah (T.D )" name="tekanandarah" addonAfter="(mmHg)" required />
                             <_Input label="LILA" name="lila" addonAfter="(cm)" required />
-                            <_Input label="Tinggi Fundus" name="tinggifundus" addonAfter="(cm)" required />
-                            <_Switch label="Masuk Panggul" name="masukpanggul" titleCheck="Sudah" titleUnCheck="Belum" />
-                            <_Input label="Perkiraan Berat Janin" disabled name="beratjanin" addonAfter="gram" />
+                            <_Input label="Tinggi Fundus" name="tinggifundus" addonAfter="(cm)" onChange={() => cekBeratJanin('-')} required />
+                            <_Switch label="Masuk Panggul" name="masukpanggul" titleCheck="Sudah" onChange={(e) => cekBeratJanin(e)} titleUnCheck="Belum" />
+                            <_Input label="Perkiraan Berat Janin" name="beratjanin" addonAfter="gram" />
                             <_Input label="Imunisasi" name="imunisasi" />
                             <_Input label="Tablet Tambah Darah" name="tablettambahdarah" addonAfter="transfusi" />
                             <_Input label="Analisa" multiline name="analisa" />
@@ -216,7 +267,9 @@ function InputKunjungan() {
                                     <Collapse defaultActiveKey={['1']} size="small">
                                         <Panel header="HASIL LAB" key="1">
                                             <br />
-                                            <_Number label="Hemoglobin (HB)" />
+                                            <_Input name="hb" label="Hemoglobin (HB)" />
+                                            <br />
+
                                             {renderHasilLab}
                                         </Panel>
 
@@ -234,8 +287,8 @@ function InputKunjungan() {
                             </_Row>
                             <_Row>
                                 <_Col sm="5" />
-                                <_Button label="Simpan" submit block sm={3} />
-                                <_Button label="Batal" danger block sm={3} />
+                                <_Button save label="Simpan" submit block sm={3} />
+                                <_Button cancel label="Batal" danger block sm={3} />
                             </_Row>
 
                         </Form>

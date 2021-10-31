@@ -1,4 +1,4 @@
-import { CloseCircleOutlined, CloudDownloadOutlined, DeliveredProcedureOutlined, FilterOutlined, RollbackOutlined, SaveOutlined, SearchOutlined } from "@ant-design/icons"
+import { CloseCircleOutlined, CloudDownloadOutlined, DeliveredProcedureOutlined, DownloadOutlined, FilterOutlined, RollbackOutlined, SaveOutlined, SearchOutlined } from "@ant-design/icons"
 import { Button, Col, DatePicker, Form, Input, InputNumber, Mentions, Radio, Row, Select, Switch, TimePicker } from "antd"
 import { mainColor } from "../Color"
 import { Col as ColB } from 'react-bootstrap';
@@ -214,10 +214,10 @@ export const _Label = ({ span, label, onChange, defaultValue, number, max, min, 
 export const _Search = (r) => {
     return (
         <ColB sm={r.sm ? r.sm : 12}>
-            <Form.Item name={r.name} label={r.label ? r.label : " "} style={{ marginBottom: "10px" }}
+            <Form.Item name={r.name} label={r.label ? r.label : ""} style={{ marginBottom: "10px" }}
                 rules={[{ required: r.required, message: r.message ? r.message : errMessage }]}
             >
-                <Search placeholder={r.placeholder} onChange={r.onChange} onSearch={r.onSearch} enterButton loading={r.loading} />
+                <Search allowClear placeholder={r.placeholder} size={r.size} onChange={r.onChange} onSearch={r.onSearch} enterButton loading={r.loading} />
             </Form.Item>
         </ColB>
     )
@@ -373,7 +373,7 @@ export const _Button = (r) => {
                 size={r.size}
                 type={"primary"}
 
-                icon={r.save ? <SaveOutlined /> : r.find ? <SearchOutlined /> : r.cancel ? <RollbackOutlined /> : r.icon}>
+                icon={r.save ? <DownloadOutlined /> : r.find ? <SearchOutlined /> : r.cancel ? <RollbackOutlined /> : r.icon}>
                 {r.title} {r.label}
             </Button>
         </ColB>

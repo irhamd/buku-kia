@@ -47,8 +47,8 @@ function AttemptLogin() {
             Cache.set(globalText.authorization, acakText(data.token))
             Cache.set(globalText.x_auth_access_token, acakText(data.tokenx))
             Cache.set(globalText.x_auth_refresh_token, new Date().toString())
-            // window.location.href = "/admin/dashboard"
-            history.push('/admin/dashboard')
+            window.location.href = "/admin/dashboard"
+            // history.push('/admin/dashboard')
             // props.history.push("/home")
         }).catch((err) => {
             setloading(false)

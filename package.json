@@ -11,6 +11,7 @@
     "@material-ui/icons": "4.11.2",
     "angka-menjadi-terbilang": "^0.5.0",
     "antd": "^4.16.13",
+    "antd-img-crop": "^3.16.0",
     "axios": "^0.23.0",
     "chartist": "0.10.1",
     "classnames": "2.3.1",
