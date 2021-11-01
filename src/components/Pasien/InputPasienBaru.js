@@ -43,7 +43,7 @@ function InputPasienBaru() {
 
     const simpanPasien = (val) => {
         _Api.post("saveDataPasien", val).then(res => {
-            console.log(res.data)
+            // console.log(res.data)
             form.resetFields()
             _Toastr.success("Suksess .")
         }).cath(err => {

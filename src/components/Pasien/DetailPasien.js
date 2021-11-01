@@ -20,7 +20,6 @@ function DetailPasien() {
 
     useEffect(() => {
         if (!data) history.push('/admin/dataPasien')
-        console.log(`ERROR`, 'Data Pasien belum ada .!')
     }, [])
 
     return (

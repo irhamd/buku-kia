@@ -38,7 +38,7 @@ function AttemptLogin() {
         _Api.post("loginRev", e).then(res => {
             var data = res.data
 
-            console.log(res.data)
+            // console.log(res.data)
             var pegawai = JSON.stringify(data.pegawai)
             var user = JSON.stringify(data.user)
 

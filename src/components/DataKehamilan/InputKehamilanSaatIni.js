@@ -93,7 +93,7 @@ function InputKehamilanSaatIni(pr) {
     const getData = () => {
         _Api.post("getMasterData", { "masterData": "penggunaankontrasepsi_m", "limit": "100" }).then(res => {
             setkontrasepsi(res.data)
-            console.log(res.data)
+            // console.log(res.data)
         })
     }
 

@@ -23,7 +23,6 @@ import { _Search } from 'services/Forms/Forms'
 import { userLogin } from 'services/Text/GlobalText'
 import { _role } from 'services/Text/GlobalText'
 
-
 function DataPasien() {
 
     const [dataPasien, setdataPasien] = useState(null)
@@ -37,7 +36,11 @@ function DataPasien() {
 
 
     useEffect(() => {
-        cariPasien("")
+        let cekPasien = _Cache.get("datapasien")
+        if (cekPasien) {
+            setdataPasien(JSON.parse(cekPasien))
+        } else
+            cariPasien("")
         _Cache.remove(pacient)
     }, [])
 
@@ -79,7 +82,7 @@ function DataPasien() {
         setloading(true)
         _Api.get("getDataPasien?nobuku=" + nobuku).then(res => {
             setdataPasien(res.data)
-            console.log(res.data)
+            _Cache.set("datapasien", JSON.stringify(res.data))
             setloading(false)
         })
     }

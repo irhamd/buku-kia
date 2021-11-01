@@ -177,7 +177,7 @@ function InputKunjungan() {
 
     const renderKeluhan = keluhan.map((item, index) => {
         return (
-            <>
+            <div key={index}>
                 <label className="containerc" key={item.id} style={{ fontSize: "15px", fontWeight: "bold", height: "30px" }}>
                     <span className="checkboxC" style={{ color: item.isrujuk == 1 ? 'maroon' : '#000000b3' }}> {index + 1}. {item.keluhan}
                         {item.isrujuk == 1 ? <Warning /> : ""}
@@ -185,7 +185,7 @@ function InputKunjungan() {
                     <input type="checkbox" value={item.id} onChange={changeKeluhan} />
                     <span className="checkmark" />
                 </label>
-            </>
+            </div>
         )
     })
 
