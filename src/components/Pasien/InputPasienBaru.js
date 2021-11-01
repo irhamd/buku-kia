@@ -76,8 +76,9 @@ function InputPasienBaru() {
                                     <_Date name="tgllahir" sm={4} required label="Tanggal Lahir (DD-MM-YYYY)" format={"DD-MM-YYYY"} />
                                 </_Row>
                                 <_Input name="nama" label="Nama Lengkap"required />
+                                <_Input name="nohp" sm={4} label="No HP (Aktif)"required />
                                 <_Input multiline name="alamat" label="Alamat Lengkap" required />
-                                <_Number name="nojkn" label="No. JKN" />
+                                <_Number name="nojkn" label="No. JKN"/>
                                 <_Input name="faskestk1" label="Faskes Pertama" />
 
                                 <_RadioGroup options={[

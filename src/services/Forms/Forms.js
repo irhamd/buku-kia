@@ -80,9 +80,9 @@ export const _Number = (r) => {
                 name={r.name} hidden={r.hidden}
                 fieldKey={r.fieldKey}
                 restField={r.restField}
-                rules={[{ required: r.required, message: r.message ? r.message : errMessage, type: 'number', min: 0, max: 9999999999999 }]}
+                rules={[{ required: r.required, message: r.message ? r.message : errMessage, type: 'number', min: 0 }]}
             >
-                <Input
+                <InputNumber
                     value={r.value}
                     // bordered={false}
                     suffix={r.suffix} size={r.size}
@@ -92,7 +92,7 @@ export const _Number = (r) => {
                     addonAfter={r.addonAfter}
                     maxLength={r.maxLength}
                     addonBefore={r.addonBefore}
-                    style={{ ...r.style }}
+                    style={{ ...r.style, width:"100%" }}
                     defaultValue={r.defaultValue}
                 />
             </Form.Item>

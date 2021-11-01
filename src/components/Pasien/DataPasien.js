@@ -20,6 +20,8 @@ import { dataPegawai } from 'services/Text/GlobalText'
 import { useHistory } from 'react-router'
 import RiwayatKunjungan from './Riwayat/RiwayatKunjungan'
 import { _Search } from 'services/Forms/Forms'
+import { userLogin } from 'services/Text/GlobalText'
+import { _role } from 'services/Text/GlobalText'
 
 
 function DataPasien() {
@@ -31,6 +33,8 @@ function DataPasien() {
 
     const history = useHistory()
     const pacient = 'x-pacient';
+    let cekRole = userLogin.role
+
 
     useEffect(() => {
         cariPasien("")
@@ -38,10 +42,17 @@ function DataPasien() {
     }, [])
 
     const prosesPasien = (data) => {
-        console.log(data)
+        // console.log(data)
         // _Cache.set('id_pasien', id_pasien)
         _Cache.set(pacient, JSON.stringify(data))
         history.push("/admin/InputKunjungan")
+    }
+
+    const pemeriksaanDokter = (data) => {
+        // console.log(data)
+        // _Cache.set('id_pasien', id_pasien)
+        _Cache.set(pacient, JSON.stringify(data))
+        history.push("/admin/PemeriksaanDokter")
     }
     const dataKehamilan = (data) => {
         _Cache.set(pacient, JSON.stringify(data))
@@ -74,6 +85,8 @@ function DataPasien() {
     }
 
 
+
+
     const jadwalKunjungan = async (data) => {
         _Cache.set(pacient, JSON.stringify(data))
         history.push("/admin/JadwalKunjungan?key=" + data.id)
@@ -99,7 +112,13 @@ function DataPasien() {
                                 <p className="title-a">{item.nama && item.nama.toUpperCase()}</p>
                                 <p> {item.alamat} </p>
                                 <_Row>
-                                    <_Button label="Proses" block sm={2} color="#da2b8b" onClick={() => prosesPasien(item)} icon={<DeploymentUnitOutlined />} />
+
+                                    {cekRole == _role.bidan &&
+                                        <_Button label="Proses" block sm={2} color="#da2b8b" onClick={() => prosesPasien(item)} icon={<DeploymentUnitOutlined />} />
+                                    }
+                                    {cekRole == _role.dokter &&
+                                        <_Button label="Pemeriksaan Dokter" block sm={2} color="#da2b8b" onClick={() => pemeriksaanDokter(item)} icon={<DeploymentUnitOutlined />} />
+                                    }
                                     <_Button label="Pertumbuhan Janin" color="#da2b8b" icon={<AreaChartOutlined />} block sm={3} />
                                     <_Button label="Riwayat" icon={<FieldTimeOutlined />} color="orangered" onClick={() => riwayatPasien(item)} block sm={2} />
                                     <_Button label="Kehamilan" icon={<NodeIndexOutlined />} color="orangered" onClick={() => dataKehamilan(item)} block sm={2} />

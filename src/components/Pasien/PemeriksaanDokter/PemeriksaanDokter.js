@@ -17,6 +17,19 @@ import { _Date } from "services/Forms/Forms";
 import ImgCrop from 'antd-img-crop';
 import { _Button } from "services/Forms/Forms";
 import DetailPasien from "../DetailPasien";
+
+const alertUser = (e) => {
+    e.preventDefault();
+    e.returnValue = "";
+};
+
+function cekRefresh() {
+    window.addEventListener("beforeunload", alertUser);
+    return () => {
+        window.removeEventListener("beforeunload", alertUser);
+    };
+}
+
 function PemeriksaanDokter() {
 
     const [pasienRujuk, setpasienRujuk] = useState([])
@@ -43,9 +56,21 @@ function PemeriksaanDokter() {
         });
     }
 
+    const aaa = true
+
+
+
     useEffect(() => {
         getData()
-    }, [])
+        if (aaa) {
+            cekRefresh()
+        }
+
+    }, []);
+
+
+
+
 
     const [fileList, setFileList] = useState([]);
 
@@ -153,19 +178,23 @@ function PemeriksaanDokter() {
                                 <_Date label="Taksir Persalinan (dd-mm-yyyy)" format={"DD-MM-YYYY"} />
 
                             </Form>
+                            <hr />
+
+                            <_Button save submit label="Simpan" sm={4} block color="orangered" size="large" />
 
                         </_Col>
                         <_Col sm={6} style={{ background: "#de68a940", padding: "10px" }}>
                             <p className="tengah b"> Hasil USG </p>
                             <p style={{ textAlign: "center" }}>
                                 {
-                                    src && <Image
+                                    src && <> <Image
                                         width={700}
                                         src={src}
                                     />
+                                        <_Button cancel sm={2} label="Clear" onClick={clearImage} />
+                                    </>
                                 }
                             </p>
-                            <_Button cancel sm={2} label="Clear" onClick={clearImage} />
 
                             <ImgCrop rotate>
                                 <Upload

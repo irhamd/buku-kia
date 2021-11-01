@@ -35,7 +35,7 @@ FixedPlugin.propTypes = {
   handleFixedClick: PropTypes.func,
   rtlActive: PropTypes.bool,
   fixedClasses: PropTypes.string,
-  bgColor: PropTypes.oneOf(["red"]),
+  // bgColor: PropTypes.oneOf(["red"]),
   handleColorClick: PropTypes.func,
   handleImageClick: PropTypes.func,
 };

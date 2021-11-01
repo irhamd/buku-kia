@@ -33,80 +33,22 @@ import { dataPegawai, userLogin } from "services/Text/GlobalText";
 // var role =  _Cache.get(globalText.x_auth_resu)
 
 console.log(`role`, userLogin)
-const dashboardRoutes = [
 
+var role = userLogin.role
+
+const dokter = [
   {
     path: "/dashboard",
     name: "Dashboard",
-    rtlName: "لوحة القيادة",
     icon: Dashboard,
     component: DashboardPage,
     layout: "/admin",
   },
-  // {
-  //   path: "/user",
-  //   name: "User Profile",
-  //   rtlName: "ملف تعريفي للمستخدم",
-  //   icon: Person,
-  //   component: UserProfile,
-  //   layout: "/admin",
-  // },
-  // {
-  //   path: "/table",
-  //   name: "Table List",
-  //   rtlName: "قائمة الجدول",
-  //   icon: "content_paste",
-  //   component: TableList,
-  //   layout: "/admin",
-  // },
   {
     path: "/dataPasien",
     name: "Data Pasien",
-    rtlName: "قائمة الجدول",
     icon: PersonAdd,
     component: DataPasien,
-    layout: "/admin",
-  },
-
-  {
-    path: "/InputPasienBaru",
-    name: "Pasien Baru",
-    rtlName: "قائمة الجدول",
-    icon: PersonAdd,
-    component: InputPasienBaru,
-    layout: "/admin",
-  },
-  {
-    path: "/InputKehamilanSaatIni",
-    name: "DataKehamilan",
-    rtlName: "قائمة الجدول",
-    icon: PersonAdd,
-    component: InputKehamilanSaatIni,
-    layout: "/admin",
-  },
-
-  {
-    path: "/InputKunjungan",
-    name: "Input Kunjungan",
-    rtlName: "قائمة الجدول",
-    icon: PersonAdd,
-    component: InputKunjungan,
-    layout: "/admin",
-  },
-  {
-    path: "/JadwalKunjungan",
-    name: "Jadwal Kunjungan",
-    rtlName: "قائمة الجدول",
-    icon: PersonAdd,
-    component: JadwalKunjungan,
-    layout: "/admin",
-  },
-  {
-    path: "/DataPasienRujuk",
-    name: "Data Pasien Di Rujuk",
-    // rtlName: "قائمة الجدول",
-    icon: PersonAdd,
-    component: DataPasienRujuk,
     layout: "/admin",
   },
   {
@@ -116,6 +58,74 @@ const dashboardRoutes = [
     component: PemeriksaanDokter,
     layout: "/admin",
   },
+
+]
+
+const bidan = [
+  {
+    path: "/dashboard",
+    name: "Dashboard",
+    icon: Dashboard,
+    component: DashboardPage,
+    layout: "/admin",
+  },
+  {
+    path: "/dataPasien",
+    name: "Data Pasien",
+    icon: PersonAdd,
+    component: DataPasien,
+    layout: "/admin",
+  },
+
+  {
+    path: "/InputPasienBaru",
+    name: "Pasien Baru",
+    icon: PersonAdd,
+    component: InputPasienBaru,
+    layout: "/admin",
+  },
+  {
+    path: "/InputKehamilanSaatIni",
+    name: "DataKehamilan",
+    icon: PersonAdd,
+    component: InputKehamilanSaatIni,
+    layout: "/admin",
+  },
+
+  {
+    path: "/InputKunjungan",
+    name: "Input Kunjungan",
+    icon: PersonAdd,
+    component: InputKunjungan,
+    layout: "/admin",
+  },
+  {
+    path: "/JadwalKunjungan",
+    name: "Jadwal Kunjungan",
+    icon: PersonAdd,
+    component: JadwalKunjungan,
+    layout: "/admin",
+  },
+  {
+    path: "/DataPasienRujuk",
+    name: "Data Pasien Di Rujuk",
+    icon: PersonAdd,
+    component: DataPasienRujuk,
+    layout: "/admin",
+  },
+
 ];
+
+var dashboardRoutes = ""
+
+switch (role) {
+  case 'dokter':
+    dashboardRoutes = dokter
+    break;
+  case 'bidan':
+    dashboardRoutes = bidan
+    break;
+
+}
 
 export default dashboardRoutes;

@@ -80,3 +80,9 @@ export var dataPegawai = JSON.parse(dat ? dat : "{}")
 
 var user = ubahText(_Cache.get(globalText.x_auth_user))
 export var userLogin = JSON.parse(user ? user : "{}")
+
+export const _role = {
+    admin: 'admin',
+    bidan: 'bidan',
+    dokter: 'dokter'
+}
