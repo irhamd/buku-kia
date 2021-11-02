@@ -25,6 +25,7 @@ import { DownloadOutlined, RollbackOutlined } from '@ant-design/icons'
 import { useHistory, useLocation } from 'react-router'
 import queryString from 'query-string'
 import DetailPasien from 'components/Pasien/DetailPasien'
+import { _RadioGroup } from 'services/Forms/Forms'
 
 function InputKehamilanSaatIni(pr) {
 
@@ -145,7 +146,7 @@ function InputKehamilanSaatIni(pr) {
                 <CardBody>
                     <Spin spinning={loading} >
 
-                        <DetailPasien />
+                        {/* <DetailPasien /> */}
 
                         <Form size="large"
                             labelCol={{
@@ -158,9 +159,15 @@ function InputKehamilanSaatIni(pr) {
                             autoComplete="off"
                         >
                             <_Switch checked={tidaktahu} label="HPHT Terakhir" name="tt" titleCheck="Tidak Tahu" titleUnCheck="Tahu" onChange={tidakTahuHPHT} />
-                            <_Date label="(Hari Pertama Haid Terakhir (HPHT))" name="hpht" format="DD / MM / YYYY" onChange={cekHTP} />
-                            <_Date label="Hari Taksiran Persalinan (HTP)" name="htp" format="DD / MM / YYYY" />
-                            <_Select label="Penggunaan Kontrasepsi Sebelum Hamil" option={kontrasepsi} val="id" caption="kontrasepsi" name="penggunaankontrasepsi" style={{ fontWeight: "bold" }} />
+                            <_Date label="(Hari Pertama Haid Terakhir (HPHT))" name="hpht" required={!tidaktahu} format="DD / MM / YYYY" onChange={cekHTP} />
+                            <_Date label="Hari Taksiran Persalinan (HTP)" name="htp" format="DD / MM / YYYY" required={!tidaktahu} />
+                            {/* <_Select label="Penggunaan Kontrasepsi Sebelum Hamil" option={kontrasepsi} val="id" caption="kontrasepsi" name="penggunaankontrasepsi" style={{ fontWeight: "bold" }} /> */}
+                            <_RadioGroup options={[
+                                { value: "7", label: "Pil KB" },
+                                { value: "3", label: "Kondom" },
+                                { value: "6", label: "Suntik" },
+                                { value: "2", label: "Implan" },
+                            ]} label="Golongan Darah" name="penggunaankontrasepsi" />
                             <_Input label="Riwayat Penyakit Yang diderita Ibu" name="riwayatpenyakit" multiline />
                             <_Input label="Riwayat Alergi" multiline name="riwayatalergi" />
                             <_Input label="Status Imunisasi Tetanus (T) terakhir" required name="tetanustrakhir" />
@@ -176,7 +183,7 @@ function InputKehamilanSaatIni(pr) {
                             <hr />
                             <_Row>
                                 <_Col sm="5" />
-                                <_Button label="Simpan" color="#096dd9bd" loading={loading} icon={<DownloadOutlined />} submit block sm={3} />
+                                <_Button label="Simpan Data Kehamilan" color="#096dd9bd" loading={loading} icon={<DownloadOutlined />} submit block sm={4} />
                                 <_Button label="Batal" icon={<RollbackOutlined />} onClick={batal} danger block sm={2} />
                             </_Row>
 

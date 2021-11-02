@@ -133,23 +133,19 @@ function InputKunjungan() {
 
 
     const cekBeratJanin = (e) => {
-
-        var tf = form.getFieldValue("tinggifundus")
+        var tfu = form.getFieldValue("tinggifundus")
         if (e == "-") {
             var kj = masukpanggul ? 11 : 12
         } else {
             var kj = e ? 11 : 12
             setmasukpanggul(e)
         }
-        let berat = (parseInt(tf) - kj) * 155;
+        let berat = (parseInt(tfu) - kj) * 155;
 
         var beratjanin = berat > 0 ? berat : 0
         form.setFieldsValue({
             beratjanin: beratjanin.toString()
         })
-        // console.log(tf.target.defaultValue)
-
-        // $("#beratjanin").val(berat > 0 ? berat : 0)
     }
 
 
@@ -223,7 +219,7 @@ function InputKunjungan() {
                     <p>Input data kunjungan pasien saat ini </p>
                 </CardHeader>
                 <CardBody>
-                    <DetailPasien />
+                    {/* <DetailPasien /> */}
                     <Spin spinning={dataPasien ? false : true} size="large" tip="Loading..." >
                         <Form size="large" onFinish={onFinish} autoComplete="off" form={form}
                             labelCol={{ span: 8 }}
@@ -235,12 +231,16 @@ function InputKunjungan() {
                             <_Input label="LILA" name="lila" addonAfter="(cm)" required />
                             <_Input label="Tinggi Fundus" name="tinggifundus" addonAfter="(cm)" onChange={() => cekBeratJanin('-')} required />
                             <_Switch label="Masuk Panggul" name="masukpanggul" titleCheck="Sudah" onChange={(e) => cekBeratJanin(e)} titleUnCheck="Belum" />
-                            <_Input label="Perkiraan Berat Janin" name="beratjanin" addonAfter="gram" />
+                            <_Input label="Perkiraan Berat Janin" disabled name="beratjanin" addonAfter="gram" />
                             <_Input label="Imunisasi" name="imunisasi" />
                             <_Input label="Tablet Tambah Darah" name="tablettambahdarah" addonAfter="transfusi" />
                             <_Input label="Analisa" multiline name="analisa" />
                             <_Input label="Tata Laksana" multiline name="tatalaksana" />
                             <_Input label="Konseling" name="konseling" />
+                            {/* <_Input label="Sudah Vaksin" name="Vaksin" /> */}
+                            <_Switch label="Sudah Vaksin 1" name="vaksin1" titleCheck="Sudah"  titleUnCheck="Belum" />
+                            <_Switch label="Sudah Vaksin 2" name="vaksin2" titleCheck="Sudah"  titleUnCheck="Belum" />
+                            <_Switch label="Sudah Vaksin 3" name="vaksin3" titleCheck="Sudah"  titleUnCheck="Belum" />
 
                             {/* <_Date label="Hari Taksiran Persalinan (HTP)" name="htp" format="DD / MM / YYYY" />
                             <_Select label="Penggunaan Kontrasepsi Sebelum Hamil" required name="penggunaankontrasepsi" style={{ fontWeight: "bold" }} />
@@ -263,7 +263,6 @@ function InputKunjungan() {
                             <hr />
                             <_Row>
                                 <_Col sm="6">
-
                                     <Collapse defaultActiveKey={['1']} size="small">
                                         <Panel header="HASIL LAB" key="1">
                                             <br />
@@ -276,18 +275,18 @@ function InputKunjungan() {
                                     </Collapse>,
                                 </_Col>
                                 <_Col sm="4">
-                                    <Collapse defaultActiveKey={['1']} size="small">
+                                    {/* <Collapse defaultActiveKey={['1']} size="small">
                                         <Panel header="LETAK JANIN" key="1">
                                             <br />
                                             {renderLetakJanin}
                                         </Panel>
 
-                                    </Collapse>,
+                                    </Collapse>, */}
                                 </_Col>
                             </_Row>
                             <_Row>
-                                <_Col sm="5" />
-                                <_Button save label="Simpan" submit block sm={3} />
+                                <_Col sm={3} />
+                                <_Button save color="#096dd9bd" label="Simpan Keluhan Pasien" submit block sm={5} />
                                 <_Button cancel label="Batal" danger block sm={3} />
                             </_Row>
 

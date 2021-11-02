@@ -195,6 +195,12 @@ License URL: http://creativecommons.org/licenses/by/3.0/
     align-items: center;
 }
 
+.boxShadow {
+    box-shadow: 4px 7px 5px -2px rgba(32, 17, 29, 0.75);
+    -webkit-box-shadow: 4px 7px 5px -2px  rgba(32, 17, 29, 0.75);
+    -moz-box-shadow: 4px 7px 5px -2px  rgba(32, 17, 29, 0.75);
+}
+
 .boxscroll {
     /* background-color: lightblue; */
     width: 100%;
@@ -3587,15 +3593,16 @@ input[type="checkbox"] {
 }
 
 .header-head {
-    padding: .5em;
+    padding: .1em;
     text-align: center;
     /* box-shadow: 0 0 1px #bd4899, 0 0 5px #652e47; */
 }
 
-.b{
+.b {
     font-weight: bold;
 }
-.bb{
+
+.bb {
     font-weight: bolder;
 }
 

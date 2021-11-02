@@ -140,11 +140,13 @@ function RiwayatKunjungan(pr) {
     return (
         <>
             <Drawer
-                placement="top"
+                placement="left"
                 style={{ margin: "-10px" }}
-                headerStyle={{ background: "#f19ecf", height: "76px" }}
+                headerStyle={{ background: "#f19ecf", height: "1px" }}
                 onClose={pr.onClose}
-                height={1200}
+                width={"100%"}
+                height={"100%"}
+                
                 visible={pr.visible}
                 getContainer={false}
             >
@@ -152,7 +154,7 @@ function RiwayatKunjungan(pr) {
 
                 <DetailPasien />
                 <Table loading={pr.loading} bordered pagination={{ position: ['bottomCenter'] }}
-                    rowKey="id" dataSource={pr.dataRiwayat && pr.dataRiwayat} columns={columns} scroll={{ x: 3100, y :400 }} />;
+                    rowKey="id" dataSource={pr.dataRiwayat && pr.dataRiwayat} columns={columns} scroll={{ x: 3100, y: 400 }} />;
 
                 <hr />
                 <_Button label="Tutup" block sm={2} onClick={pr.onClose} cancel />

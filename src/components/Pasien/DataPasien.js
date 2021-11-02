@@ -48,7 +48,8 @@ function DataPasien() {
         // console.log(data)
         // _Cache.set('id_pasien', id_pasien)
         _Cache.set(pacient, JSON.stringify(data))
-        history.push("/admin/InputKunjungan")
+        // history.push("/admin/InputKunjungan")
+        history.push("/admin/LembarKerjaBidan")
     }
 
     const pemeriksaanDokter = (data) => {
@@ -82,6 +83,7 @@ function DataPasien() {
         setloading(true)
         _Api.get("getDataPasien?nobuku=" + nobuku).then(res => {
             setdataPasien(res.data)
+            console.log(`res.data`, res.data)
             _Cache.set("datapasien", JSON.stringify(res.data))
             setloading(false)
         })
@@ -111,21 +113,21 @@ function DataPasien() {
                         </_Col>
                         <_Col sm={9}>
                             <div style={{ margin: "20px 10px 10px 40px" }}>
-                                <p className="title-b">{item.nobuku}</p>
-                                <p className="title-a">{item.nama && item.nama.toUpperCase()}</p>
+                                <p className="title-b" style={{ color: "#d3307b" }}>{item.nobuku}</p>
+                                <p className="title-a">{item.nama && item.nama.toUpperCase()} </p>
                                 <p> {item.alamat} </p>
                                 <_Row>
 
                                     {cekRole == _role.bidan &&
-                                        <_Button label="Proses" block sm={2} color="#da2b8b" onClick={() => prosesPasien(item)} icon={<DeploymentUnitOutlined />} />
+                                        <_Button label="Lembar Kerja" block sm={3} color="#da2b8b" disabled={item.kunjunganke == 0} onClick={() => prosesPasien(item)} icon={<DeploymentUnitOutlined />} />
                                     }
                                     {cekRole == _role.dokter &&
                                         <_Button label="Pemeriksaan Dokter" block sm={2} color="#da2b8b" onClick={() => pemeriksaanDokter(item)} icon={<DeploymentUnitOutlined />} />
                                     }
-                                    <_Button label="Pertumbuhan Janin" color="#da2b8b" icon={<AreaChartOutlined />} block sm={3} />
+                                    <_Button label="Data Kehamilan" icon={<NodeIndexOutlined />} color="orangered" onClick={() => dataKehamilan(item)} block sm={3} />
+                                    {/* <_Button label="Pertumbuhan Janin" color="#da2b8b" icon={<AreaChartOutlined />} block sm={3} />
                                     <_Button label="Riwayat" icon={<FieldTimeOutlined />} color="orangered" onClick={() => riwayatPasien(item)} block sm={2} />
-                                    <_Button label="Kehamilan" icon={<NodeIndexOutlined />} color="orangered" onClick={() => dataKehamilan(item)} block sm={2} />
-                                    <_Button label="Jadwal Kunjungan" icon={<CalendarOutlined />} color="orangered" block sm={3} onClick={() => jadwalKunjungan(item)} />
+                                    <_Button label="Jadwal Kunjungan" icon={<CalendarOutlined />} color="orangered" block sm={3} onClick={() => jadwalKunjungan(item)} /> */}
 
                                 </_Row>
                             </div>

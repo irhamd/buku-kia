@@ -21,9 +21,7 @@ import { _RadioGroup } from 'services/Forms/Forms'
 import { CameraOutlined, RollbackOutlined } from '@ant-design/icons';
 import Webcam from 'react-webcam'
 import _Api from 'services/Api/_Api'
-import { _Toastr } from 'services/Toastr/Notify/_Toastr'
-import Swal from 'sweetalert2'
-
+import { _Swall } from 'services/Toastr/Notify/_Toastr'
 
 
 function InputPasienBaru() {
@@ -42,18 +40,38 @@ function InputPasienBaru() {
     }, [webcamRef, setImgSrc]);
 
     const simpanPasien = (val) => {
-        _Api.post("saveDataPasien", val).then(res => {
+        if (!imgSrc) {
+            _Swall.warning("Silahkan ambil foto pasien ...")
+            return
+        }
+        const obj = {
+            ...val,
+            foto: imgSrc
+        }
+        _Api.post("saveDataPasien", obj).then(res => {
             // console.log(res.data)
-            form.resetFields()
-            _Toastr.success("Suksess .")
+            if (res.data.sts == 1) {
+                _Swall.success("Berhasil ...")
+                form.resetFields()
+            } else _Swall.success("Gagal ...")
         }).cath(err => {
-            alert("errorr")
+            _Swall.success("Gagal /err ...")
         })
     }
 
+    const getFoto = () => {
+        return (
+            imgSrc && (
+                <img style={{ borderColor: "orange", width: "300px", borderRadius: "10px" }}
+                    src={imgSrc}
+                />
+            )
+        )
+    }
+
     const videoConstraints = {
-        width: 300,
-        height: 400,
+        width: 350,
+        height: 300,
         facingMode: "user"
     };
 
@@ -69,16 +87,18 @@ function InputPasienBaru() {
                     <Form layout="vertical" form={form} onFinish={simpanPasien} size="large" style={{ marginBottom: "10%" }}>
                         <_Row>
                             <_Col sm={7}>
-                                <_Search name="nik" required label="NIK" />
+                                <_Search name="nik" showCount required label="NIK" maxLength={26} />
                                 <_Number name="nobuku" required label="Nomor Buku" />
                                 <_Row>
                                     <_Input name="tempatlahir" required sm={8} label="Tempat Lahir" />
                                     <_Date name="tgllahir" sm={4} required label="Tanggal Lahir (DD-MM-YYYY)" format={"DD-MM-YYYY"} />
                                 </_Row>
-                                <_Input name="nama" label="Nama Lengkap"required />
-                                <_Input name="nohp" sm={4} label="No HP (Aktif)"required />
+                                <_Input name="nama" label="Nama Lengkap" required />
+                                <_Row>
+                                    <_Input name="nohp" label="No HP (Aktif)" required maxLength={13} sm={5} />
+                                    <_Number name="nojkn" label="No. JKN" sm={7} />
+                                </_Row>
                                 <_Input multiline name="alamat" label="Alamat Lengkap" required />
-                                <_Number name="nojkn" label="No. JKN"/>
                                 <_Input name="faskestk1" label="Faskes Pertama" />
 
                                 <_RadioGroup options={[
@@ -106,20 +126,21 @@ function InputPasienBaru() {
                                         }
                                     </CardAvatar>
                                     <CardBody profile>
-                                        <h6 style={{ marginBottom: "-6px" }}>CEO / CO-FOUNDER</h6>
-                                        <h4>Alec Thompson</h4>
+                                        <h6 style={{ marginBottom: "6px" }}>Foto Pasien</h6>
                                         <_Row>
-                                            <_Button block icon={<CameraOutlined />} onClick={() =>
+                                            {
+                                                !foto ?
+                                                    <button type="button" onClick={capture} className="btn-pink w100"> <i className="fa fa-camera" />
+                                                        &nbsp;Ambil Gambar</button> :
+                                                    <button type="button" onClick={() => setFoto(false)} className="btn-pink w100"> <i className="fa fa-refresh" />
+                                                        &nbsp;Ulang</button>
+                                                // <button onClick={capture} className="btn-pink">Ambil Gambar</button>:""  
+                                            }
+                                            {/* <_Button label="Ulang" cancel onClick={() => setFoto(false)} /> */}
+                                            {/* <button  >  <span className="fa fa-refresh"></span> Ulang</button> */}
+                                            {/* <button className="btn-reset w50">  <span className="fa  fa-file-picture-o"></span> File</button> */}
 
-                                                Swal.fire({
-                                                    icon: 'success',
-                                                    title: 'Oops...',
-                                                    confirmButtonColor: "rgb(222, 104, 169)",
-                                                })
-
-
-                                            } sm={5} label="Foto" />
-                                            <_Button block icon={<RollbackOutlined />} sm={5} label="File" />
+                                            {/* <_Button block icon={<RollbackOutlined />} sm={5} label="File" /> */}
                                         </_Row>
                                         <br />
                                     </CardBody>

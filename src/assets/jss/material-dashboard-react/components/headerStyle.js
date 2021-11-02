@@ -20,7 +20,7 @@ const headerStyle = () => ({
     position: "absolute",
     width: "100%",
     paddingTop: "10px",
-    zIndex: "1029",
+    zIndex: "4",
     color: grayColor[7],
     border: "0",
     borderRadius: "3px",
@@ -46,7 +46,7 @@ const headerStyle = () => ({
     color: "inherit",
     margin: "0",
     "&:hover,&:focus": {
-      background: "transparent",
+      background: "#de68a9",
     },
   },
   appResponsive: {

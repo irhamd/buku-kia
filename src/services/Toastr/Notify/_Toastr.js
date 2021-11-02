@@ -43,6 +43,13 @@ export const _Swall = {
             confirmButtonColor: "rgb(222, 104, 169)",
         })
     },
+    warning(msg) {
+        Swal.fire({
+            icon: 'warning',
+            title: msg,
+            confirmButtonColor: "rgb(212 115 34)",
+        })
+    },
     // warning(msg) {
     //     toastr.warning(`${msg} `);
     // },

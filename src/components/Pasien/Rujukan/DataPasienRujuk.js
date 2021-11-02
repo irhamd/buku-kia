@@ -7,6 +7,7 @@ import React, { useEffect, useState } from "react";
 import { List, Avatar, Space, Image } from 'antd';
 import { MessageOutlined, LikeOutlined, StarOutlined } from '@ant-design/icons';
 import _Api from "services/Api/_Api";
+import { _Button } from "services/Forms/Forms";
 
 function DataPasienRujuk() {
 
@@ -68,8 +69,8 @@ function DataPasienRujuk() {
                                 style={{ background: "linear-gradient(white 90%, rgb(219 188 223 / 32%))" }}
                                 key={item.id}
                                 actions={[
-                                    <IconText icon={StarOutlined} text="kunjungan : 3" key="list-vertical-star-o" />,
-                                    <IconText icon={LikeOutlined} text="UK : 4 Bulan" key="list-vertical-like-o" />,
+                                    <IconText icon={StarOutlined} text="kunjungan : 1" key="list-vertical-star-o" />,
+                                    <IconText icon={LikeOutlined} text="UK : " key="list-vertical-like-o" />,
                                 ]}
                             // extra={
                             //     <div style={{ background: "#fea9ad", padding: "10px", borderRadius: "5px", width: "600px", fontWeight: "bold", fontSize: "15px" }}>
@@ -104,9 +105,11 @@ function DataPasienRujuk() {
                                         )
                                     })
                                 } </p>
+                                <p> <_Button save label="Rujuk Pasien Ke RSUD Kota" />  </p>
                             </List.Item>
                         )}
                     />,
+                    {/* <p> <_Button label="Rujuk" /> </p> */}
                 </CardBody>
             </Card>
         </div>

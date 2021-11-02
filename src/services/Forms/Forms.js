@@ -56,6 +56,7 @@ export const _Input = (r) => {
                             defaultValue={r.defaultValue} /> :
                         <Input
                             value={r.value}
+                            showCount
                             // bordered={false}
                             suffix={r.suffix} size={r.size}
                             disabled={r.disabled}
@@ -92,7 +93,7 @@ export const _Number = (r) => {
                     addonAfter={r.addonAfter}
                     maxLength={r.maxLength}
                     addonBefore={r.addonBefore}
-                    style={{ ...r.style, width:"100%" }}
+                    style={{ ...r.style, width: "100%" }}
                     defaultValue={r.defaultValue}
                 />
             </Form.Item>
@@ -217,7 +218,7 @@ export const _Search = (r) => {
             <Form.Item name={r.name} label={r.label ? r.label : ""} style={{ marginBottom: "10px" }}
                 rules={[{ required: r.required, message: r.message ? r.message : errMessage }]}
             >
-                <Search allowClear placeholder={r.placeholder} size={r.size} onChange={r.onChange} onSearch={r.onSearch} enterButton loading={r.loading} />
+                <Search maxLength={r.maxLength} showCount allowClear placeholder={r.placeholder} size={r.size} onChange={r.onChange} onSearch={r.onSearch} enterButton loading={r.loading} />
             </Form.Item>
         </ColB>
     )
@@ -360,7 +361,7 @@ export const _ButtonFilter = (props) => {
 }
 export const _Button = (r) => {
     return (
-        <ColB sm={r.sm ? r.sm : 12}>
+        <ColB sm={r.sm ? r.sm : 12} style={{ marginBottom: "5px" }}>
             <Button className={r.className}
                 onClick={r.onClick}
                 block={r.block}
