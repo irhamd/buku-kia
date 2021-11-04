@@ -12,6 +12,7 @@ import { _Cache } from "services/Cache";
 import { dataPegawai, userLogin } from "services/Text/GlobalText";
 import LembarKerjaBidan from "components/Pasien/LembarKerjaBidan";
 import AturTindakan from "components/Master/AturTindakan";
+import EvaluasiKesehatanBumil from "components/Pasien/PemeriksaanDokter/EvaluasiKesehatanBumil";
 
 // var role =  _Cache.get(globalText.x_auth_resu)
 
@@ -39,6 +40,13 @@ const dokter = [
     name: "Pemeriksaan Dokter",
     icon: PersonAdd,
     component: PemeriksaanDokter,
+    layout: "/admin",
+  },
+  {
+    path: "/EvaluasiKesehatanBumil",
+    name: "Evaluasi Kesehatan",
+    icon: PersonAdd,
+    component: EvaluasiKesehatanBumil,
     layout: "/admin",
   },
 

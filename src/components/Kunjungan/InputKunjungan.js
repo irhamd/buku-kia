@@ -28,6 +28,7 @@ import moment from 'moment'
 import DetailPasien from 'components/Pasien/DetailPasien'
 import { fitrah } from 'services/Text/GlobalText'
 import { _Swall } from 'services/Toastr/Notify/_Toastr'
+import { _RadioGroup } from 'services/Forms/Forms'
 
 
 function Warning() {
@@ -104,7 +105,7 @@ function InputKunjungan() {
         _Api.post("saveKunjungan", obj).then(res => {
             if (res.data.sts == 1) {
                 _Swall.success("Suksess .")
-                console.log(obj)
+                // console.log(obj)
                 _Api.get("checkPasienDiRujuk?id_pasien=" + dataPasien.id
                     + "&id_kunjungan=" + res.data.id_kunjungan
                     + "&tinggifundus=" + val.tinggifundus
@@ -148,8 +149,10 @@ function InputKunjungan() {
         })
     }
 
-
-
+    const sudahBelum = [
+        { value: "1", label: "Sudah" },
+        { value: "0", label: "Belum" },
+    ]
 
     const getData = () => {
         _Api.post("getMasterData", { "masterData": "keluhan_m", "limit": "100" }).then(res => {
@@ -223,10 +226,18 @@ function InputKunjungan() {
                     <Spin spinning={dataPasien ? false : true} size="large" tip="Loading..." >
                         <Form size="large" onFinish={onFinish} autoComplete="off" form={form}
                             labelCol={{ span: 8 }}
+                            // layout="vertical"
+                            initialValues={{
+                                tanggal: moment()
+                            }}
                             wrapperCol={{ span: 12 }}
                         >
+
                             <_Date label="Tanggal" name="tanggal" format="DD / MM / YYYY" required />
                             <_Input label="Berat Badan (BB)" name="beratbadan" addonAfter="kg" required />
+                            <_Input label="Timbang" name="timbang" addonAfter="kg" required />
+                            <_Input label="Ukur Lingkar Lengan Atas" name="timbang" addonAfter="kg" required />
+                            <_Input label="Periksa Tinggui Rahim" name="timbang" addonAfter="kg" required />
                             <_Input label="Tekanan Darah (T.D )" name="tekanandarah" addonAfter="(mmHg)" required />
                             <_Input label="LILA" name="lila" addonAfter="(cm)" required />
                             <_Input label="Tinggi Fundus" name="tinggifundus" addonAfter="(cm)" onChange={() => cekBeratJanin('-')} required />
@@ -238,15 +249,16 @@ function InputKunjungan() {
                             <_Input label="Tata Laksana" multiline name="tatalaksana" />
                             <_Input label="Konseling" name="konseling" />
                             {/* <_Input label="Sudah Vaksin" name="Vaksin" /> */}
-                            <_Switch label="Sudah Vaksin 1" name="vaksin1" titleCheck="Sudah"  titleUnCheck="Belum" />
-                            <_Switch label="Sudah Vaksin 2" name="vaksin2" titleCheck="Sudah"  titleUnCheck="Belum" />
-                            <_Switch label="Sudah Vaksin 3" name="vaksin3" titleCheck="Sudah"  titleUnCheck="Belum" />
-
-                            {/* <_Date label="Hari Taksiran Persalinan (HTP)" name="htp" format="DD / MM / YYYY" />
+                            <_RadioGroup options={sudahBelum} label="Vaksin 1" name="vaksin1" />
+                            <_RadioGroup options={sudahBelum} label="Vaksin 2" name="vaksin2" />
+                            <_RadioGroup options={sudahBelum} label="Vaksin 3" name="vaksin3" />
+                            {/* 
+                            <_Date label="Hari Taksiran Persalinan (HTP)" name="htp" format="DD / MM / YYYY" />
                             <_Select label="Penggunaan Kontrasepsi Sebelum Hamil" required name="penggunaankontrasepsi" style={{ fontWeight: "bold" }} />
                             <_Input label="Riwayat Penyakit Yang diderita Ibu" required name="riwayatpenyakit" multiline />
                             <_Input label="Status Imunisasi Tetanus (T) terakhir" name="tetanustrakhir" />
-                            <_Input label="Tinggi Badan" required addonAfter="cm" name="tb" /> */}
+                            <_Input label="Tinggi Badan" required addonAfter="cm" name="tb" /> 
+                            */}
 
                             <br />
                             <br />
@@ -261,29 +273,35 @@ function InputKunjungan() {
 
 
                             <hr />
-                            <_Row>
-                                <_Col sm="6">
-                                    <Collapse defaultActiveKey={['1']} size="small">
-                                        <Panel header="HASIL LAB" key="1">
+                            <Collapse defaultActiveKey={['1']} size="small">
+                                <Panel header="HASIL LAB" key="1">
+                                    <_Row>
+                                        <_Col>
                                             <br />
                                             <_Input name="hb" label="Hemoglobin (HB)" />
+                                            <_Input name="goldarah" label="Golongan Darah" />
+                                            <_Input name="proteinurine" label="Protein Urine" />
+                                            <_Input name="guladarah" label="Gula Darah" />
+                                            <_Input multiline name="hasillablainnya" label="Lain - lain" />
+
+                                        </_Col>
+                                        <_Col sm={5}>
                                             <br />
-
                                             {renderHasilLab}
-                                        </Panel>
+                                        </_Col>
+                                    </_Row>
+                                </Panel>
 
-                                    </Collapse>,
-                                </_Col>
-                                <_Col sm="4">
-                                    {/* <Collapse defaultActiveKey={['1']} size="small">
+                            </Collapse>,
+                            {/* <_Col sm="4">
+                                    <Collapse defaultActiveKey={['1']} size="small">
                                         <Panel header="LETAK JANIN" key="1">
                                             <br />
                                             {renderLetakJanin}
                                         </Panel>
 
-                                    </Collapse>, */}
-                                </_Col>
-                            </_Row>
+                                    </Collapse>,
+                                </_Col> */}
                             <_Row>
                                 <_Col sm={3} />
                                 <_Button save color="#096dd9bd" label="Simpan Keluhan Pasien" submit block sm={5} />

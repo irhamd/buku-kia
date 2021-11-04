@@ -82,6 +82,7 @@ function InputKehamilanSaatIni(pr) {
         }
         _Api.post('simpanDataKehamilanSaatIni', obj).then(res => {
             _Swall.success("Suksess ...!")
+
             // formKehamilan.resetFields()
             setloading(false)
         }).catch(err => {

@@ -64,6 +64,12 @@ function DataPasien() {
 
     }
 
+    const evaluasiKesehatanBumil = (data) => {
+        _Cache.set(pacient, JSON.stringify(data))
+        history.push("/admin/InputKehamilanSaatIni?id_pasien=" + data.id)
+
+    }
+
     const riwayatPasien = async (data) => {
         setshowRiwayat(true)
         setdataRiwayat([])
@@ -122,7 +128,10 @@ function DataPasien() {
                                         <_Button label="Lembar Kerja" block sm={3} color="#da2b8b" disabled={item.kunjunganke == 0} onClick={() => prosesPasien(item)} icon={<DeploymentUnitOutlined />} />
                                     }
                                     {cekRole == _role.dokter &&
-                                        <_Button label="Pemeriksaan Dokter" block sm={2} color="#da2b8b" onClick={() => pemeriksaanDokter(item)} icon={<DeploymentUnitOutlined />} />
+                                        <>
+                                            <_Button label="Pemeriksaan Dokter" block sm={3} color="#da2b8b" onClick={() => pemeriksaanDokter(item)} icon={<DeploymentUnitOutlined />} />
+                                            <_Button label="Evaluasi Kesehatan Ibu Hamil" block sm={5} color="#da2b8b" onClick={() => evaluasiKesehatanBumil(item)} icon={<DeploymentUnitOutlined />} />
+                                        </>
                                     }
                                     <_Button label="Data Kehamilan" icon={<NodeIndexOutlined />} color="orangered" onClick={() => dataKehamilan(item)} block sm={3} />
                                     {/* <_Button label="Pertumbuhan Janin" color="#da2b8b" icon={<AreaChartOutlined />} block sm={3} />

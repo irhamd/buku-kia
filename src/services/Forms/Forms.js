@@ -1,5 +1,5 @@
 import { CloseCircleOutlined, CloudDownloadOutlined, DeliveredProcedureOutlined, DownloadOutlined, FilterOutlined, RollbackOutlined, SaveOutlined, SearchOutlined } from "@ant-design/icons"
-import { Button, Col, DatePicker, Form, Input, InputNumber, Mentions, Radio, Row, Select, Switch, TimePicker } from "antd"
+import { Button, Col, DatePicker, Form, Input, InputNumber, Mentions, Radio, Row, Select, Space, Switch, TimePicker } from "antd"
 import { mainColor } from "../Color"
 import { Col as ColB } from 'react-bootstrap';
 import { CloseOutlined, CheckOutlined } from '@ant-design/icons';
@@ -191,7 +191,9 @@ export const _RadioGroup = (r) => {
                 /> */}
 
                 <Radio.Group buttonStyle="solid" defaultValue={r.defaultValue} onChange={e => console.log(e)}>
-                    {render}
+                    <Space direction={ r.direction ? r.direction :  "horizontal"} >
+                        {render}
+                    </Space>
                 </Radio.Group>
 
             </Form.Item>
