@@ -6,6 +6,7 @@ import { _Label } from 'services/Forms/Forms'
 import { _Row, _Col } from 'services/Forms/LayoutBootstrap'
 import { formatTgl } from 'services/Text/GlobalText'
 import { fitrah } from 'services/Text/GlobalText'
+import src from "assets/img/no_image.jpg"
 
 function DetailPasien(pr) {
 
@@ -28,7 +29,7 @@ function DetailPasien(pr) {
             <_Row>
                 <_Col sm={3} >
                     <div className=" w100 tengah ">
-                        <Image style={{ borderRadius: "10px" }} className="boxShadow" height={200} src={dataPasien && dataPasien.foto} />
+                        <Image style={{ borderRadius: "10px" }} className="boxShadow" height={200} src={dataPasien.foto ? dataPasien.foto : src} />
                         <br /> <br />
                     </div>
                 </_Col>

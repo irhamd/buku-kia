@@ -66,7 +66,7 @@ function DataPasien() {
 
     const evaluasiKesehatanBumil = (data) => {
         _Cache.set(pacient, JSON.stringify(data))
-        history.push("/admin/InputKehamilanSaatIni?id_pasien=" + data.id)
+        history.push("/admin/EvaluasiKesehatanBumil")
 
     }
 

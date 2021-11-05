@@ -3,9 +3,10 @@ import Card from "components/Card/Card";
 import CardBody from "components/Card/CardBody";
 import CardHeader from "components/Card/CardHeader";
 import React, { useEffect, useState } from "react";
+import { Table } from 'react-bootstrap'
 
 import { List, Avatar, Space, Image, Row, Col, Checkbox } from 'antd';
-import { MessageOutlined, LikeOutlined, StarOutlined, UploadOutlined } from '@ant-design/icons';
+import { MessageOutlined, LikeOutlined, StarOutlined, UploadOutlined, PlusOutlined, RollbackOutlined } from '@ant-design/icons';
 import _Api from "services/Api/_Api";
 import { _Row } from "services/Forms/LayoutBootstrap";
 import { _Col } from "services/Forms/LayoutBootstrap";
@@ -23,6 +24,7 @@ import { _Swall } from "services/Toastr/Notify/_Toastr";
 import { baseURL } from "services/Api/_Api";
 import axios from 'axios'
 import { authToken } from "services/Api/_Api";
+import { _Number } from "services/Forms/Forms";
 
 const alertUser = (e) => {
     e.preventDefault();
@@ -36,11 +38,16 @@ function cekRefresh() {
     };
 }
 
+const kanan = { marginRight: "-15px" }
+
+
+const style = {
+    checkbox: { background: "#bce7ee", margin: "2px", padding: "5px", width: "98%" },
+}
+
 function EvaluasiKesehatanBumil() {
 
-    const [pasienRujuk, setpasienRujuk] = useState([])
-    const [loading, setloading] = useState(false);
-    const [src, setsrc] = useState(null);
+
     const [formKehamilan] = Form.useForm();
 
 
@@ -51,82 +58,16 @@ function EvaluasiKesehatanBumil() {
         // console.log('INI ADAKAHHH', dataPasien)
     }
 
-    const getData = () => {
-        setloading(true)
-        _Api.get("getPasienRujuk?rujuk=0").then(res => {
-            console.log(`res.data`, res.data.data)
-            setpasienRujuk(res.data.data)
-            // setloading(false)
-        })
-    }
 
-
-    function getBase64(file) {
-        return new Promise((resolve, reject) => {
-            const reader = new FileReader();
-            reader.readAsDataURL(file);
-            reader.onload = () => resolve(reader.result);
-            reader.onerror = error => reject(error);
-        });
-    }
-
-    const aaa = true
-
-
+    const aaa = false
 
     useEffect(() => {
-        getData()
-        if (aaa) {
-            cekRefresh()
-        }
+        // getData()
+        // if (aaa) {
+        //     cekRefresh()
+        // }
 
     }, []);
-
-
-
-
-
-    const [fileList, setFileList] = useState([]);
-
-    const onChange = async ({ fileList: newFileList }) => {
-        setFileList(newFileList);
-
-        // console.log(fileList[0])
-        if (fileList[0]) {
-            let aaa = await getBase64(fileList[0].originFileObj)
-            setsrc(aaa)
-        }
-
-        // let src = file.url;
-
-        // const reader = new FileReader();
-        // reader.readAsDataURL(file.originFileObj);
-        // reader.onload = () => {
-        //     resolve(reader.result);
-        //     setsrc(render.result)
-
-
-        // }
-
-    };
-
-    const onPreview = async file => {
-        // let src = file.url;
-        // if (!src) {
-        //     src = await new Promise(resolve => {
-        //         const reader = new FileReader();
-        //         reader.readAsDataURL(file.originFileObj);
-        //         reader.onload = () => {
-        //             resolve(reader.result);
-        //             setsrc(src)
-        //         }
-        //     });
-        // }
-        // const image = new Image();
-        // image.src = src;
-        // const imgWindow = window.open(src);
-        // imgWindow.document.write(image.outerHTML);
-    };
 
 
 
@@ -135,58 +76,31 @@ function EvaluasiKesehatanBumil() {
         { value: "tidak", label: "Tidak Normal" },
     ]
 
-    const clearImage = () => {
-        setsrc(null)
-        setFileList([])
-    }
+    const plusminus = [
+        { value: "+", label: "+" },
+        { value: "-", label: "-" },
+    ]
 
-    const submitProvider = (name, info) => {
 
-        if (!src) {
-            _Swall.error("Silahkan pilih foto USG")
-            return
+    const submitProvider = (name, { forms }) => {
+
+        console.log(`info`, forms)
+        var form_riwayatkehamilan = forms.form_riwayatkehamilan.getFieldsValue()
+        var kondisiibu = forms.kondisiibu.getFieldsValue()
+        var riwayatkesehatanibu = forms.riwayatkesehatanibu.getFieldsValue()
+        var statusimunisasi = forms.statusimunisasi.getFieldsValue()
+        var formpemeriksaankhusus = forms.formpemeriksaankhusus.getFieldsValue()
+
+        var obj = {
+            form_riwayatkehamilan,
+            kondisiibu,
+            riwayatkesehatanibu,
+            statusimunisasi,
+            formpemeriksaankhusus,
         }
-        let form = info.forms;
 
-        var valueUsg = form.formusg.getFieldsValue()
-        var valuePemeriksaan = form.formpemeriksaan.getFieldsValue()
+        console.log(`valuePemeriksaan`, obj)
 
-        let obj = {
-            ...valueUsg,
-            ...valuePemeriksaan,
-            id_pasien: dataPasien && dataPasien.id,
-            kunjunganke: dataPasien && dataPasien.kunjunganke + 1,
-            htp: moment(valuePemeriksaan.htp).format('YYYY-MM-DD')
-        }
-
-        var bod = new FormData();
-
-        var keys = Object.keys(obj)
-        bod.append('fileusg', fileList[0].originFileObj);
-        Object.values(obj).forEach((val, i) => {
-            bod.append(keys[i], val);
-        });
-
-        axios({
-            method: "post",
-            url: baseURL + "simpanPemeriksaanDokter",
-            data: bod,
-            headers: {
-                "Content-Type": "multipart/form-data",
-                "Authorization": `Bearer ${authToken}`
-            },
-        })
-            .then(function (res) {
-                if (res.data && res.data.sts == 1) {
-                    _Swall.success("Sukses ..")
-                } else {
-                    _Swall.error("Gagal ...")
-                }
-            })
-            .catch(function (res) {
-                _Swall.error("Gagal {err}...")
-
-            });
 
 
         // _Api.post("simpanPemeriksaanDokter", obj).then(res => {
@@ -207,6 +121,83 @@ function EvaluasiKesehatanBumil() {
 
         // console.log(`getVlaue`, obj)
     }
+
+
+    const riwayatKesehatan = [
+        { val: "1", value: "Hipertensi" },
+        { val: "2", value: "Jantung" },
+        { val: "3", value: "Tyroid" },
+        { val: "4", value: "Alergi" },
+        { val: "5", value: "Alergi" },
+        { val: "6", value: "Autoimun" },
+        { val: "7", value: "Asma" },
+        { val: "8", value: "TB" },
+        { val: "9", value: "Hepatitis B" },
+        { val: "10", value: "Jiwa" },
+        { val: "11", value: "Sifilis" },
+    ]
+
+    const statusImuniasasi = [
+        { val: "1", value: "Awal" },
+        { val: "2", value: "1 Bulan / 3 Tahun" },
+        { val: "3", value: "6 Bulan / 5 Tahun" },
+        { val: "4", value: "12 Bulan / 10 Tahun" },
+        { val: "5", value: "12 Bulan / > 25 Tahun" },
+
+    ]
+
+    const riwayatPrilaku = [
+        { val: "1", value: "Merokok" },
+        { val: "2", value: "Pola makan beresiko" },
+        { val: "3", value: "Aktifitas fisik kurang" },
+        { val: "4", value: "Alkohol" },
+        { val: "5", value: "Obat - obatan" },
+        { val: "6", value: "Kosmetik" },
+    ]
+
+    const riwayatpenyakitKeluarga = [
+        { val: "1", value: "Hipertensi" },
+        { val: "2", value: "Diabetes" },
+        { val: "3", value: "SesakNafas" },
+        { val: "4", value: "Jantung" },
+        { val: "5", value: "TB" },
+        { val: "6", value: "Alergi" },
+        { val: "7", value: "Jiwa" },
+        { val: "8", value: "Kelainan Darah" },
+        { val: "9", value: "Hepatitis B" },
+    ]
+
+    const render_riwayatpenyakitKeluarga = riwayatpenyakitKeluarga.map((ii, i) => {
+        return (
+            <Col key={i} span={8}>
+                <Checkbox style={style.checkbox} value={ii.val}>{ii.value}</Checkbox>
+            </Col>
+        )
+    })
+
+    const render_riwayatKesehatan = riwayatKesehatan.map((ii, i) => {
+        return (
+            <Col key={i} span={8}>
+                <Checkbox style={style.checkbox} value={ii.val}>{ii.value}</Checkbox>
+            </Col>
+        )
+    })
+
+    const renderstatusImuniasasi = statusImuniasasi.map((ii, i) => {
+        return (
+            <Col key={i} span={24}>
+                <Checkbox style={style.checkbox} value={ii.val}>{ii.value}</Checkbox>
+            </Col>
+        )
+    })
+
+    const render_riwayatPrilaku = riwayatPrilaku.map((ii, i) => {
+        return (
+            <Col key={i} span={8} >
+                <Checkbox style={style.checkbox} value={ii.val}>{ii.value}</Checkbox>
+            </Col>
+        )
+    })
 
 
     return (
@@ -237,63 +228,141 @@ function EvaluasiKesehatanBumil() {
                                     <_Input name="lila" label="Lila" addonAfter="cm" />
 
                                 </Form>
-                                <_Label label="USG" />
-                                <Form size="small" name="riwayatkesehatanibu"
-                                    labelCol={{
-                                        span: 12,
-                                    }}
-                                    wrapperCol={{
-                                        span: 12,
-                                    }}
+                                <_Label label="Riwayat Kesehatan Ibu Sekarang" />
+                                <Form name="riwayatkesehatanibu" style={{ width: '100%', marginLeft: "14px" }}
                                     autoComplete="off"
                                 >
-                                    <Checkbox.Group style={{ width: '100%' }} onChange={(cc) => console.log(`cc`, cc)}>
-                                        <Row>
-                                            <Col span={8}>
-                                                <Checkbox value="A">A</Checkbox>
-                                            </Col>
-                                            <Col span={8}>
-                                                <Checkbox value="B">B</Checkbox>
-                                            </Col>
-                                            <Col span={8}>
-                                                <Checkbox value="C">C</Checkbox>
-                                            </Col>
-                                            <Col span={8}>
-                                                <Checkbox value="D">D</Checkbox>
-                                            </Col>
-                                            <Col span={8}>
-                                                <Checkbox value="E">E</Checkbox>
-                                            </Col>
-                                        </Row>
-                                    </Checkbox.Group>,
+                                    <Form.Item
+                                        name="riwayatkesehatanibu1">
+                                        <Checkbox.Group>
+                                            <Row >
+                                                {render_riwayatKesehatan}
+                                            </Row>
+                                        </Checkbox.Group>
+                                    </Form.Item>
+                                    <p className="fkanan i"> <small> Centang yang sesuai </small> </p>
+                                    <_Input multiline name="riwayatlainnya" label="Lainnya" />
                                 </Form>
-                                <hr />
-
-
                             </_Col>
-                            <_Col sm={6} style={{ background: "#000000", borderRadius: "15px", padding: "10px" }}>
-                                <p className="tengah b"> Hasil USG </p>
-                                <p style={{ textAlign: "center" }}>
-                                    {
-                                        src && <> <Image
-                                            width={700}
-                                            src={src}
-                                        />
-                                            <_Button cancel sm={2} label="Clear" onClick={clearImage} />
-                                        </>
-                                    }
+                            <_Col sm={6} style={{ paddingLeft: "10px" }}>
+                                <Form name="statusimunisasi">
+                                    <_Label label="Status Imunisasi " />
+                                    <span> ( Selang waktu / Perlindungan)</span>
+                                    <Form.Item
+                                        name="statusimunisasi_checked">
+                                        <Checkbox.Group style={{ width: '100%' }}>
+                                            <Row >
+                                                {renderstatusImuniasasi}
+                                            </Row>
+                                        </Checkbox.Group>
+                                    </Form.Item>
+                                    <p>Kesimpulan :  Status imunisasi</p>
+                                    <_Label label="Riwayat Prilaku Bersesiko 1 Bulan Sebelum hamil " />
+                                    <Form.Item
+                                        name="riwayatprilaku_checked">
+                                        <Checkbox.Group>
+                                            <Row >
+                                                {render_riwayatPrilaku}
+                                            </Row>
+                                        </Checkbox.Group>
+                                    </Form.Item>
+                                    <p className="fkanan i"> Centang pilihan yang beresiko </p>
+                                    <_Input label="Lain-lain jelaskan" multiline name="riwayatprilaku_lain" />
+                                </Form>
+                            </_Col>
 
-                                </p>
-                                {/* <ImgCrop rotate> */}
-                                <Upload
-                                    listType="picture-card"
-                                    fileList={fileList}
-                                    onChange={onChange}
+                            <_Col>
+                                <br />
+                                <p style={{ fontSize: "15px", fontWeight: "bold", background: "rgb(243, 195, 99)", padding: "4px" }}> &nbsp; Riwayat Kehamilan dan Persalinan (termasuk Keguguran , Kembar dan Lahir Mati) </p>
+                                <Form name="form_riwayatkehamilan">
+                                    <Table borderless size="sm">
+                                        <Form.List name="detail">
+                                            {(fields, { add, remove }) => (
+                                                <>
+                                                    <thead style={{ background: "#40a9ffb5" }}>
+                                                        <tr>
+                                                            <th width={10} style={{ textAlign: "center" }}>No</th>
+                                                            <th style={{ textAlign: "center" }}>Tahun</th>
+                                                            <th>Berat Lahir (gr)</th>
+                                                            <th>Persalinan</th>
+                                                            <th>Penolong Persalinan</th>
+                                                            <th>Komplikasi</th>
+                                                            <th></th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        {fields.map(({ key, name, fieldKey, ...restField }) => (
+                                                            <tr>
+                                                                <td width={10} style={{ textAlign: "center" }}>
+                                                                    {name + 1}
+                                                                </td>
+                                                                <td width="170" style={{ paddingRight: "4px" }}> <_Input name={[name, 'tahun']} mb="-10px" style={kanan} fieldKey={[fieldKey, 'tahun']} {...restField} /> </td>
+                                                                <td width="170" style={{ paddingRight: "4px" }}> <_Input name={[name, 'berat']} mb="-10px" style={kanan} fieldKey={[fieldKey, 'berat']} {...restField} addonAfter="gram" /> </td>
+                                                                <td width="170" style={{ paddingRight: "4px" }}>  <_Input name={[name, 'persalinan']} mb="-10px" style={kanan} fieldKey={[fieldKey, 'persalinan']} {...restField} /></td>
+                                                                <td width="170" style={{ paddingRight: "4px" }}> <_Input name={[name, 'penolong']} mb="-10px" style={kanan} fieldKey={[fieldKey, 'penolong']} {...restField} /> </td>
+                                                                <td width="170" style={{ paddingRight: "4px" }}> <_Input name={[name, 'komplikasi']} mb="-10px" style={kanan} fieldKey={[fieldKey, 'komplikasi']} {...restField} /> </td>
+
+                                                                <td width="5">
+                                                                    <_Button color="orange" block icon={<RollbackOutlined />} onClick={() => remove(name)} label="Batal" />
+                                                                </td>
+                                                            </tr>
+
+                                                        ))}
+                                                    </tbody>
+                                                    <Form.Item>
+                                                        <br />
+                                                        <Button type="primary" onClick={() => add()}
+                                                            icon={<PlusOutlined />}>  Tambah </Button>
+                                                    </Form.Item>
+                                                </>
+                                            )}
+                                        </Form.List>
+                                    </Table>
+                                    <_Input multiline name="riwayatlainnya" label="Lainnya" />
+
+                                    <_Label label="Riwayat Penyakit Keluarga" />
+                                    <_Row>
+                                        <_Col sm={6}>
+                                            <Form.Item
+                                                name="riwayatpenyakitkeluarga">
+                                                <Checkbox.Group>
+                                                    <Row >
+                                                        {render_riwayatpenyakitKeluarga}
+                                                    </Row>
+                                                </Checkbox.Group>
+                                            </Form.Item>
+                                            <p className="fkanan i"> <small> Centang yang sesuai </small> </p>
+                                        </_Col>
+                                        <_Col>
+                                            <_Input multiline name="riwayatpenyakitkeluarga_lainnya" label="Lain - lain, jelaskan " />
+                                        </_Col>
+                                    </_Row>
+                                </Form>
+
+                                <_Label label="Pemeriksaan Khusus" />
+                                <Form name="formpemeriksaankhusus"
+                                    labelCol={{
+                                        span: 8,
+                                    }}
+                                    wrapperCol={{
+                                        span: 16,
+                                    }}
+                                    // onFinish={onFinish} form={formKehamilan}
+                                    autoComplete="off"
                                 >
-                                    {fileList.length < 1 && '+ Upload'}
-                                </Upload>
-                                {/* </ImgCrop> */}
+                                    <_Input name="inspeksiinspekulo" multiline label="Inspeksi/ Inspekulo" />
+                                    <_RadioGroup options={opsi} label="Vulva" name="vulva" />
+                                    <_RadioGroup options={opsi} label="Uretra" name="uretra" />
+                                    <_RadioGroup options={opsi} label="Vagina" name="vagina" />
+                                    <_RadioGroup options={plusminus} label="Fluksus" name="fluksus" />
+                                    <_RadioGroup options={plusminus} label="Fluor" name="fluor" />
+                                    <_RadioGroup options={opsi} label="Porsio" name="porsio" />
+                                    <hr />
+                                    <_Button save submit label="Simpan" sm={4} block color="orangered" size="large" />
+                                </Form>
+
                             </_Col>
+
                         </_Row>
                     </Form.Provider>
                 </CardBody>

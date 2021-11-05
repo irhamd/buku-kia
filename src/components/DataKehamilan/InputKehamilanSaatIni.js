@@ -119,9 +119,6 @@ function InputKehamilanSaatIni(pr) {
         formKehamilan.setFieldsValue({
             htp: htp != 'Invalid date' ? moment(htp) : null
         });
-
-        // formKehamilan.setFieldsValue((e)=> {'htp' : htp})
-        // $("#htp").val(htp)
     }
 
     const tidakTahuHPHT = (e) => {

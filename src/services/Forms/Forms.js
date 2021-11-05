@@ -191,11 +191,10 @@ export const _RadioGroup = (r) => {
                 /> */}
 
                 <Radio.Group buttonStyle="solid" defaultValue={r.defaultValue} onChange={e => console.log(e)}>
-                    <Space direction={ r.direction ? r.direction :  "horizontal"} >
+                    <Space direction={r.direction ? r.direction : "horizontal"} >
                         {render}
                     </Space>
                 </Radio.Group>
-
             </Form.Item>
         </ColB>
     )
@@ -203,9 +202,9 @@ export const _RadioGroup = (r) => {
 export const _Label = ({ span, label, onChange, defaultValue, number, max, min, sm, name }) => {
     return (
         <ColB sm={sm ? sm : 12}>
-            <Form.Item name={name} label={" "} style={{ marginBottom: "10px" }}>
+            <Form.Item name={name} label={""} style={{ marginBottom: "10px" }}>
                 <Input
-                    style={{ background: "#f3c363", borderColor: "#f3c363", color: "black", fontWeight: "bold" }}
+                    style={{ background: "#f3c363", cursor: "default", borderColor: "#f3c363", color: "black", fontWeight: "bold" }}
                     disabled
                     defaultValue={label}
                 />
