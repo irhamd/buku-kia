@@ -17,6 +17,39 @@ License URL: http://creativecommons.org/licenses/by/3.0/
     -ms-user-select: none;
     user-select: none;
 }
+ 
+
+
+.blink-bg {
+    color: #fff;
+    padding: 10px;
+    /* display: inline-block; */
+    border-radius: 5px;
+    animation: blinkingBackground 2s infinite;
+}
+
+@keyframes blinkingBackground {
+    0% {
+        background-color: #d3d62a;
+    }
+
+    25% {
+        background-color: #d86417;
+    }
+
+    50% {
+        background-color: #ef0a1a;
+    }
+
+    85% {
+        background-color: #cc8f3f;
+    }
+
+    100% {
+        background-color: #f1540b;
+    }
+}
+
 
 /* Hide the browser's default radio button */
 .containerR input {
@@ -106,9 +139,10 @@ License URL: http://creativecommons.org/licenses/by/3.0/
     text-align: right;
 }
 
-.i{
+.i {
     font-style: italic;
 }
+
 .fkiri {
     text-align: left;
 }
@@ -200,8 +234,8 @@ License URL: http://creativecommons.org/licenses/by/3.0/
 
 .boxShadow {
     box-shadow: 4px 7px 5px -2px rgba(32, 17, 29, 0.75);
-    -webkit-box-shadow: 4px 7px 5px -2px  rgba(32, 17, 29, 0.75);
-    -moz-box-shadow: 4px 7px 5px -2px  rgba(32, 17, 29, 0.75);
+    -webkit-box-shadow: 4px 7px 5px -2px rgba(32, 17, 29, 0.75);
+    -moz-box-shadow: 4px 7px 5px -2px rgba(32, 17, 29, 0.75);
 }
 
 .boxscroll {
@@ -294,7 +328,7 @@ p {
 }
 
 ul,
- 
+
 body a:hover {
     text-decoration: none;
 }
@@ -1873,9 +1907,10 @@ h3.m_1 {
     height: 35px;
 }
 
-label{
+label {
     color: orange;
 }
+
 .label {
     font-weight: 300 !important;
     border-radius: 4px;
@@ -2958,6 +2993,6 @@ h4.modal-title {
     border-top-style: none;
     border-right-style: none;
     border-width: 2px;
-} 
+}
 
 /*--//responsive-design---*/

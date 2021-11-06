@@ -25,6 +25,9 @@ import { _role } from 'services/Text/GlobalText'
 import { _Date } from 'services/Forms/Forms'
 import { _Input } from 'services/Forms/Forms'
 import { NotFound } from 'services/Forms/Forms'
+import { collection, onSnapshot } from '@firebase/firestore'
+import { db } from 'services/firebase/firebase'
+import { _Swall } from 'services/Toastr/Notify/_Toastr'
 
 
 function DataPasien() {
@@ -46,6 +49,14 @@ function DataPasien() {
         } else
             cariPasien("")
         _Cache.remove(pacient)
+
+        onSnapshot(collection(db, "users"), (snap) => {
+            // alert("insert")
+            console.log(snap)
+            // _Swall.error("Pasien di rujukk")
+        })
+
+
     }, [])
 
 
@@ -56,6 +67,8 @@ function DataPasien() {
         _Cache.set(pacient, JSON.stringify(data))
         // history.push("/admin/InputKunjungan")
         history.push("/admin/LembarKerjaBidan")
+
+
     }
 
     const pemeriksaanDokter = (data) => {

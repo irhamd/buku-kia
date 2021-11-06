@@ -13,6 +13,7 @@ import { dataPegawai, userLogin } from "services/Text/GlobalText";
 import LembarKerjaBidan from "components/Pasien/LembarKerjaBidan";
 import AturTindakan from "components/Master/AturTindakan";
 import EvaluasiKesehatanBumil from "components/Pasien/PemeriksaanDokter/EvaluasiKesehatanBumil";
+import TestFirebase from "components/Test/TestFirebase";
 
 // var role =  _Cache.get(globalText.x_auth_resu)
 
@@ -53,6 +54,13 @@ const dokter = [
 ]
 
 const bidan = [
+  {
+    path: "/TestFirebase",
+    name: "TestFirebase",
+    icon: Dashboard,
+    component: TestFirebase,
+    layout: "/admin",
+  },
   {
     path: "/dashboard",
     name: "Dashboard",
