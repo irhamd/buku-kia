@@ -43,7 +43,8 @@ function InputKehamilanSaatIni(pr) {
     var cekPas = _Cache.get('x-pacient');
     if (cekPas) {
         query = JSON.parse(cekPas)
-    }
+    } else 
+    history.push("/admin/dataPasien")
 
     useEffect(() => {
         getData()
@@ -111,7 +112,7 @@ function InputKehamilanSaatIni(pr) {
 
 
 
-    const cekHTP = (e, tgl) => {
+    const cekHTPlama = (e, tgl) => {
         // var tgl = e.target.value
         var hpht = moment(e).format('YYYY-MM-DD');
         settidaktahu(false)
@@ -119,6 +120,31 @@ function InputKehamilanSaatIni(pr) {
         formKehamilan.setFieldsValue({
             htp: htp != 'Invalid date' ? moment(htp) : null
         });
+    }
+
+    const cekHTP = (e, tgl) => {
+        // var tgl = e.target.value
+        var bulan = moment(e).format('MM');
+
+        if (bulan > 3) {
+            var htp = moment(e)
+                .add(1, 'years')
+                .subtract(3, 'month')
+                .add(7, 'days')
+                .format("YYYY-MM-DD");
+        } else {
+            var htp = moment(e)
+                .add(9, 'month')
+                .add(7, 'days')
+                .format("YYYY-MM-DD");
+        }
+
+        formKehamilan.setFieldsValue({
+            htp: htp != 'Invalid date' ? moment(htp) : null
+        });
+
+        console.log(`bulan`, htp)
+
     }
 
     const tidakTahuHPHT = (e) => {

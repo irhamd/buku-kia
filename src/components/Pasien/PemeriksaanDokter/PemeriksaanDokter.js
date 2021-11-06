@@ -77,7 +77,7 @@ function PemeriksaanDokter() {
     useEffect(() => {
         getData()
         if (aaa) {
-            cekRefresh()
+            // cekRefresh()
         }
 
     }, []);

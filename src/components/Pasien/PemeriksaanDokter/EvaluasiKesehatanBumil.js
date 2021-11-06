@@ -84,7 +84,6 @@ function EvaluasiKesehatanBumil() {
 
     const submitProvider = (name, { forms }) => {
 
-        console.log(`info`, forms)
         var form_riwayatkehamilan = forms.form_riwayatkehamilan.getFieldsValue()
         var kondisiibu = forms.kondisiibu.getFieldsValue()
         var riwayatkesehatanibu = forms.riwayatkesehatanibu.getFieldsValue()
@@ -92,34 +91,24 @@ function EvaluasiKesehatanBumil() {
         var formpemeriksaankhusus = forms.formpemeriksaankhusus.getFieldsValue()
 
         var obj = {
-            form_riwayatkehamilan,
-            kondisiibu,
-            riwayatkesehatanibu,
-            statusimunisasi,
-            formpemeriksaankhusus,
+            id: "",
+            id_pasien: dataPasien.id,
+            kunjunganke: dataPasien.kunjunganke,
+            ...form_riwayatkehamilan,
+            ...kondisiibu,
+            ...riwayatkesehatanibu,
+            ...statusimunisasi,
+            ...formpemeriksaankhusus,
         }
+        _Api.post("evaluasiKesehatanIbuHamil", obj).then(res => {
+            if (res.data.sts == 1)
+                _Swall.success("Suksess .! ")
+            else
+                _Swall.error("Gagal simpan data . ")
 
-        console.log(`valuePemeriksaan`, obj)
-
-
-
-        // _Api.post("simpanPemeriksaanDokter", obj).then(res => {
-        //     // console.log(res.data)
-        //     // form.resetFields()
-
-        //     var myFormData = new FormData();
-        //     myFormData.append('fileusg', fileList);
-
-        //     if (res.data.sts == 1)
-        //         _Swall.success("Suksess .")
-        //     else
-        //         _Swall.error("Gagal simpan data ...")
-
-        // }).cath(err => {
-        //     _Swall.error("Gagal simpan data . ")
-        // })
-
-        // console.log(`getVlaue`, obj)
+        }).cath(err => {
+            _Swall.error("Gagal simpan data \err . ")
+        })
     }
 
 
@@ -212,6 +201,9 @@ function EvaluasiKesehatanBumil() {
                         onFormFinish={submitProvider}>
                         <DetailPasien />
                         <_Row>
+                            <_Col sm={12}>
+                                <_Date label="Tanggal" name="tanggal" sm={3} />
+                            </_Col>
                             <_Col sm={5} style={{ background: "white" }}>
                                 <_Label label="Kondisi kesehatan ibu" />
                                 <Form name="kondisiibu"
@@ -226,6 +218,7 @@ function EvaluasiKesehatanBumil() {
                                     <_Input name="tb" addonAfter="cm" label="TB" />
                                     <_Input name="bb" addonAfter="kg" label="BB" />
                                     <_Input name="lila" label="Lila" addonAfter="cm" />
+                                    <_Input name="imt" label="IMT" disabled />
 
                                 </Form>
                                 <_Label label="Riwayat Kesehatan Ibu Sekarang" />
@@ -233,7 +226,7 @@ function EvaluasiKesehatanBumil() {
                                     autoComplete="off"
                                 >
                                     <Form.Item
-                                        name="riwayatkesehatanibu1">
+                                        name="riwayatkesehatanibuskarang">
                                         <Checkbox.Group>
                                             <Row >
                                                 {render_riwayatKesehatan}
@@ -241,7 +234,7 @@ function EvaluasiKesehatanBumil() {
                                         </Checkbox.Group>
                                     </Form.Item>
                                     <p className="fkanan i"> <small> Centang yang sesuai </small> </p>
-                                    <_Input multiline name="riwayatlainnya" label="Lainnya" />
+                                    <_Input multiline name="riwayatkesehatanibuskarang_lainnya" label="Lainnya" />
                                 </Form>
                             </_Col>
                             <_Col sm={6} style={{ paddingLeft: "10px" }}>
@@ -276,7 +269,7 @@ function EvaluasiKesehatanBumil() {
                                 <p style={{ fontSize: "15px", fontWeight: "bold", background: "rgb(243, 195, 99)", padding: "4px" }}> &nbsp; Riwayat Kehamilan dan Persalinan (termasuk Keguguran , Kembar dan Lahir Mati) </p>
                                 <Form name="form_riwayatkehamilan">
                                     <Table borderless size="sm">
-                                        <Form.List name="detail">
+                                        <Form.List name="riwayatkehamilandanpersalinan">
                                             {(fields, { add, remove }) => (
                                                 <>
                                                     <thead style={{ background: "#40a9ffb5" }}>
@@ -318,7 +311,7 @@ function EvaluasiKesehatanBumil() {
                                             )}
                                         </Form.List>
                                     </Table>
-                                    <_Input multiline name="riwayatlainnya" label="Lainnya" />
+                                    <_Input multiline name="riwayatkehamilandanpersalinan_lainnya" label="Lainnya" />
 
                                     <_Label label="Riwayat Penyakit Keluarga" />
                                     <_Row>

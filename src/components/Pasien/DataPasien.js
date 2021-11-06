@@ -7,7 +7,7 @@ import React, { useEffect, useState } from 'react'
 import avatar from "assets/img/faces/marc.jpg";
 import Button from "components/CustomButtons/Button.js";
 import GridContainer from 'components/Grid/GridContainer'
-import { Image, Spin } from 'antd'
+import { Image, Spin, Form, Empty } from 'antd'
 import _Api from 'services/Api/_Api'
 import src from "assets/img/no_image.jpg"
 import { _Row } from 'services/Forms/LayoutBootstrap'
@@ -22,10 +22,12 @@ import RiwayatKunjungan from './Riwayat/RiwayatKunjungan'
 import { _Search } from 'services/Forms/Forms'
 import { userLogin } from 'services/Text/GlobalText'
 import { _role } from 'services/Text/GlobalText'
+import { _Date } from 'services/Forms/Forms'
+import { _Input } from 'services/Forms/Forms'
 
 function DataPasien() {
 
-    const [dataPasien, setdataPasien] = useState(null)
+    const [dataPasien, setdataPasien] = useState([])
     const [showRiwayat, setshowRiwayat] = useState(false)
     const [dataRiwayat, setdataRiwayat] = useState([]);
     const [loading, setloading] = useState(false);
@@ -43,6 +45,16 @@ function DataPasien() {
             cariPasien("")
         _Cache.remove(pacient)
     }, [])
+
+    const notFound = () => {
+        return (
+            <p style={{ width: "100%" }}>
+                <Empty description="Data pasien tidak ditemukan ..!">
+                    <_Button label="Input pasien baru" add />
+                </Empty>
+            </p>
+        )
+    }
 
     const prosesPasien = (data) => {
         // console.log(data)
@@ -85,11 +97,10 @@ function DataPasien() {
         })
     }
 
-    const cariPasien = (nobuku) => {
+    const cariPasien = (val) => {
         setloading(true)
-        _Api.get("getDataPasien?nobuku=" + nobuku).then(res => {
+        _Api.get("getDataPasien", { params: val }).then(res => {
             setdataPasien(res.data)
-            console.log(`res.data`, res.data)
             _Cache.set("datapasien", JSON.stringify(res.data))
             setloading(false)
         })
@@ -158,12 +169,24 @@ function DataPasien() {
                 </CardHeader>
                 <CardBody>
                     <br />
-                    <_Search placeholder="Cari nomor buku  ...." loading={loading} onSearch={cariPasien} sm={6} size="large" />
+                    <Form layout="vertical" onFinish={cariPasien}>
+                        <_Row>
+                            {/* <_Search placeholder="Cari nomor buku  ...." loading={loading} onSearch={cariPasien} sm={3} /> */}
+                            <_Input name="nama" placeholder="Nama Pasien" sm={3} />
+                            <_Input name="nobuku" placeholder="Nomor Buku" sm={2} />
+                            <_Date name="tanggaldari" placeholder="Tanggal" sm={2} />
+                            <_Date name="tanggalsampai" placeholder=" s/d " sm={2} />
+                            <_Button sm={2} save submit loading={loading} />
+                        </_Row>
+                    </Form>
+
                     <br /> <br />
                     {/* <Spin spinning={loading} size="large" tip="Loading..." > */}
                     <GridContainer>
                         {dataRiwayat && <RiwayatKunjungan loading={loading} dataRiwayat={dataRiwayat} visible={showRiwayat} onClose={() => setshowRiwayat(false)} />}
-                        {renderPasien}
+                        {dataPasien.length > 0 ? renderPasien : notFound
+                        }
+
                     </GridContainer>
                     {/* </Spin> */}
                     <br />

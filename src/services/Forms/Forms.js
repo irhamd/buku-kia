@@ -1,4 +1,4 @@
-import { CloseCircleOutlined, CloudDownloadOutlined, DeliveredProcedureOutlined, DownloadOutlined, FilterOutlined, RollbackOutlined, SaveOutlined, SearchOutlined } from "@ant-design/icons"
+import { CloseCircleOutlined, CloudDownloadOutlined, DeliveredProcedureOutlined, DownloadOutlined, FilterOutlined, FolderAddOutlined, RollbackOutlined, SaveOutlined, SearchOutlined } from "@ant-design/icons"
 import { Button, Col, DatePicker, Form, Input, InputNumber, Mentions, Radio, Row, Select, Space, Switch, TimePicker } from "antd"
 import { mainColor } from "../Color"
 import { Col as ColB } from 'react-bootstrap';
@@ -375,7 +375,7 @@ export const _Button = (r) => {
                 size={r.size}
                 type={"primary"}
 
-                icon={r.save ? <DownloadOutlined /> : r.find ? <SearchOutlined /> : r.cancel ? <RollbackOutlined /> : r.icon}>
+                icon={r.save ? <DownloadOutlined /> : r.find ? <SearchOutlined /> : r.cancel ? <RollbackOutlined /> : r.add ? <FolderAddOutlined /> : r.icon}>
                 {r.title} {r.label}
             </Button>
         </ColB>

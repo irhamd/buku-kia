@@ -8,6 +8,8 @@ import { List, Avatar, Space, Image } from 'antd';
 import { MessageOutlined, LikeOutlined, StarOutlined } from '@ant-design/icons';
 import _Api from "services/Api/_Api";
 import { _Button } from "services/Forms/Forms";
+import { _Row } from "services/Forms/LayoutBootstrap";
+import Swal from "sweetalert2";
 
 function DataPasienRujuk() {
 
@@ -22,6 +24,26 @@ function DataPasienRujuk() {
             // setloading(false)
         })
     }
+
+    const tidakPerluRujuk = () => {
+        Swal.fire({
+            title: 'Pasien tidak perlu di Rujuk ?',
+            text: "Harap pertimbangkan kondisi pasien.",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#ac4181',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Ya, tidak perlu dirujuk',
+            cancelButtonText: 'Batal'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                // settidakPerluRujuk(id)
+            }
+
+        })
+    }
+
+
 
     useEffect(() => {
         getData()
@@ -89,23 +111,28 @@ function DataPasienRujuk() {
                                         <b> {item.alamat} </b>
                                     </div>}
                                 />
-                                <p>    {
-                                    item.keterangan && item.keterangan.map((val, i) => {
-                                        return (
-                                            < div key={i} >
-                                                <p style={{ margin: "-4px 0px -4px 0px" }}> <b> {i + 1}. {val.keterangan} </b>  </p>
-                                            </div>
+                                <p style={{ background: "#df132726", borderRadius: "10px", padding: "10px" }}>
+                                    <p> Alasan :  </p>
+                                    {
+                                        item.keterangan && item.keterangan.map((val, i) => {
+                                            return (
+                                                < div key={i} >
+                                                    <p className="b" style={{ margin: "-4px 0px -4px 0px", fontWeight: "bold", color: "#b73e3e", fontSize: "18px" }}> <b> {i + 1}. {val.keterangan} </b>  </p>
+                                                </div>
 
-                                            // <label className="containerc " key={i}>
-                                            //     <span className="checkboxC" style={{ color: 'maroon' }}> {i + 1}. {val.keterangan}
-                                            //     </span>
-                                            //     <input disabled type="checkbox" value={val.id} />
-                                            //     <span className="checkmark" />
-                                            // </label>
-                                        )
-                                    })
-                                } </p>
-                                <p> <_Button save label="Rujuk Pasien Ke RSUD Kota" />  </p>
+                                                // <label className="containerc " key={i}>
+                                                //     <span className="checkboxC" style={{ color: 'maroon' }}> {i + 1}. {val.keterangan}
+                                                //     </span>
+                                                //     <input disabled type="checkbox" value={val.id} />
+                                                //     <span className="checkmark" />
+                                                // </label>
+                                            )
+                                        })
+                                    } </p>
+                                <_Row>
+                                    <_Button save label="Rujuk" block sm={2} />
+                                    <_Button label="Tidak perlu dirujuk" block sm={3} onClick={tidakPerluRujuk} color="orangered" cancel />
+                                </_Row>
                             </List.Item>
                         )}
                     />,
