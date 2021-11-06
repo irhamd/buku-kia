@@ -4,12 +4,14 @@ import CardBody from "components/Card/CardBody";
 import CardHeader from "components/Card/CardHeader";
 import React, { useEffect, useState } from "react";
 
-import { List, Avatar, Space, Image } from 'antd';
+import { List, Form, Space, Image } from 'antd';
 import { MessageOutlined, LikeOutlined, StarOutlined } from '@ant-design/icons';
 import _Api from "services/Api/_Api";
 import { _Button } from "services/Forms/Forms";
 import { _Row } from "services/Forms/LayoutBootstrap";
 import Swal from "sweetalert2";
+import { _Input } from "services/Forms/Forms";
+import { _Date } from "services/Forms/Forms";
 
 function DataPasienRujuk() {
 
@@ -19,9 +21,9 @@ function DataPasienRujuk() {
     const getData = () => {
         setloading(true)
         _Api.get("getPasienRujuk?rujuk=0").then(res => {
-            console.log(`res.data`, res.data.data)
+            // console.log(`res.data`, res.data.data)
             setpasienRujuk(res.data.data)
-            // setloading(false)
+            setloading(false)
         })
     }
 
@@ -71,12 +73,23 @@ function DataPasienRujuk() {
                 </CardHeader>
                 <CardBody>
                     <br />
+                    <Form layout="vertical" onFinish={getData}>
+                        <_Row>
+                            {/* <_Search placeholder="Cari nomor buku  ...." loading={loading} onSearch={cariPasien} sm={3} /> */}
+                            <_Input name="nama" placeholder="Nama Pasien" sm={3} />
+                            <_Input name="nobuku" placeholder="Nomor Buku" sm={2} />
+                            <_Date name="tanggaldari" placeholder="Tanggal" sm={2} />
+                            <_Date name="tanggalsampai" placeholder=" s/d " sm={2} />
+                            <_Button sm={2} save submit loading={loading} />
+                        </_Row>
+                    </Form>
+
                     <List
                         itemLayout="vertical"
                         size="large"
                         pagination={{
                             onChange: page => {
-                                console.log(page);
+
                             },
                             pageSize: 3,
                         }}
@@ -86,6 +99,10 @@ function DataPasienRujuk() {
                                 {/* <b>ant design</b> footer part */}
                             </div>
                         }
+                        pagination={{
+                            pageSize: 3,
+                            position :"both"
+                          }}
                         renderItem={item => (
                             <List.Item
                                 style={{ background: "linear-gradient(white 90%, rgb(219 188 223 / 32%))" }}
@@ -111,7 +128,7 @@ function DataPasienRujuk() {
                                         <b> {item.alamat} </b>
                                     </div>}
                                 />
-                                <p style={{ background: "#df132726", borderRadius: "10px", padding: "10px" }}>
+                                <p style={{ background: "#df132726", borderRadius: "5px", padding: "10px" }}>
                                     <p> Alasan :  </p>
                                     {
                                         item.keterangan && item.keterangan.map((val, i) => {

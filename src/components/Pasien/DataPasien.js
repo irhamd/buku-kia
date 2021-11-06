@@ -24,6 +24,8 @@ import { userLogin } from 'services/Text/GlobalText'
 import { _role } from 'services/Text/GlobalText'
 import { _Date } from 'services/Forms/Forms'
 import { _Input } from 'services/Forms/Forms'
+import { NotFound } from 'services/Forms/Forms'
+
 
 function DataPasien() {
 
@@ -46,15 +48,7 @@ function DataPasien() {
         _Cache.remove(pacient)
     }, [])
 
-    const notFound = () => {
-        return (
-            <p style={{ width: "100%" }}>
-                <Empty description="Data pasien tidak ditemukan ..!">
-                    <_Button label="Input pasien baru" add />
-                </Empty>
-            </p>
-        )
-    }
+
 
     const prosesPasien = (data) => {
         // console.log(data)
@@ -184,9 +178,7 @@ function DataPasien() {
                     {/* <Spin spinning={loading} size="large" tip="Loading..." > */}
                     <GridContainer>
                         {dataRiwayat && <RiwayatKunjungan loading={loading} dataRiwayat={dataRiwayat} visible={showRiwayat} onClose={() => setshowRiwayat(false)} />}
-                        {dataPasien.length > 0 ? renderPasien : notFound
-                        }
-
+                        {dataPasien.length > 0 ? renderPasien : <NotFound label="Data pasien tidak ditemukan ..!" />}
                     </GridContainer>
                     {/* </Spin> */}
                     <br />

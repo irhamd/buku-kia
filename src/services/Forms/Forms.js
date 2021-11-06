@@ -1,5 +1,5 @@
 import { CloseCircleOutlined, CloudDownloadOutlined, DeliveredProcedureOutlined, DownloadOutlined, FilterOutlined, FolderAddOutlined, RollbackOutlined, SaveOutlined, SearchOutlined } from "@ant-design/icons"
-import { Button, Col, DatePicker, Form, Input, InputNumber, Mentions, Radio, Row, Select, Space, Switch, TimePicker } from "antd"
+import { Button, Col, DatePicker, Empty, Form, Input, InputNumber, Mentions, Radio, Row, Select, Space, Switch, TimePicker } from "antd"
 import { mainColor } from "../Color"
 import { Col as ColB } from 'react-bootstrap';
 import { CloseOutlined, CheckOutlined } from '@ant-design/icons';
@@ -379,5 +379,13 @@ export const _Button = (r) => {
                 {r.title} {r.label}
             </Button>
         </ColB>
+    )
+}
+
+export function NotFound(pr) {
+    return (
+        <p style={{ width: "100%" }}>
+            <Empty description={pr.label} />
+        </p>
     )
 }
