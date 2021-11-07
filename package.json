@@ -7,7 +7,6 @@
   "dependencies": {
     "@ant-design/icons": "^4.7.0",
     "@craco/craco": "^6.3.0",
-    "firebase": "^9.1.1",
     "@firebase/firestore": "^3.2.1",
     "@material-ui/core": "4.11.4",
     "@material-ui/icons": "4.11.2",
@@ -20,6 +19,7 @@
     "craco-less": "^1.20.0",
     "crypto-js": "^4.1.1",
     "dotenv": "^10.0.0",
+    "firebase": "^9.1.1",
     "history": "5.0.0",
     "jquery": "^3.6.0",
     "moment": "^2.29.1",
@@ -36,7 +36,10 @@
     "react-swipeable-views": "^0.14.0",
     "react-webcam": "^6.0.0",
     "sweetalert2": "^11.1.9",
-    "toastr": "^2.1.4"
+    "toastr": "^2.1.4",
+
+    "leaflet": "^1.6.0",
+    "react-leaflet": "^2.6.0"
   },
   "scripts": {
     "start": "craco start",
@@ -51,7 +54,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/creativetimofficial/material-dashboard-react.git"
+    "url": "https://github.com/irhamd/buku-kia.git"
   },
   "keywords": [],
   "author": "Creative Tim <hello@creative-tim.com> (https://www.creative-tim.com/)",

@@ -14,6 +14,7 @@ import LembarKerjaBidan from "components/Pasien/LembarKerjaBidan";
 import AturTindakan from "components/Master/AturTindakan";
 import EvaluasiKesehatanBumil from "components/Pasien/PemeriksaanDokter/EvaluasiKesehatanBumil";
 import TestFirebase from "components/Test/TestFirebase";
+import TestMaps from "components/Test/TestMaps";
 
 // var role =  _Cache.get(globalText.x_auth_resu)
 
@@ -59,6 +60,13 @@ const bidan = [
     name: "TestFirebase",
     icon: Dashboard,
     component: TestFirebase,
+    layout: "/admin",
+  },
+  {
+    path: "/TestMaps",
+    name: "TestMaps",
+    icon: Dashboard,
+    component: TestMaps,
     layout: "/admin",
   },
   {

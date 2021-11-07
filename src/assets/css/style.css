@@ -1614,7 +1614,8 @@ h4.title {
 /*--//statistics--*/
 /*--map--*/
 .map {
-    padding: 1em;
+    /* padding: 1em; */
+    height: 90vh;
 }
 
 /*--//map--*/
