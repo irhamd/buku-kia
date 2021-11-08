@@ -14,7 +14,7 @@ const useStyles = makeStyles(styles);
 
 export default function CardHeader(props) {
   const classes = useStyles();
-  const { className, children, color, plain, stats, icon, ...rest } = props;
+  const { className, children, color, plain, stats, icon,warna, ...rest } = props;
   const cardHeaderClasses = classNames({
     [classes.cardHeader]: true,
     [classes[color + "CardHeader"]]: color,
@@ -24,7 +24,7 @@ export default function CardHeader(props) {
     [className]: className !== undefined,
   });
   return (
-    <div className={cardHeaderClasses} style={{ background: "#de68a9" }}   {...rest}>
+    <div className={cardHeaderClasses} style={{ background: warna ? warna : "#de68a9", padding :"0px 20px 5px 10px" }}   {...rest}>
       {children}
     </div>
   );

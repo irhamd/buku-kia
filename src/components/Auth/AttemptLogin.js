@@ -16,7 +16,7 @@ import { _Input } from 'services/Forms/Forms';
 import { UserSwitchOutlined, KeyOutlined, GooglePlusOutlined, LoginOutlined, UnlockOutlined } from '@ant-design/icons';
 import { _Button } from 'services/Forms/Forms';
 import _Api from 'services/Api/_Api';
-import Footer from 'components/Footer/Footer';    
+import Footer from 'components/Footer/Footer';
 import { _Toastr } from 'services/Toastr/Notify/_Toastr';
 import Swal from 'sweetalert2';
 import { Cache } from 'services/Cache';
@@ -24,6 +24,8 @@ import { globalText } from 'services/Text/GlobalText';
 import { acakText } from 'services/Crypto';
 import { useHistory } from 'react-router';
 import { logOut } from 'services/Route/ProtectedRoute';
+import Cookies from 'js-cookie';
+import { gcookies } from 'services/Text/GlobalText';
 
 
 function AttemptLogin() {
@@ -47,6 +49,7 @@ function AttemptLogin() {
             Cache.set(globalText.authorization, acakText(data.token))
             Cache.set(globalText.x_auth_access_token, acakText(data.tokenx))
             Cache.set(globalText.x_auth_refresh_token, new Date().toString())
+            Cookies.set(gcookies.kia, acakText(data.token))
             window.location.href = "/admin/dashboard"
             // history.push('/admin/dashboard')
             // props.history.push("/home")

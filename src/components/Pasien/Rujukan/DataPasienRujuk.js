@@ -12,11 +12,14 @@ import { _Row } from "services/Forms/LayoutBootstrap";
 import Swal from "sweetalert2";
 import { _Input } from "services/Forms/Forms";
 import { _Date } from "services/Forms/Forms";
+import { collection, getDocs, addDoc, updateDoc, deleteDoc, onSnapshot, query, doc, where, } from "firebase/firestore";
+import { db } from "services/firebase/firebase";
 
 function DataPasienRujuk() {
 
     const [pasienRujuk, setpasienRujuk] = useState([])
     const [loading, setloading] = useState(false);
+    const usersCollectionRef = collection(db, "users");
 
     const getData = () => {
         setloading(true)
@@ -45,7 +48,18 @@ function DataPasienRujuk() {
         })
     }
 
-
+    const rujukPasien = async (item) => {
+        console.log(`item`, item)
+        await addDoc(usersCollectionRef,
+            {
+                name: item.nama,
+                id_pasien: item.id_pasien,
+                nobuku: item.nobuku,
+                age: Number(123),
+                isrujuk: true
+            }
+        );
+    };
 
     useEffect(() => {
         getData()
@@ -101,8 +115,8 @@ function DataPasienRujuk() {
                         }
                         pagination={{
                             pageSize: 3,
-                            position :"both"
-                          }}
+                            position: "both"
+                        }}
                         renderItem={item => (
                             <List.Item
                                 style={{ background: "linear-gradient(white 90%, rgb(219 188 223 / 32%))" }}
@@ -147,7 +161,7 @@ function DataPasienRujuk() {
                                         })
                                     } </p>
                                 <_Row>
-                                    <_Button save label="Rujuk" block sm={2} />
+                                    <_Button save label="Rujuk" onClick={()=>rujukPasien(item)} block sm={2} />
                                     <_Button label="Tidak perlu dirujuk" block sm={3} onClick={tidakPerluRujuk} color="orangered" cancel />
                                 </_Row>
                             </List.Item>

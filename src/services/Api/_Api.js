@@ -1,15 +1,16 @@
 import Axios from 'axios'
+import Cookies from 'js-cookie';
 import { Cache } from 'services/Cache';
 import { ubahText } from '../Crypto';
-import { globalText } from '../Text/GlobalText';
+import { gcookies, globalText } from '../Text/GlobalText';
 // export const baseURL = process.env.REACT_APP_BASE_URL_229
 export const baseURL = process.env.REACT_APP_BASE_URL
 // export const baseURL = process.env.REACT_APP_BASE_URL_JSON_SERVER
 
-let cek = Cache.get(globalText.authorization);
-let auth = ubahText(cek ? cek : "")
+// let cek = Cache.get(globalText.authorization);
+var cekcookies = Cookies.get(gcookies.kia)
+let auth = ubahText(cekcookies ? cekcookies : "{}");
 
-console.log(auth)
 
 export const authToken = auth
 const _Api = () => {

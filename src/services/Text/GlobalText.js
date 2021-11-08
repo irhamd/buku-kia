@@ -12,6 +12,10 @@ export const globalText = {
     'x_auth_refresh_token': 'x-auth-refresh-token',
 }
 
+export const gcookies = {
+    'kia': '_kia_rems',
+}
+
 export const terbilang = require('angka-menjadi-terbilang')
 
 export const fitrah = {

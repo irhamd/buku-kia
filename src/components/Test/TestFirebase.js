@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from 'react'
 // import { db } from "./firebase-config";
-import {
-    collection, getDocs, addDoc, updateDoc, deleteDoc, onSnapshot, query, doc, where,
-} from "firebase/firestore";
+import { collection, getDocs, addDoc, updateDoc, deleteDoc, onSnapshot, query, doc, where, } from "firebase/firestore";
 import { db } from 'services/firebase/firebase';
 import { _Swall } from 'services/Toastr/Notify/_Toastr';
+import { Detector, Offline, Online } from 'react-detect-offline';
+import Cookies from 'js-cookie';
+import Countdown from 'react-countdown';
 
 function TestFirebase() {
 
@@ -18,7 +19,7 @@ function TestFirebase() {
 
 
     const createUser = async () => {
-        await addDoc(usersCollectionRef, { name: newName, age: Number(newAge) });
+        await addDoc(usersCollectionRef, { name: newName, age: Number(newAge), isrujuk: true });
     };
 
     const updateUser = async (id, age) => {
@@ -32,17 +33,21 @@ function TestFirebase() {
         await deleteDoc(userDoc);
     };
 
+    const tambahCook = () => {
+        Cookies.set("bebass", "apapaa ajjaa")
+    };
+    const showCookies = () => {
+        var aa = Cookies.get("bebass")
+
+        console.log(aa)
+    };
+
     const getUsers = async () => {
         const q = query(collection(db, dbname), where("isrujuk", "==", true));
         const querySnapshot = await getDocs(q);
         let dt = querySnapshot.docs.map((doc) => ({ ...doc.data(), id: doc.id }))
         dt.map((val, i) => {
-
             console.log(`rujukk`, val.isrujuk)
-
-            if (val.isrujuk == true) {
-                _Swall.error("Suksess ...")
-            }
 
         })
         // console.log(dt)
@@ -50,40 +55,26 @@ function TestFirebase() {
     };
 
     useEffect(async () => {
-
-
-
-
-        // // const querySnapshot = await getDocs(usersCollectionRef);
         onSnapshot(
             collection(db, dbname),
             where("isrujuk", "==", true),
             (snapshot) => {
                 setUsers([])
-                // console.log(`snapshot`, snapshot)
                 getUsers()
             })
 
 
         navigator.geolocation.getCurrentPosition(function (position) {
-            console.log("Latitude is :", position.coords.latitude +', '+position.coords.longitude);
-            // console.log("Longitude is :", position.coords.longitude);
+            console.log("Latitude is :", position.coords.latitude + ', ' + position.coords.longitude);
         });
 
-
-
-        // querySnapshot.forEach((doc) => {
-        //     console.log(doc.data());
-        // });
-
-
-        // getUsers();
     }, []);
 
 
     return (
         <div>
             <div className="App">
+                <Countdown date={Date.now() + 10000} />,
                 <input
                     placeholder="Name..."
                     onChange={(event) => {
@@ -99,10 +90,23 @@ function TestFirebase() {
                 />
 
                 <button onClick={createUser}> Create User</button>
+                <button onClick={tambahCook}> Add Coockies</button>
+                <button onClick={showCookies}> Tampil</button>
+                <br />   <br />
+
+
+                <Detector
+                    render={({ online }) => (
+                        <div className={online ? "normal" : "warning"}>
+                            Koneksi Internet :  {online ? "online" : "offline"}
+                        </div>
+                    )}
+                />
+
+
                 {users.map((user) => {
                     return (
-                        <div className="blink-bg">
-                            {" "}
+                        <div className="blink-bg" style={{ marginBottom: "5px" }}>
                             <h1 >Name: {user.name}</h1>
                             <h1>Age: {user.age}</h1>
                             <h1>Rujuk: {user.isrujuk && user.isrujuk.toString()}</h1>
@@ -111,7 +115,6 @@ function TestFirebase() {
                                     updateUser(user.id, user.age);
                                 }}
                             >
-                                {" "}
                                 Increase Age
                             </button>
                             <button
@@ -119,7 +122,6 @@ function TestFirebase() {
                                     deleteUser(user.id);
                                 }}
                             >
-                                {" "}
                                 Delete User
                             </button>
                         </div>

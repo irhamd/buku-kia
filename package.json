@@ -22,6 +22,8 @@
     "firebase": "^9.1.1",
     "history": "5.0.0",
     "jquery": "^3.6.0",
+    "js-cookie": "^3.0.1",
+    "leaflet": "^1.7.1",
     "moment": "^2.29.1",
     "perfect-scrollbar": "1.5.1",
     "prop-types": "15.7.2",
@@ -29,17 +31,19 @@
     "react": "17.0.2",
     "react-bootstrap": "^2.0.0",
     "react-chartist": "0.14.4",
+    "react-countdown": "^2.3.2",
+    "react-detect-offline": "^2.4.5",
     "react-dom": "17.0.2",
     "react-firebase-hooks": "^3.0.4",
+    "react-leaflet": "^3.2.0",
+    "react-leaflet-animated-marker": "^1.0.2",
     "react-router-dom": "5.2.0",
     "react-scripts": "4.0.3",
     "react-swipeable-views": "^0.14.0",
+    "react-timer-hook": "^3.0.5",
     "react-webcam": "^6.0.0",
     "sweetalert2": "^11.1.9",
-    "toastr": "^2.1.4",
-
-    "leaflet": "^1.6.0",
-    "react-leaflet": "^2.6.0"
+    "toastr": "^2.1.4"
   },
   "scripts": {
     "start": "craco start",
