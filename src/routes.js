@@ -15,6 +15,7 @@ import AturTindakan from "components/Master/AturTindakan";
 import EvaluasiKesehatanBumil from "components/Pasien/PemeriksaanDokter/EvaluasiKesehatanBumil";
 import TestFirebase from "components/Test/TestFirebase";
 import TestMaps from "components/Test/TestMaps";
+import MonitoringPasienEmergency from "components/Test/MonitoringPasienEmergency";
 
 // var role =  _Cache.get(globalText.x_auth_resu)
 
@@ -56,10 +57,10 @@ const dokter = [
 
 const bidan = [
   {
-    path: "/TestFirebase",
-    name: "TestFirebase",
+    path: "/MonitoringPasienEmergency",
+    name: "Pasien Emergency",
     icon: Dashboard,
-    component: TestFirebase,
+    component: MonitoringPasienEmergency,
     layout: "/admin",
   },
   {

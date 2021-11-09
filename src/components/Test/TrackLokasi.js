@@ -20,7 +20,7 @@ import { CounterTime } from 'services/Forms/FormsAdd';
 
 
 
-function TestMaps() {
+function TrackLokasi(pr) {
 
 
 
@@ -37,10 +37,9 @@ function TestMaps() {
 
     // L.DomUtil.addClass(marker._icon, 'blinking');
 
-
-
     const [map, setMap] = useState(null)
-    const [position, setposition] = useState([-8.600073, 116.114254])
+    var position = pr.position
+    // const [position, setposition] = useState([-8.600073, 116.114254])
     const { Panel } = Collapse;
 
     const usersCollectionRef = collection(db, "position");
@@ -56,54 +55,17 @@ function TestMaps() {
 
 
 
-    const state = {
-        greenIcon: {
-            lat: 35.787449,
-            lng: -78.6438197,
-        },
-        redIcon: {
-            lat: 35.774416,
-            lng: -78.633271,
-        },
-        orangeIcon: {
-            lat: 35.772790,
-            lng: -78.652305,
-        },
-        zoom: 13
-    }
 
-    const getLocation = async () => {
-
-
-        const data = await getDocs(usersCollectionRef);
-        let datapos = data.docs.map((doc) => ({ ...doc.data() }))
-        let pos = datapos[0].position
-
-        // console.log(pos._lat)
-
-        let currPos = [pos._lat, pos._long]
-
-        setposition(currPos)
-        posRef.current.click()
-
-
-
-    };
-
+    const zoom = 11
 
     useEffect(() => {
-        onSnapshot(
-            collection(db, "position"),
-            (snapshot) => {
-                getLocation()
-                // gotoLocation()
-            })
-        console.log(map)
+        gotoLocation()
     }, [])
+
 
     return (
         <div>
-            <div style={{ position: "absolute", zIndex: 1000, width: "200px", right: "10px", top: "5px" }}>
+            {/* <div style={{ position: "absolute", zIndex: 1000, width: "200px", right: "10px", top: "5px" }}>
                 <Collapse ghost style={{ height: "5px" }} defaultActiveKey={['1']}>
                     <Panel header="Reminder" key="1">
 
@@ -117,15 +79,15 @@ function TestMaps() {
                         </div>
                     </Panel>
                 </Collapse>
-            </div>
+            </div> */}
 
-            <MapContainer whenCreated={setMap} className="map" center={position} zoom={state.zoom}>
+            <MapContainer whenCreated={setMap} className="map" center={position} zoom={zoom}>
                 <TileLayer
                     url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
                 />
                 <Marker position={position} icon={grenIcon}>
                     <Popup>
-                        I am a green leaf
+                        Lokasi Pasien
                     </Popup>
                 </Marker>
 
@@ -137,4 +99,4 @@ function TestMaps() {
     )
 }
 
-export default TestMaps
+export default TrackLokasi

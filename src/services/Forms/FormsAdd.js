@@ -1,5 +1,6 @@
 import { Button, Checkbox, Col, DatePicker, Form, Input, InputNumber, Mentions, Radio, Row, Select, Slider, Switch } from "antd"
 import { Col as ColB } from 'react-bootstrap';
+import { useStopwatch } from 'react-timer-hook';
 
 
 export const _Slider = (r) => {
@@ -54,3 +55,31 @@ export const formItemLayout =
     },
 }
 
+
+
+export function CounterTime() {
+    const {
+        seconds,
+        minutes,
+        hours,
+        days,
+        isRunning,
+        start,
+        pause,
+        reset,
+    } = useStopwatch({ autoStart: true });
+
+    return (
+        <div style={{ textAlign: 'center' }}>
+            {/* <p style={{ marginBottom: "-5px" }}>Count Respond Time</p> */}
+            {/* <span>Hari</span>:<span>Jam</span>:<span>Menit</span>:<span>Detik</span> <br /> */}
+            <div style={{ fontSize: '24px', fontWeight: "bold" }}>
+                <span>{days}</span>:<span>{hours}</span>:<span>{minutes}</span>:<span>{seconds}</span>
+            </div>
+            {/* <p>{isRunning ? 'Running' : 'Not running'}</p> */}
+            {/* <button onClick={start}>Start</button>
+            <button onClick={pause}>Pause</button>
+            <button onClick={reset}>Reset</button> */}
+        </div>
+    );
+}

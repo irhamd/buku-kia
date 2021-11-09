@@ -30,7 +30,7 @@ License URL: http://creativecommons.org/licenses/by/3.0/
 
 @keyframes blinkingBackground {
     0% {
-        background-color: #d3d62a;
+        background-color: #d18f43;
     }
 
     25% {
@@ -46,7 +46,7 @@ License URL: http://creativecommons.org/licenses/by/3.0/
     }
 
     100% {
-        background-color: #f1540b;
+        background-color: #cc8f3f;
     }
 }
 
@@ -1621,6 +1621,7 @@ h4.title {
 .map {
     /* padding: 1em; */
     height: 100vh;
+    /* margin: -50px; */
     margin: -100px -30px -30px -20px;
 }
 

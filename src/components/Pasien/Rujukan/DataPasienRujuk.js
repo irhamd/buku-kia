@@ -14,13 +14,17 @@ import { _Input } from "services/Forms/Forms";
 import { _Date } from "services/Forms/Forms";
 import { collection, getDocs, addDoc, updateDoc, deleteDoc, onSnapshot, query, doc, where, } from "firebase/firestore";
 import { db } from "services/firebase/firebase";
+import { _Col } from "services/Forms/LayoutBootstrap";
+import { _Swall } from "services/Toastr/Notify/_Toastr";
 
 function DataPasienRujuk() {
 
     const [pasienRujuk, setpasienRujuk] = useState([])
     const [loading, setloading] = useState(false);
-    const usersCollectionRef = collection(db, "users");
+    const [nohp, setnohp] = useState([]);
+    const colPasienRujuk = collection(db, "pasien");
 
+    var array = []
     const getData = () => {
         setloading(true)
         _Api.get("getPasienRujuk?rujuk=0").then(res => {
@@ -30,7 +34,7 @@ function DataPasienRujuk() {
         })
     }
 
-    const tidakPerluRujuk = () => {
+    const tidakPerluRujuk = ({ id }) => {
         Swal.fire({
             title: 'Pasien tidak perlu di Rujuk ?',
             text: "Harap pertimbangkan kondisi pasien.",
@@ -42,23 +46,40 @@ function DataPasienRujuk() {
             cancelButtonText: 'Batal'
         }).then((result) => {
             if (result.isConfirmed) {
-                // settidakPerluRujuk(id)
+                _Api.get("tidakPerluDiRujuk/" + id).then(res => {
+                    if (res.data.cek == 1) {
+                        // _Swall.success("Suksess ....")
+                        getData()
+                    } else {
+                        _Swall.error("Gagal .")
+                    }
+                }).catch(err => {
+                    _Swall.error("Gagal .Err")
+
+                })
             }
 
         })
     }
 
     const rujukPasien = async (item) => {
-        console.log(`item`, item)
-        await addDoc(usersCollectionRef,
+        console.log(nohp)
+        setloading(true)
+        // console.log(`item`, item)
+        await addDoc(colPasienRujuk,
             {
-                name: item.nama,
+                nama: item.nama,
+                nohp: item.nohp,
                 id_pasien: item.id_pasien,
                 nobuku: item.nobuku,
-                age: Number(123),
-                isrujuk: true
+                alamat: item.alamat,
+                isrujuk: true,
+                foto: item.foto,
+                status: "Request",
+                faskes: item.unitkerja
             }
         );
+        setloading(false)
     };
 
     useEffect(() => {
@@ -71,6 +92,7 @@ function DataPasienRujuk() {
             {text}
         </Space>
     );
+
 
     const gaya = {
         title: { fontSize: "26px", paddingTop: "20px", marginBottom: "-10px" },
@@ -117,13 +139,13 @@ function DataPasienRujuk() {
                             pageSize: 3,
                             position: "both"
                         }}
-                        renderItem={item => (
+                        renderItem={(item, idx) => (
                             <List.Item
                                 style={{ background: "linear-gradient(white 90%, rgb(219 188 223 / 32%))" }}
                                 key={item.id}
                                 actions={[
                                     <IconText icon={StarOutlined} text="kunjungan : 1" key="list-vertical-star-o" />,
-                                    <IconText icon={LikeOutlined} text="UK : " key="list-vertical-like-o" />,
+                                    <IconText icon={LikeOutlined} text={"UK : " + idx} key="list-vertical-like-o" />,
                                 ]}
                             // extra={
                             //     <div style={{ background: "#fea9ad", padding: "10px", borderRadius: "5px", width: "600px", fontWeight: "bold", fontSize: "15px" }}>
@@ -142,31 +164,44 @@ function DataPasienRujuk() {
                                         <b> {item.alamat} </b>
                                     </div>}
                                 />
-                                <p style={{ background: "#df132726", borderRadius: "5px", padding: "10px" }}>
-                                    <p> Alasan :  </p>
-                                    {
-                                        item.keterangan && item.keterangan.map((val, i) => {
-                                            return (
-                                                < div key={i} >
-                                                    <p className="b" style={{ margin: "-4px 0px -4px 0px", fontWeight: "bold", color: "#b73e3e", fontSize: "18px" }}> <b> {i + 1}. {val.keterangan} </b>  </p>
-                                                </div>
-
-                                                // <label className="containerc " key={i}>
-                                                //     <span className="checkboxC" style={{ color: 'maroon' }}> {i + 1}. {val.keterangan}
-                                                //     </span>
-                                                //     <input disabled type="checkbox" value={val.id} />
-                                                //     <span className="checkmark" />
-                                                // </label>
-                                            )
-                                        })
-                                    } </p>
                                 <_Row>
-                                    <_Button save label="Rujuk" onClick={()=>rujukPasien(item)} block sm={2} />
-                                    <_Button label="Tidak perlu dirujuk" block sm={3} onClick={tidakPerluRujuk} color="orangered" cancel />
+                                    <_Col sm={8}>
+                                        <p style={{ background: "#df132726", borderRadius: "5px", padding: "10px" }}>
+                                            <p> Alasan :  </p>
+                                            {
+                                                item.keterangan && item.keterangan.map((val, i) => {
+                                                    return (
+                                                        < div key={i} >
+                                                            <p className="b" style={{ margin: "-4px 0px -4px 0px", fontWeight: "bold", color: "#b73e3e", fontSize: "18px" }}> <b> {i + 1}. {val.keterangan} </b>  </p>
+                                                        </div>
+
+                                                        // <label className="containerc " key={i}>
+                                                        //     <span className="checkboxC" style={{ color: 'maroon' }}> {i + 1}. {val.keterangan}
+                                                        //     </span>
+                                                        //     <input disabled type="checkbox" value={val.id} />
+                                                        //     <span className="checkmark" />
+                                                        // </label>
+                                                    )
+                                                })
+                                            }
+                                        </p>
+                                    </_Col>
+                                    <_Col sm={3}>
+                                        <_Input label="Nomor HP yang bisa dihubungi" onChange={(e) => {
+                                            array[idx] = e.target.value.toString()
+                                            console.log(array)
+                                            setnohp(array)
+                                        }} />
+                                    </_Col>
+                                </_Row>
+                                <_Row>
+                                    <_Button save label="Rujuk" onClick={() => rujukPasien(item)} block sm={2} />
+                                    <_Button label="Tidak perlu dirujuk" block sm={3} onClick={() => tidakPerluRujuk(item)} color="orangered" cancel />
                                 </_Row>
                             </List.Item>
                         )}
                     />,
+                    <p> {JSON.stringify(array)} </p>
                     {/* <p> <_Button label="Rujuk" /> </p> */}
                 </CardBody>
             </Card>

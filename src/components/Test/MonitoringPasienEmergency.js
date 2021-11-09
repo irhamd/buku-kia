@@ -9,20 +9,24 @@ import Countdown from 'react-countdown';
 import { _Button } from 'services/Forms/Forms';
 import { _Row } from 'services/Forms/LayoutBootstrap';
 import src from "assets/img/no_image.jpg"
-import { Image } from 'antd';
+import { Image, Modal, Tag } from 'antd';
 import { _Col } from 'services/Forms/LayoutBootstrap';
-import { PhoneOutlined } from '@material-ui/icons';
+import { HighlightOutlined, PhonelinkOutlined, PhoneOutlined } from '@material-ui/icons';
 import { CounterTime } from 'services/Forms/FormsAdd';
-import { DislikeOutlined, WhatsAppOutlined } from '@ant-design/icons';
+import { DislikeOutlined, EnvironmentOutlined, FallOutlined, SisternodeOutlined, WhatsAppOutlined } from '@ant-design/icons';
+import TrackLokasi from './TrackLokasi';
 
-function TestFirebase() {
+function MonitoringPasienEmergency() {
 
 
     const [newName, setNewName] = useState("");
     const [newAge, setNewAge] = useState(0);
+    const [position, setposition] = useState(null)
+    const [showpeta, setShowpeta] = useState(false)
 
-    const [users, setUsers] = useState([]);
-    const dbname = "users"
+
+    const [pasienEmer, setPasienEmer] = useState([]);
+    const dbname = "pasien"
     const usersCollectionRef = collection(db, dbname);
 
     const styl = {
@@ -33,6 +37,10 @@ function TestFirebase() {
         }
     }
 
+    const gotoLokasi = (post) => {
+        setShowpeta(true)
+        setposition(post)
+    }
 
 
     const createUser = async () => {
@@ -63,12 +71,12 @@ function TestFirebase() {
         const q = query(collection(db, dbname), where("isrujuk", "==", true));
         const querySnapshot = await getDocs(q);
         let dt = querySnapshot.docs.map((doc) => ({ ...doc.data(), id: doc.id }))
-        dt.map((val, i) => {
-            console.log(`rujukk`, val.isrujuk)
+        // dt.map((val, i) => {
+        //     console.log(`rujukk`, val.isrujuk)
 
-        })
-        // console.log(dt)
-        setUsers(dt);
+        // })
+        // console.log("DTTTTT", dt)
+        setPasienEmer(dt);
     };
 
     useEffect(async () => {
@@ -76,7 +84,7 @@ function TestFirebase() {
             collection(db, dbname),
             where("isrujuk", "==", true),
             (snapshot) => {
-                setUsers([])
+                setPasienEmer([])
                 getUsers()
             })
 
@@ -91,64 +99,34 @@ function TestFirebase() {
     return (
         <div>
             <div className="App">
-                <p>
-                    <Countdown date={Date.now() + 10000} />,
-                </p>
-                {/* <input
-                    placeholder="Name..."
-                    onChange={(event) => {
-                        setNewName(event.target.value);
-                    }}
-                />
-                <input
-                    type="number"
-                    placeholder="Age..."
-                    onChange={(event) => {
-                        setNewAge(event.target.value);
-                    }}
-                />
 
-                <button onClick={createUser}> Create User</button>
-                <button onClick={tambahCook}> Add Coockies</button>
-                <button onClick={showCookies}> Tampil</button>
-                <br />   <br /> */}
-
-
-                {/* <Detector
-                    render={({ online }) => (
-                        <div className={online ? "normal" : "warning"}>
-                            Koneksi Internet :  {online ? "online" : "offline"}
-                        </div>
-                    )}
-                /> */}
-
-
-                {users.map((user) => {
+                {pasienEmer.map((user) => {
                     return (
                         <div>
 
                             <div className="blink-bg" style={{ marginBottom: "5px", padding: "10px" }}>
                                 <_Row>
                                     <_Col sm={3} style={{ textAlign: "center" }}>
-                                        <Image src={src} width={200} style={{ borderRadius: " 50%" }} />
+                                        <Image src={user.foto ? user.foto : src} height={200} style={{ borderRadius: " 20% 0%" }} />
                                         <p style={styl.label}>  Nomor yang bisa dihubungi  </p>
 
-                                        <h1 style={{ marginBottom: "-5px" }}> <b> 0878685898 </b> </h1>
+                                        <h1 style={{ marginBottom: "-5px" }}> <b> {user.nohp} </b> </h1>
                                         <CounterTime />
+                                        <p> Status :   <Tag color="red"> {user.status} </Tag> </p>
 
                                     </_Col>
                                     <_Col sm={8} style={{ background: "#352b1a38", borderRadius: "5px", padding: "10px" }}>
                                         <p style={styl.label}> Nama Pasien : </p>
-                                        <p style={styl.caption}> ZAHRA ALFA BETA DELTA </p>
+                                        <p style={styl.caption}> {user.nama}</p>
 
                                         {/* <p style={styl.label}> Nomor telpon yang bisa dihubungi : </p>
                                     <p style={styl.caption}>  08785365511 </p> */}
 
                                         <p style={styl.label}>  Faskes : </p>
-                                        <p style={styl.caption}>  Puskesmas Dasan Agung </p>
+                                        <p style={styl.caption}>  {user.faskes} </p>
 
                                         <p style={styl.label}>  Alamat : </p>
-                                        <p style={styl.caption}>  Jln. Mana saja Mana saja Mana saja Mana saja Mana saja Mana saja Mana saja Mana saja Mana saja Mana saja  </p>
+                                        <p style={styl.caption}>  {user.alamat}  </p>
                                     </_Col>
 
                                     {/* <h3 >Name: {user.name}</h3>
@@ -158,14 +136,28 @@ function TestFirebase() {
                                 <br />
                                 <_Row>
                                     <_Col sm={2} />
-                                    <_Button size="large" label="Terima" icon={<WhatsAppOutlined />} sm={4} block color="green" onClick={() => {
-                                        updateUser(user.id, user.age);
-                                    }}
-                                    />
-                                    <_Button label="Abaikan" size="large" color="orange" sm={3} block icon={<DislikeOutlined />}
+
+                                    {user.status == "Request" ?
+
+                                        <_Button size="large" label="Terima" icon={<FallOutlined />} sm={4} block color="green" onClick={() => {
+                                            updateUser(user.id, user.age);
+                                        }} /> :
+
+                                        <_Button size="large" label="Commit" icon={<SisternodeOutlined />} sm={4} block color="#17a2b8" onClick={() => {
+                                            updateUser(user.id, user.age);
+                                        }} />
+
+
+                                    }
+
+
+                                    <_Button label="Abaikan" size="large" color="orange" sm={2} block icon={<DislikeOutlined />}
                                         onClick={() => {
                                             deleteUser(user.id);
                                         }}
+                                    />
+                                    <_Button label="Track Lokasi" size="large" color="orangered" sm={2} block icon={<EnvironmentOutlined />}
+                                        onClick={() => gotoLokasi([-8.600073, 116.114254])}
                                     />
                                 </_Row>
 
@@ -178,8 +170,20 @@ function TestFirebase() {
                     );
                 })}
             </div>
+
+            {
+                position &&
+                <Modal
+                    title="Modal 1000px width"
+                    onCancel={() => setShowpeta(false)}
+                    visible={showpeta}
+                    width={1300}
+                >
+                    <TrackLokasi position={position} />
+                </Modal>
+            }
         </div>
     )
 }
 
-export default TestFirebase
+export default MonitoringPasienEmergency
