@@ -7,7 +7,7 @@ import React, { useEffect, useState } from 'react'
 import avatar from "assets/img/faces/marc.jpg";
 import Button from "components/CustomButtons/Button.js";
 import GridContainer from 'components/Grid/GridContainer'
-import { Image, Spin, Form, Empty } from 'antd'
+import { Image, Spin, Form, Empty, Table } from 'antd'
 import _Api from 'services/Api/_Api'
 import src from "assets/img/no_image.jpg"
 import { _Row } from 'services/Forms/LayoutBootstrap'
@@ -28,6 +28,10 @@ import { NotFound } from 'services/Forms/Forms'
 import { collection, onSnapshot } from '@firebase/firestore'
 import { db } from 'services/firebase/firebase'
 import { _Swall } from 'services/Toastr/Notify/_Toastr'
+import { fitrah } from 'services/Text/GlobalText'
+import { formatTgl } from 'services/Text/GlobalText'
+
+
 
 
 function DataPasien() {
@@ -36,6 +40,7 @@ function DataPasien() {
     const [showRiwayat, setshowRiwayat] = useState(false)
     const [dataRiwayat, setdataRiwayat] = useState([]);
     const [loading, setloading] = useState(false);
+    const [selected, setselected] = useState(null)
 
     const history = useHistory()
     const pacient = 'x-pacient';
@@ -48,124 +53,120 @@ function DataPasien() {
             setdataPasien(JSON.parse(cekPasien))
         } else
             cariPasien("")
+
         _Cache.remove(pacient)
 
-        onSnapshot(collection(db, "users"), (snap) => {
-            // alert("insert")
-            console.log(snap)
-            // _Swall.error("Pasien di rujukk")
-        })
+        // onSnapshot(collection(db, "users"), (snap) => {
+        // alert("insert")
+        // console.log(snap)
+        // _Swall.error("Pasien di rujukk")
+        // })
 
 
     }, [])
 
 
 
-    const prosesPasien = (data) => {
-        // console.log(data)
-        // _Cache.set('id_pasien', id_pasien)
-        _Cache.set(pacient, JSON.stringify(data))
-        // history.push("/admin/InputKunjungan")
-        history.push("/admin/LembarKerjaBidan")
-
-
-    }
-
-    const pemeriksaanDokter = (data) => {
-        // console.log(data)
-        // _Cache.set('id_pasien', id_pasien)
-        _Cache.set(pacient, JSON.stringify(data))
-        history.push("/admin/PemeriksaanDokter")
-    }
-    const dataKehamilan = (data) => {
-        _Cache.set(pacient, JSON.stringify(data))
-        history.push("/admin/InputKehamilanSaatIni?id_pasien=" + data.id)
-
-    }
-
-    const evaluasiKesehatanBumil = (data) => {
-        _Cache.set(pacient, JSON.stringify(data))
-        history.push("/admin/EvaluasiKesehatanBumil")
-
-    }
-
-    const riwayatPasien = async (data) => {
-        setshowRiwayat(true)
-        setdataRiwayat([])
-        // console.log(data)
-        _Cache.set(pacient, JSON.stringify(data))
-        setloading(true)
-        await _Api.get("getKunjunganByPasien?id_pasien=" + data.id).then(res => {
-            setdataRiwayat(res.data.data)
-
-            // console.log(res.data.data)
-            setloading(false)
-
-        })
-    }
 
     const cariPasien = (val) => {
         setloading(true)
+        setselected(null)
         _Api.get("getDataPasien", { params: val }).then(res => {
             setdataPasien(res.data)
+            // console.log(`res.data`, res.data)
             _Cache.set("datapasien", JSON.stringify(res.data))
             setloading(false)
         })
     }
 
+    const saveRegistrasiPasien = (item) => {
+        var id = item ? item.id : selected && selected.id
+        
+        if (!id) {
+            _Swall.error('Silahkan pilih pasien .!')
+            return
+        }
+        setloading(true)
+        var obj = { "id_pasien": id }
 
-
-
-    const jadwalKunjungan = async (data) => {
-        _Cache.set(pacient, JSON.stringify(data))
-        history.push("/admin/JadwalKunjungan?key=" + data.id)
+        _Api.post("saveRegistrasiPasien", obj).then(res => {
+            let dt = res.data
+            if (dt.sts == 1) {
+                _Swall.success(dt.msg)
+            } else {
+                _Swall.error(dt.msg)
+            }
+            setloading(false)
+        })
     }
 
-    const renderPasien = dataPasien && dataPasien.map((item, i) => {
-        return (
-            <GridItem md={12} key={i} style={{ marginTop: "-50px" }}>
-                <Card>
-                    <_Row style={{ background: "#de68a959", borderRadius: "5px" }}>
-                        <_Col sm={2} >
-                            <div style={{ textAlign: "center" }}>
-                                <a href="#pablo" onClick={(e) => e.preventDefault()}>
-                                    <Image width={200} style={{ borderRadius: "5px", marginTop: "5px", boxShadow: "0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(171, 71, 188, 0.32)" }}
-                                        src={item.foto ? item.foto : src}
-                                    />
-                                </a>
-                            </div>
-                        </_Col>
-                        <_Col sm={9}>
-                            <div style={{ margin: "20px 10px 10px 40px" }}>
-                                <p className="title-b" style={{ color: "#d3307b" }}>{item.nobuku}</p>
-                                <p className="title-a">{item.nama && item.nama.toUpperCase()} </p>
-                                <p> {item.alamat} </p>
-                                <_Row>
+    const columns = [
 
-                                    {cekRole == _role.bidan &&
-                                        <_Button label="Lembar Kerja" block sm={3} color="#da2b8b" disabled={item.kunjunganke == 0} onClick={() => prosesPasien(item)} icon={<DeploymentUnitOutlined />} />
-                                    }
-                                    {cekRole == _role.dokter &&
-                                        <>
-                                            <_Button label="Pemeriksaan Dokter" block sm={3} color="#da2b8b" onClick={() => pemeriksaanDokter(item)} icon={<DeploymentUnitOutlined />} />
-                                            <_Button label="Evaluasi Kesehatan Ibu Hamil" block sm={5} color="#da2b8b" onClick={() => evaluasiKesehatanBumil(item)} icon={<DeploymentUnitOutlined />} />
-                                        </>
-                                    }
-                                    <_Button label="Data Kehamilan" icon={<NodeIndexOutlined />} color="orangered" onClick={() => dataKehamilan(item)} block sm={3} />
-                                    {/* <_Button label="Pertumbuhan Janin" color="#da2b8b" icon={<AreaChartOutlined />} block sm={3} />
-                                    <_Button label="Riwayat" icon={<FieldTimeOutlined />} color="orangered" onClick={() => riwayatPasien(item)} block sm={2} />
-                                    <_Button label="Jadwal Kunjungan" icon={<CalendarOutlined />} color="orangered" block sm={3} onClick={() => jadwalKunjungan(item)} /> */}
+        {
+            title: 'No',
+            render: (rc, j, i) => (
+                <div className="tengah">  {i + 1} </div>
+            ),
+            sorter: true,
+            width: '100px',
+            // fixed: 'left',
+        },
 
-                                </_Row>
-                            </div>
-                        </_Col>
+        {
+            title: 'No. Buku',
+            width: '100px',
+            dataIndex: 'nobuku',
+            sorter: (a, b) => a.nobuku.length - b.nobuku.length,
+        },
+        {
+            title: 'Foto',
+            width: '150px',
 
-                    </_Row>
+            render: (rc) => (<div className="tengah">
+                <Image src={rc.foto ? rc.foto : src} width={100} style={{ borderRadius: "10% 0px 10%" }} />
+            </div>),
+        },
+        {
+            title: 'Nama Pasien',
+            width: '230px',
+            sorter: (a, b) => a.nama.length - b.nama.length,
+            render: (rc) => (<div style={{ fontWeight: "bold" }}>
+                <b> {rc.nama.toUpperCase()} </b>
+            </div>),
+        },
+        {
+            title: 'Tanggal Lahir',
+            render: (rc) => (<>
+                {formatTgl(rc.tgllahir)}
+            </>),
+            width: '130px',
+        },
+        {
+            title: 'Umur',
+            render: (rc) => (<>
+                {fitrah.getUmur(rc.tgllahir)}
+            </>),
+            width: '130px',
+        },
+        {
+            title: 'Alamat',
+            width: '430px',
+            dataIndex: 'alamat',
+            sorter: (a, b) => a.alamat.length - b.alamat.length,
+        },
 
-                </Card>
-            </GridItem>
-        )
-    })
+
+        {
+            title: 'No. HP',
+            width: '130px',
+            dataIndex: 'nohp',
+            sorter: (a, b) => a.nohp.length - b.nohp.length,
+        },
+
+
+    ];
+
+
 
     return (
         <div>
@@ -181,17 +182,31 @@ function DataPasien() {
                             {/* <_Search placeholder="Cari nomor buku  ...." loading={loading} onSearch={cariPasien} sm={3} /> */}
                             <_Input name="nama" placeholder="Nama Pasien" sm={3} />
                             <_Input name="nobuku" placeholder="Nomor Buku" sm={2} />
-                            <_Date name="tanggaldari" placeholder="Tanggal" sm={2} />
-                            <_Date name="tanggalsampai" placeholder=" s/d " sm={2} />
                             <_Button sm={2} save submit loading={loading} />
                         </_Row>
                     </Form>
-
-                    <br /> <br />
+                    <p> <_Button label="Registrasi" onClick={() => saveRegistrasiPasien(null)} /> </p>
                     {/* <Spin spinning={loading} size="large" tip="Loading..." > */}
+                    <Table columns={columns} dataSource={dataPasien}
+                        rowClassName={(record, index) => record == selected && 'bg-orange'}
+                        pagination={{ pageSize: 5, position: ["topLeft"] }} scroll={{ x: 1400 }}
+                        onRow={(rc, i) => {
+                            return {
+                                onClick: event => {
+                                    setselected(rc)
+                                },
+                                onDoubleClick: event => {
+                                    saveRegistrasiPasien(rc)
+                                    // saveRegistrasiPasien(rc)
+
+
+                                }, // double click row
+                            };
+                        }}
+                    />
                     <GridContainer>
                         {dataRiwayat && <RiwayatKunjungan loading={loading} dataRiwayat={dataRiwayat} visible={showRiwayat} onClose={() => setshowRiwayat(false)} />}
-                        {dataPasien.length > 0 ? renderPasien : <NotFound label="Data pasien tidak ditemukan ..!" />}
+                        {/* {dataPasien.length > 0 ? renderPasien : <NotFound label="Data pasien tidak ditemukan ..!" />} */}
                     </GridContainer>
                     {/* </Spin> */}
                     <br />

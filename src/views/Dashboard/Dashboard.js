@@ -38,6 +38,7 @@ import {
 } from "variables/charts.js";
 
 import styles from "assets/jss/material-dashboard-react/views/dashboardStyle.js";
+import { LogoutOutlined } from "@ant-design/icons";
 
 const useStyles = makeStyles(styles);
 
@@ -90,7 +91,8 @@ export default function Dashboard() {
           <Card>
             <CardHeader color="danger" stats icon>
               <CardIcon color="danger">
-                <Icon>info_outline</Icon>
+                <LogoutOutlined />
+                {/* <Icon>info_outline</Icon> */}
               </CardIcon>
               <p className={classes.cardCategory}>Fixed Issues</p>
               <h3 className={classes.cardTitle}>75</h3>

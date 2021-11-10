@@ -16,6 +16,7 @@ import EvaluasiKesehatanBumil from "components/Pasien/PemeriksaanDokter/Evaluasi
 import TestFirebase from "components/Test/TestFirebase";
 import TestMaps from "components/Test/TestMaps";
 import MonitoringPasienEmergency from "components/Test/MonitoringPasienEmergency";
+import PasienRegistrasi from "components/Pasien/PasienRegistrasi";
 
 // var role =  _Cache.get(globalText.x_auth_resu)
 
@@ -30,6 +31,7 @@ const dokter = [
     icon: Dashboard,
     component: DashboardPage,
     layout: "/admin",
+    show : true,
   },
   {
     path: "/dataPasien",
@@ -37,6 +39,7 @@ const dokter = [
     icon: People,
     component: DataPasien,
     layout: "/admin",
+    show : true,
   },
   {
     path: "/PemeriksaanDokter",
@@ -44,6 +47,7 @@ const dokter = [
     icon: PersonAdd,
     component: PemeriksaanDokter,
     layout: "/admin",
+    show : true,
   },
   {
     path: "/EvaluasiKesehatanBumil",
@@ -62,6 +66,7 @@ const bidan = [
     icon: Dashboard,
     component: MonitoringPasienEmergency,
     layout: "/admin",
+    show : true,
   },
   {
     path: "/TestMaps",
@@ -69,6 +74,7 @@ const bidan = [
     icon: Dashboard,
     component: TestMaps,
     layout: "/admin",
+    show : true,
   },
   {
     path: "/dashboard",
@@ -76,6 +82,7 @@ const bidan = [
     icon: Dashboard,
     component: DashboardPage,
     layout: "/admin",
+    show : true,
   },
   {
     path: "/dataPasien",
@@ -83,6 +90,15 @@ const bidan = [
     icon: People,
     component: DataPasien,
     layout: "/admin",
+    show : true,
+  },
+  {
+    path: "/PasienRegistrasi",
+    name: "Pasien Registrasi",
+    icon: People,
+    component: PasienRegistrasi,
+    layout: "/admin",
+    show : true,
   },
 
   {
@@ -91,6 +107,7 @@ const bidan = [
     icon: PersonAdd,
     component: InputPasienBaru,
     layout: "/admin",
+    show : true,
   },
   {
     path: "/InputKehamilanSaatIni",
@@ -120,6 +137,7 @@ const bidan = [
     icon: PersonAdd,
     component: DataPasienRujuk,
     layout: "/admin",
+    show : true,
   },
   {
     path: "/LembarKerjaBidan",
@@ -134,6 +152,7 @@ const bidan = [
     icon: PersonAdd,
     component: AturTindakan,
     layout: "/admin",
+    show : true,
   },
 
 ];

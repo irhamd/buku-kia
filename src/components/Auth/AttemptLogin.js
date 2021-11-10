@@ -71,7 +71,7 @@ function AttemptLogin() {
         <div style={{ background: "#f1cee1", height: "100vh", overflow: "auto" }}>
 
             <br />
-            <Form onFinish={signIn} form={form}>
+            <Form onFinish={signIn} initialValues={{name :"bidan", password :"admin1"}} form={form}>
                 <_Row>
                     <_Col sm={3} />
                     <_Col sm={5} style={{ background: "#f1e3ebdb", borderRadius: "3%", boxShadow: "10px 10px #de68a9", textAlign: "center" }} >

@@ -1615,6 +1615,11 @@ h4.title {
     animation: fade 1s infinite alternate;
 }
 
+.bg-orange {
+    background-color: #fac1ed;
+    cursor: pointer;
+}
+
 
 /*--//statistics--*/
 /*--map--*/
@@ -1662,6 +1667,12 @@ h4.title {
     font-size: 0.8em;
     color: #fff;
     letter-spacing: 1px;
+}
+
+.kotakShadow {
+    border-radius: "5px";
+    margin-top: "5px";
+    box-shadow: "0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(171, 71, 188, 0.32)"
 }
 
 .twitter {

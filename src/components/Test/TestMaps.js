@@ -4,7 +4,8 @@ import React, { createRef, useEffect, useRef, useState } from 'react'
 import 'leaflet/dist/leaflet.css';
 import { collection, getDocs, addDoc, updateDoc, deleteDoc, onSnapshot, query, doc, where, } from "firebase/firestore";
 
-import leafGreen from '../../assets/css/images/marker-icon-2x.png';
+// import leafGreen from '../../assets/css/images/marker-icon-2x.png';
+import leafGreen from '../../assets/css/images/icon.gif';
 import leafRed from '../../assets/css/images/marker-icon.png';
 import leafOrange from '../../assets/css/images/marker-icon.png';
 import leafShadow from '../../assets/css/images/marker-shadow.png';
@@ -28,8 +29,8 @@ function TestMaps() {
         iconUrl: leafGreen,
         shadowUrl: leafShadow,
         className: 'blinking',
-        iconSize: [40, 50], // size of the icon
-        shadowSize: [50, 64], // size of the shadow
+        iconSize: [70, 70], // size of the icon
+        shadowSize: [100, 80], // size of the shadow
         iconAnchor: [22, 50], // point of the icon which will correspond to marker's location
         shadowAnchor: [20, 62],  // the same for the shadow
         popupAnchor: [-3, -76]

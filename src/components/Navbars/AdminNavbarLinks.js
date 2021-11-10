@@ -30,6 +30,7 @@ import { _Cache } from "services/Cache";
 import { globalText } from "services/Text/GlobalText";
 import { ubahText } from "services/Crypto";
 import { dataPegawai } from "services/Text/GlobalText";
+import { WifiOutlined } from "@ant-design/icons";
 
 
 const useStyles = makeStyles(styles);
@@ -104,7 +105,7 @@ export default function AdminNavbarLinks() {
           <Detector
             render={({ online }) => (
               <>
-                {online ? <Dashboard className={classes.icons} /> : <PortableWifiOffTwoTone className={classes.icons} />
+                {online ? <WifiOutlined /> : <PortableWifiOffTwoTone className={classes.icons} />
                 }
               </>
 
