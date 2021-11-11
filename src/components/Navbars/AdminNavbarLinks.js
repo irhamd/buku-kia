@@ -105,7 +105,8 @@ export default function AdminNavbarLinks() {
           <Detector
             render={({ online }) => (
               <>
-                {online ? <WifiOutlined /> : <PortableWifiOffTwoTone className={classes.icons} />
+
+                {online ? <>  <WifiOutlined /> &nbsp; On </> : <> <PortableWifiOffTwoTone className={classes.icons} /> &nbsp; Off  </>
                 }
               </>
 

@@ -44,11 +44,14 @@ function DataPasien() {
 
     const history = useHistory()
     const pacient = 'x-pacient';
-    let cekRole = userLogin.role
+    // let cekRole = userLogin.role
+
 
 
     useEffect(() => {
         let cekPasien = _Cache.get("datapasien")
+        
+        console.log(`cekPasien`, dataPegawai)
         if (cekPasien) {
             setdataPasien(JSON.parse(cekPasien))
         } else
@@ -61,8 +64,6 @@ function DataPasien() {
         // console.log(snap)
         // _Swall.error("Pasien di rujukk")
         // })
-
-
     }, [])
 
 
@@ -81,18 +82,19 @@ function DataPasien() {
 
     const saveRegistrasiPasien = (item) => {
         var id = item ? item.id : selected && selected.id
-        
+
         if (!id) {
             _Swall.error('Silahkan pilih pasien .!')
             return
         }
         setloading(true)
-        var obj = { "id_pasien": id }
+        var obj = { "id_pasien": id, "id_unitkerja" : dataPegawai.id_unitkerja }
 
         _Api.post("saveRegistrasiPasien", obj).then(res => {
             let dt = res.data
             if (dt.sts == 1) {
                 _Swall.success(dt.msg)
+                history.push("/admin/PasienRegistrasi")
             } else {
                 _Swall.error(dt.msg)
             }

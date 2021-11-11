@@ -32,7 +32,7 @@ function LembarKerjaBidan() {
     const pacient = 'x-pacient';
 
 
-    var data = _Cache.get('x-pacient')
+    var data = _Cache.get(pacient)
     var dataPacient = {}
     if (data) {
         dataPacient = JSON.parse(data)
@@ -41,10 +41,11 @@ function LembarKerjaBidan() {
 
     useEffect(() => {
         let cekPasien = _Cache.get("datapasien")
+        console.log(`dataPacient`, dataPacient)
         cekPasien ? setdataPasien(JSON.parse(cekPasien)) : ""
         // _Cache.remove(pacient)
     }, [])
- 
+
     const riwayatPasien = async () => {
         setshowRiwayat(true)
         setdataRiwayat([])
@@ -84,7 +85,7 @@ function LembarKerjaBidan() {
                     <br />
                     <br />
                     <hr />
-                    <InputKehamilanSaatIni  showdetail/>
+                    <InputKehamilanSaatIni showdetail />
                     <InputKunjungan />
 
                     {dataRiwayat && <RiwayatKunjungan loading={loading} dataRiwayat={dataRiwayat} visible={showRiwayat} onClose={() => setshowRiwayat(false)} />}

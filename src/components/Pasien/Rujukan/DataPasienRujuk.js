@@ -4,7 +4,7 @@ import CardBody from "components/Card/CardBody";
 import CardHeader from "components/Card/CardHeader";
 import React, { useEffect, useState } from "react";
 
-import { List, Form, Space, Image } from 'antd';
+import { List, Form, Space, Image, Tabs } from 'antd';
 import { MessageOutlined, LikeOutlined, StarOutlined } from '@ant-design/icons';
 import _Api from "services/Api/_Api";
 import { _Button } from "services/Forms/Forms";
@@ -24,6 +24,9 @@ function DataPasienRujuk() {
     const [nohp, setnohp] = useState([]);
     const colPasienRujuk = collection(db, "pasien");
 
+    const { TabPane } = Tabs;
+
+    var status = "request"
     var array = []
     const getData = () => {
         setloading(true)
@@ -63,9 +66,10 @@ function DataPasienRujuk() {
     }
 
     const rujukPasien = async (item) => {
-        console.log(nohp)
+
         setloading(true)
         // console.log(`item`, item)
+
         await addDoc(colPasienRujuk,
             {
                 nama: item.nama,
@@ -75,15 +79,40 @@ function DataPasienRujuk() {
                 alamat: item.alamat,
                 isrujuk: true,
                 foto: item.foto,
-                status: "Request",
-                faskes: item.unitkerja
+                status: status,
+                faskes: item.unitkerja,
+                id_pasienrujuk: item.id
             }
         );
-        setloading(false)
+
+
+        _Api.get(`updateStatusPasienRujuk/${item.id}/${status} `).then(res => {
+            if (res.data.sts == 1) {
+                // _Swall.success("Suksess ....")
+                setloading(false)
+                getData()
+            } else {
+                _Swall.error("Gagal .")
+            }
+        }).catch(err => {
+            _Swall.error("Gagal .Err")
+
+        })
+
+
+
     };
 
     useEffect(() => {
-        getData()
+        onSnapshot(
+            collection(db, "pasien"),
+            where("isrujuk", "==", true),
+            // where("status", "!=", "commit"),
+            (snapshot) => {
+                getData()
+            }
+        )
+
     }, [])
 
     const IconText = ({ icon, text }) => (
@@ -120,87 +149,111 @@ function DataPasienRujuk() {
                         </_Row>
                     </Form>
 
-                    <List
-                        itemLayout="vertical"
-                        size="large"
-                        pagination={{
-                            onChange: page => {
+                    <Tabs defaultActiveKey="1" type="card">
+                        <TabPane tab="Rekomendasi Pasien Rujuk" key="1">
+                            <List
+                                itemLayout="vertical"
+                                size="large"
+                                pagination={{
+                                    onChange: page => {
 
-                            },
-                            pageSize: 3,
-                        }}
-                        dataSource={pasienRujuk && pasienRujuk}
-                        footer={
-                            <div>
-                                {/* <b>ant design</b> footer part */}
-                            </div>
-                        }
-                        pagination={{
-                            pageSize: 3,
-                            position: "both"
-                        }}
-                        renderItem={(item, idx) => (
-                            <List.Item
-                                style={{ background: "linear-gradient(white 90%, rgb(219 188 223 / 32%))" }}
-                                key={item.id}
-                                actions={[
-                                    <IconText icon={StarOutlined} text="kunjungan : 1" key="list-vertical-star-o" />,
-                                    <IconText icon={LikeOutlined} text={"UK : " + idx} key="list-vertical-like-o" />,
-                                ]}
-                            // extra={
-                            //     <div style={{ background: "#fea9ad", padding: "10px", borderRadius: "5px", width: "600px", fontWeight: "bold", fontSize: "15px" }}>
-                            //         {/* <p> ALASAN </p> */}
+                                    },
+                                    pageSize: 3,
+                                }}
+                                dataSource={pasienRujuk && pasienRujuk}
+                                footer={
+                                    <div>
+                                        {/* <b>ant design</b> footer part */}
+                                    </div>
+                                }
+                                pagination={{
+                                    pageSize: 3,
+                                    position: "both"
+                                }}
+                                renderItem={(item, idx) => (
+                                    <List.Item
+                                        style={{ background: "linear-gradient(white 90%, rgb(219 188 223 / 32%))" }}
+                                        key={item.id}
+                                        actions={[
+                                            <IconText icon={StarOutlined} text="kunjungan : 1" key="list-vertical-star-o" />,
+                                            <IconText icon={LikeOutlined} text={"UK : " + idx} key="list-vertical-like-o" />,
+                                        ]}
+                                    // extra={
+                                    //     <div style={{ background: "#fea9ad", padding: "10px", borderRadius: "5px", width: "600px", fontWeight: "bold", fontSize: "15px" }}>
+                                    //         {/* <p> ALASAN </p> */}
 
-                            //     </div>
-                            // }
-                            >
-                                <List.Item.Meta
-                                    avatar={<Image width={95} height={90} style={gaya.avatar} src={item.foto} />}
-                                    title={<div style={gaya.title} >{item.nama && item.nama.toUpperCase()}</div>}
-                                    description={<div>
+                                    //     </div>
+                                    // }
+                                    >
+                                        <List.Item.Meta
+                                            avatar={<Image width={95} height={90} style={gaya.avatar} src={item.foto} />}
+                                            title={<div style={gaya.title} >{item.nama && item.nama.toUpperCase()}</div>}
+                                            description={<div>
 
-                                        <span style={gaya.diskripsi}> <b> {item.nobuku} </b> </span>
-                                        <br />
-                                        <b> {item.alamat} </b>
-                                    </div>}
-                                />
-                                <_Row>
-                                    <_Col sm={8}>
-                                        <p style={{ background: "#df132726", borderRadius: "5px", padding: "10px" }}>
-                                            <p> Alasan :  </p>
-                                            {
-                                                item.keterangan && item.keterangan.map((val, i) => {
-                                                    return (
-                                                        < div key={i} >
-                                                            <p className="b" style={{ margin: "-4px 0px -4px 0px", fontWeight: "bold", color: "#b73e3e", fontSize: "18px" }}> <b> {i + 1}. {val.keterangan} </b>  </p>
-                                                        </div>
+                                                <span style={gaya.diskripsi}> <b> {item.nobuku} </b> </span>
+                                                <br />
+                                                <b> {item.alamat} </b>
+                                            </div>}
+                                        />
+                                        <_Row>
+                                            <_Col sm={8}>
+                                                <p style={{ background: "#df132726", borderRadius: "5px", padding: "10px" }}>
+                                                    <p> Alasan :  </p>
+                                                    {
+                                                        item.keterangan && item.keterangan.map((val, i) => {
+                                                            return (
+                                                                < div key={i} >
+                                                                    <p className="b" style={{ margin: "-4px 0px -4px 0px", fontWeight: "bold", color: "#b73e3e", fontSize: "18px" }}> <b> {i + 1}. {val.keterangan} </b>  </p>
+                                                                </div>
 
-                                                        // <label className="containerc " key={i}>
-                                                        //     <span className="checkboxC" style={{ color: 'maroon' }}> {i + 1}. {val.keterangan}
-                                                        //     </span>
-                                                        //     <input disabled type="checkbox" value={val.id} />
-                                                        //     <span className="checkmark" />
-                                                        // </label>
-                                                    )
-                                                })
+                                                                // <label className="containerc " key={i}>
+                                                                //     <span className="checkboxC" style={{ color: 'maroon' }}> {i + 1}. {val.keterangan}
+                                                                //     </span>
+                                                                //     <input disabled type="checkbox" value={val.id} />
+                                                                //     <span className="checkmark" />
+                                                                // </label>
+                                                            )
+                                                        })
+                                                    }
+                                                </p>
+                                            </_Col>
+                                            <_Col sm={3}>
+                                                <_Input label="Nomor HP yang bisa dihubungi" onChange={(e) => {
+                                                    array[idx] = e.target.value.toString()
+                                                    console.log(array)
+                                                    setnohp(array)
+                                                }} />
+                                            </_Col>
+                                        </_Row>
+                                        <_Row>
+                                            {!item.status ?
+                                                <>
+                                                    <_Button save label="Rujuk" onClick={() => rujukPasien(item)} block sm={3} />
+                                                    <_Button label="Tidak perlu dirujuk" block sm={3} onClick={() => tidakPerluRujuk(item)} color="orangered" cancel />
+                                                </>
+                                                : item.status == status ?
+                                                    <>
+                                                        <_Button save label={"Menunggu Konfirmasi RS"} loading block sm={4} />
+                                                    </>
+                                                    : item.status == "konfirm" &&
+                                                    <>
+                                                        <_Button save color="green" label={"Proses RS"} loading block sm={4} />
+                                                    </>
                                             }
-                                        </p>
-                                    </_Col>
-                                    <_Col sm={3}>
-                                        <_Input label="Nomor HP yang bisa dihubungi" onChange={(e) => {
-                                            array[idx] = e.target.value.toString()
-                                            console.log(array)
-                                            setnohp(array)
-                                        }} />
-                                    </_Col>
-                                </_Row>
-                                <_Row>
-                                    <_Button save label="Rujuk" onClick={() => rujukPasien(item)} block sm={2} />
-                                    <_Button label="Tidak perlu dirujuk" block sm={3} onClick={() => tidakPerluRujuk(item)} color="orangered" cancel />
-                                </_Row>
-                            </List.Item>
-                        )}
-                    />,
+                                        </_Row>
+                                    </List.Item>
+                                )}
+                            />
+                        </TabPane>
+                        <TabPane tab="Data Pasien Dirujuk" key="2">
+                            Content of card tab 2
+                        </TabPane>
+                        <TabPane tab="Card Tab 3" key="3">
+                            Content of card tab 3
+                        </TabPane>
+                    </Tabs>
+
+
                     <p> {JSON.stringify(array)} </p>
                     {/* <p> <_Button label="Rujuk" /> </p> */}
                 </CardBody>

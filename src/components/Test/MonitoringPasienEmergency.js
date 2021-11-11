@@ -15,6 +15,7 @@ import { HighlightOutlined, PhonelinkOutlined, PhoneOutlined } from '@material-u
 import { CounterTime } from 'services/Forms/FormsAdd';
 import { DislikeOutlined, EnvironmentOutlined, FallOutlined, SisternodeOutlined, WhatsAppOutlined } from '@ant-design/icons';
 import TrackLokasi from './TrackLokasi';
+import _Api from 'services/Api/_Api';
 
 function MonitoringPasienEmergency() {
 
@@ -47,15 +48,45 @@ function MonitoringPasienEmergency() {
         await addDoc(usersCollectionRef, { name: newName, age: Number(newAge), isrujuk: true });
     };
 
-    const updateUser = async (id, age) => {
-        const userDoc = doc(db, dbname, id);
-        const newFields = { age: age + 1 };
-        await updateDoc(userDoc, newFields);
+    const updateDB = (id_pasienrujuk, sts) => {
+
+        _Apii.get(`updateStatusPasienRujuk/${user.id_pasienrujuk}/${sts} `).then(res => {
+            if (res.data.sts == 1) {
+                _Swall.success("suksess ...")
+
+            } else {
+                _Swall.error("Gagal .")
+            }
+        }).catch(err => {
+            _Swall.error("Gagal .Err")
+
+        })
+    }
+    const upateStatus = async (id, newStatus, user) => {
+
+        try {
+            // console.log(`id`, user)
+            const userDoc = doc(db, dbname, id);
+            const newFields = { status: newStatus };
+
+            await updateDoc(userDoc, newFields);
+            updateDB(user.id_pasienrujuk, newStatus)
+
+        } catch (error) {
+
+        }
     };
 
     const deleteUser = async (id) => {
         const userDoc = doc(db, dbname, id);
         await deleteDoc(userDoc);
+    };
+
+    const commitRujukan = async (item) => {
+        const userDoc = doc(db, dbname, item.id);
+        await deleteDoc(userDoc);
+
+        updateDB(item.id_pasienrujuk, "commit")
     };
 
     const tambahCook = () => {
@@ -82,11 +113,13 @@ function MonitoringPasienEmergency() {
     useEffect(async () => {
         onSnapshot(
             collection(db, dbname),
-            where("isrujuk", "==", true),
+            // where("isrujuk", "==", true),
+            where("status", "!=", "commit"),
             (snapshot) => {
                 setPasienEmer([])
                 getUsers()
-            })
+            }
+        )
 
 
         navigator.geolocation.getCurrentPosition(function (position) {
@@ -131,15 +164,13 @@ function MonitoringPasienEmergency() {
                     <br />
                     <_Row>
                         <_Col sm={2} />
-
-                        {user.status == "Request" ?
-
-                            <_Button size="large" label="Terima" icon={<FallOutlined />} sm={4} block color="green" onClick={() => {
-                                updateUser(user.id, user.age);
+                        {/* <p> {JSON.stringify(user)} </p> */}
+                        {user.status == "request" ?
+                            <_Button size="large" label="Konfir" icon={<FallOutlined />} sm={4} block color="green" onClick={() => {
+                                upateStatus(user.id, "konfirm", user);
                             }} /> :
-
                             <_Button size="large" label="Commit" icon={<SisternodeOutlined />} sm={4} block color="#17a2b8" onClick={() => {
-                                updateUser(user.id, user.age);
+                                commitRujukan(user);
                             }} />
 
 
@@ -168,8 +199,7 @@ function MonitoringPasienEmergency() {
     return (
         <div>
             <div className="App">
-
-                {pasienEmer.length > 0 ? renderPasienEmer : <> <Spin /> <p style={{ paddingLeft: "30px" }}> Tidak ada pasien emergency .! </p> </>}
+                {pasienEmer.length > 0 ? renderPasienEmer : <> <Spin size="large" /> <p style={{ paddingLeft: "30px" }}> Belum ada pasien emergency .! </p> </>}
                 <br />
             </div>
 

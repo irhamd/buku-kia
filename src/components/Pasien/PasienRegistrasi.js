@@ -18,15 +18,12 @@ import { AreaChartOutlined, CalendarOutlined, DeploymentUnitOutlined, FieldTimeO
 import { _Cache } from 'services/Cache'
 import { dataPegawai } from 'services/Text/GlobalText'
 import { useHistory } from 'react-router'
-import RiwayatKunjungan from './Riwayat/RiwayatKunjungan'
 import { _Search } from 'services/Forms/Forms'
 import { userLogin } from 'services/Text/GlobalText'
 import { _role } from 'services/Text/GlobalText'
 import { _Date } from 'services/Forms/Forms'
 import { _Input } from 'services/Forms/Forms'
 import { NotFound } from 'services/Forms/Forms'
-import { collection, onSnapshot } from '@firebase/firestore'
-import { db } from 'services/firebase/firebase'
 import { _Swall } from 'services/Toastr/Notify/_Toastr'
 import { cekRefresh } from 'services/Text/GlobalText'
 import moment from 'moment'
@@ -36,16 +33,18 @@ function PasienRegistrasi() {
 
     const [loading, setloading] = useState(false);
     const [pasienRegistrasi, setpasienRegistrasi] = useState([]);
-    const [cekUpdate, setcekUpdate] = useState(true);
-
+    const [cekUpdate, setcekUpdate] = useState(false);
+    const [formRegistrasi] = Form.useForm()
     const history = useHistory()
     const pacient = 'x-pacient';
     let cekRole = userLogin.role
 
     const loadData = (val) => {
+
+        // console.log(`object`, object)
         setloading(true)
         _Api.get("daftarRegistrasiPasien", { params: val }).then(res => {
-            console.log(res.data)
+            // console.log(res.data)
             setpasienRegistrasi(res.data)
             // _Cache.set("datapasien", JSON.stringify(res.data))
             setloading(false)
@@ -98,8 +97,8 @@ function PasienRegistrasi() {
 
 
     useEffect(() => {
-        loadData()
-
+        // loadData()
+        formRegistrasi.submit()
         if (cekUpdate)
             cekRefresh()
 
@@ -139,10 +138,14 @@ function PasienRegistrasi() {
                                     <_Button label="Data Kehamilan" icon={<NodeIndexOutlined />} color="orangered" onClick={() => dataKehamilan(item)} block sm={3} />
 
                                 </_Row>
+                                {/* <hr />
+                                <_Button label="Data Kehamilan" icon={<NodeIndexOutlined />} color="orangered" block sm={3} /> */}
                             </div>
                         </_Col>
 
                     </_Row>
+
+
 
                 </Card>
             </GridItem>
@@ -164,13 +167,13 @@ function PasienRegistrasi() {
                 </CardHeader>
                 <CardBody>
                     <br />
-                    <Form layout="vertical" onFinish={loadData} initialValues={{tglAwal : moment(), tglAkhir : moment() }} >
+                    <Form layout="vertical" onFinish={loadData} form={formRegistrasi} initialValues={{ tglAwal: moment(), tglAkhir: moment() }} >
                         <_Row>
                             {/* <_Search placeholder="Cari nomor buku  ...." loading={loading} onSearch={cariPasien} sm={3} /> */}
                             <_Input name="nama" placeholder="Nama Pasien" sm={3} />
                             <_Input name="nobuku" placeholder="Nomor Buku" sm={2} />
-                            <_Date name="tglAwal" placeholder="Tanggal" sm={2} />
-                            <_Date name="tglAkhir" placeholder=" s/d " sm={2} />
+                            <_Date name="tglAwal" placeholder="Tanggal" sm={2} format="DD-MM-YYYY" />
+                            <_Date name="tglAkhir" placeholder=" s/d " sm={2} format="DD-MM-YYYY" />
                             <_Button sm={2} save submit loading={loading} />
                         </_Row>
                     </Form>

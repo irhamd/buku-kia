@@ -53,11 +53,13 @@ function InputKehamilanSaatIni(pr) {
             var data = res.data.data
             setloading(false)
             setkehamilan(data)
-            var init = {
-                ...data,
-                htp: data.htp ? moment(data.htp) : null,
-                hpht: data.hpht ? moment(data.hpht) : null,
-                id: data ? data.id : ""
+            if (data) {
+                var init = {
+                    ...data,
+                    htp: data.htp ? moment(data.htp) : "",
+                    hpht: data.hpht ? moment(data.hpht) : "",
+                    id: data ? data.id : ""
+                }
             }
             // console.log(init)
             formKehamilan.setFieldsValue(init);
@@ -82,13 +84,11 @@ function InputKehamilanSaatIni(pr) {
             hpht: val.hpht ? moment(val.hpht).format('YYYY-MM-DD') : val.hpht
         }
         _Api.post('simpanDataKehamilanSaatIni', obj).then(res => {
-
             if (res.data.sts == 1) {
                 _Swall.success(res.data.msg)
+                history.goBack()
             } else
                 _Swall.error(res.data.msg)
-
-
             // formKehamilan.resetFields()
             setloading(false)
         }).catch(err => {
