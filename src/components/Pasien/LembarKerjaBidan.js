@@ -30,7 +30,6 @@ function LembarKerjaBidan() {
 
     const history = useHistory()
     const pacient = 'x-pacient';
-    let cekRole = userLogin.role
 
 
     var data = _Cache.get('x-pacient')
@@ -45,26 +44,7 @@ function LembarKerjaBidan() {
         cekPasien ? setdataPasien(JSON.parse(cekPasien)) : ""
         // _Cache.remove(pacient)
     }, [])
-
-    const prosesPasien = (data) => {
-        // console.log(data)
-        // _Cache.set('id_pasien', id_pasien)
-        // _Cache.set(pacient, JSON.stringify(data))
-        history.push("/admin/InputKunjungan")
-    }
-
-    const pemeriksaanDokter = (data) => {
-        // console.log(data)
-        // _Cache.set('id_pasien', id_pasien)
-        // _Cache.set(pacient, JSON.stringify(data))
-        history.push("/admin/PemeriksaanDokter")
-    }
-    const dataKehamilan = (data) => {
-        // _Cache.set(pacient, JSON.stringify(data))
-        history.push("/admin/InputKehamilanSaatIni?id_pasien=" + dataPacient.id)
-
-    }
-
+ 
     const riwayatPasien = async () => {
         setshowRiwayat(true)
         setdataRiwayat([])
@@ -104,7 +84,7 @@ function LembarKerjaBidan() {
                     <br />
                     <br />
                     <hr />
-                    <InputKehamilanSaatIni />
+                    <InputKehamilanSaatIni  showdetail/>
                     <InputKunjungan />
 
                     {dataRiwayat && <RiwayatKunjungan loading={loading} dataRiwayat={dataRiwayat} visible={showRiwayat} onClose={() => setshowRiwayat(false)} />}

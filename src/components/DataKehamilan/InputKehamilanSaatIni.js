@@ -43,24 +43,24 @@ function InputKehamilanSaatIni(pr) {
     var cekPas = _Cache.get('x-pacient');
     if (cekPas) {
         query = JSON.parse(cekPas)
-    } else 
-    history.push("/admin/dataPasien")
+    } else
+        history.push("/admin/dataPasien")
 
     useEffect(() => {
         getData()
         setloading(true)
-        _Api.get("getDataKehamilanSaatIni?id_pasien=" + query.id).then(res => {
+        _Api.get("getDataKehamilanSaatIni?id_pasien=" + query.id_pasien).then(res => {
             var data = res.data.data
             setloading(false)
             setkehamilan(data)
-            var obj = {
+            var init = {
                 ...data,
-                htp: data ? moment(data.htp) : null,
-                hpht: data ? moment(data.hpht) : null,
+                htp: data.htp ? moment(data.htp) : null,
+                hpht: data.hpht ? moment(data.hpht) : null,
                 id: data ? data.id : ""
             }
-            // console.log(obj)
-            formKehamilan.setFieldsValue(obj);
+            // console.log(init)
+            formKehamilan.setFieldsValue(init);
         })
     }, [])
 
@@ -77,12 +77,17 @@ function InputKehamilanSaatIni(pr) {
         var obj = {
             ...val,
             id: kehamilan ? kehamilan.id : null,
-            id_pasien: query.id,
+            id_pasien: query.id_pasien,
             htp: val.htp ? moment(val.htp).format('YYYY-MM-DD') : val.htp,
             hpht: val.hpht ? moment(val.hpht).format('YYYY-MM-DD') : val.hpht
         }
         _Api.post('simpanDataKehamilanSaatIni', obj).then(res => {
-            _Swall.success("Suksess ...!")
+
+            if (res.data.sts == 1) {
+                _Swall.success(res.data.msg)
+            } else
+                _Swall.error(res.data.msg)
+
 
             // formKehamilan.resetFields()
             setloading(false)
@@ -94,7 +99,9 @@ function InputKehamilanSaatIni(pr) {
     };
 
     const getData = () => {
+        setloading(true)
         _Api.post("getMasterData", { "masterData": "penggunaankontrasepsi_m", "limit": "100" }).then(res => {
+            setloading(false)
             setkontrasepsi(res.data)
             // console.log(res.data)
         })
@@ -143,7 +150,7 @@ function InputKehamilanSaatIni(pr) {
             htp: htp != 'Invalid date' ? moment(htp) : null
         });
 
-        console.log(`bulan`, htp)
+        // console.log(`bulan`, htp)
 
     }
 
@@ -170,7 +177,7 @@ function InputKehamilanSaatIni(pr) {
                 <CardBody>
                     <Spin spinning={loading} >
 
-                        {/* <DetailPasien /> */}
+                        {!pr.showdetail ? <DetailPasien /> : ""}
 
                         <Form size="large"
                             labelCol={{
