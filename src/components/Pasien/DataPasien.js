@@ -44,13 +44,13 @@ function DataPasien() {
 
     const history = useHistory()
     const pacient = 'x-pacient';
-    // let cekRole = userLogin.role
+    let cekRole = userLogin.role
 
 
 
     useEffect(() => {
         let cekPasien = _Cache.get("datapasien")
-        
+
         console.log(`cekPasien`, dataPegawai)
         if (cekPasien) {
             setdataPasien(JSON.parse(cekPasien))
@@ -88,7 +88,7 @@ function DataPasien() {
             return
         }
         setloading(true)
-        var obj = { "id_pasien": id, "id_unitkerja" : dataPegawai.id_unitkerja }
+        var obj = { "id_pasien": id, "id_unitkerja": dataPegawai.id_unitkerja }
 
         _Api.post("saveRegistrasiPasien", obj).then(res => {
             let dt = res.data
@@ -132,7 +132,7 @@ function DataPasien() {
             title: 'Nama Pasien',
             width: '230px',
             sorter: (a, b) => a.nama.length - b.nama.length,
-            render: (rc) => (<div style={{ fontWeight: "bold" }}>
+            render: (rc) => (<div style={{ fontWeight: "bold", color: "#961f60" }}>
                 <b> {rc.nama.toUpperCase()} </b>
             </div>),
         },
@@ -187,7 +187,12 @@ function DataPasien() {
                             <_Button sm={2} save submit loading={loading} />
                         </_Row>
                     </Form>
-                    <p> <_Button label="Registrasi" onClick={() => saveRegistrasiPasien(null)} /> </p>
+                    {
+                        cekRole == _role.bidan &&
+                        <div>
+                            <p> <_Button label="Registrasi" onClick={() => saveRegistrasiPasien(null)} /> </p>
+                        </div>
+                    }
                     {/* <Spin spinning={loading} size="large" tip="Loading..." > */}
                     <Table columns={columns} dataSource={dataPasien}
                         rowClassName={(record, index) => record == selected && 'bg-orange'}
@@ -198,7 +203,7 @@ function DataPasien() {
                                     setselected(rc)
                                 },
                                 onDoubleClick: event => {
-                                    saveRegistrasiPasien(rc)
+                                    cekRole == _role.bidan && saveRegistrasiPasien(rc)
                                     // saveRegistrasiPasien(rc)
 
 

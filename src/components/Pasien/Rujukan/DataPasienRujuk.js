@@ -16,13 +16,15 @@ import { collection, getDocs, addDoc, updateDoc, deleteDoc, onSnapshot, query, d
 import { db } from "services/firebase/firebase";
 import { _Col } from "services/Forms/LayoutBootstrap";
 import { _Swall } from "services/Toastr/Notify/_Toastr";
+import { fireCollectiom } from "services/firebase/UFirebase";
 
 function DataPasienRujuk() {
 
     const [pasienRujuk, setpasienRujuk] = useState([])
     const [loading, setloading] = useState(false);
     const [nohp, setnohp] = useState([]);
-    const colPasienRujuk = collection(db, "pasien");
+    
+    // const colPasienRujuk = collection(db, "pasien");
 
     const { TabPane } = Tabs;
 
@@ -68,9 +70,8 @@ function DataPasienRujuk() {
     const rujukPasien = async (item) => {
 
         setloading(true)
-        // console.log(`item`, item)
 
-        await addDoc(colPasienRujuk,
+        await addDoc(fireCollectiom,
             {
                 nama: item.nama,
                 nohp: item.nohp,
@@ -107,7 +108,6 @@ function DataPasienRujuk() {
         onSnapshot(
             collection(db, "pasien"),
             where("isrujuk", "==", true),
-            // where("status", "!=", "commit"),
             (snapshot) => {
                 getData()
             }

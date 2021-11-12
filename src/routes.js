@@ -17,10 +17,11 @@ import TestFirebase from "components/Test/TestFirebase";
 import TestMaps from "components/Test/TestMaps";
 import MonitoringPasienEmergency from "components/Test/MonitoringPasienEmergency";
 import PasienRegistrasi from "components/Pasien/PasienRegistrasi";
+import TestFirebasePuskesmas from "components/Test/TestFirebasePuskesmas";
 
 // var role =  _Cache.get(globalText.x_auth_resu)
 
-console.log(`userLogin`, userLogin)
+// console.log(`userLogin`, userLogin)
 
 var role = userLogin.role
 
@@ -73,6 +74,14 @@ const bidan = [
     name: "TestMaps",
     icon: Dashboard,
     component: TestMaps,
+    layout: "/admin",
+    show : true,
+  },
+  {
+    path: "/TestFirebase",
+    name: "Test Firebase",
+    icon: Dashboard,
+    component: TestFirebasePuskesmas,
     layout: "/admin",
     show : true,
   },

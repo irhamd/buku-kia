@@ -15,8 +15,10 @@ import { PhoneOutlined } from '@material-ui/icons';
 import { CounterTime } from 'services/Forms/FormsAdd';
 import { DislikeOutlined, WhatsAppOutlined } from '@ant-design/icons';
 import { dataPegawai } from 'services/Text/GlobalText';
+import { fireCollectiom } from 'services/firebase/UFirebase';
+import { F } from 'services/firebase/UFirebase';
 
-function TestFirebase() {
+function TestFirebasePuskesmas() {
 
 
     const [newName, setNewName] = useState("");
@@ -24,7 +26,7 @@ function TestFirebase() {
 
     const [users, setUsers] = useState([]);
     const dbname = dataPegawai.unitkerja
-    const usersCollectionRef = collection(db, dbname , "doc","pasien_rujuk1");
+    // const usersCollectionRef = collection(db, dbname , "doc","pasien_rujuk1");
 
     const styl = {
         label: { fontWeight: "bold", marginBottom: "-2px", color: "orange", fontFamily: "Arial, Helvetica, sans-serif" },
@@ -37,7 +39,7 @@ function TestFirebase() {
 
 
     const createUser = async () => {
-        await addDoc(usersCollectionRef, { name: newName, age: Number(newAge), isrujuk: true });
+        await addDoc(fireCollectiom, { name: newName, age: Number(newAge), isrujuk: true });
     };
 
     const updateUser = async (id, age) => {
@@ -47,7 +49,7 @@ function TestFirebase() {
     };
 
     const deleteUser = async (id) => {
-        const userDoc = doc(db, dbname, id);
+        const userDoc = doc(db, F.root, F.app, F.faskes, id);
         await deleteDoc(userDoc);
     };
 
@@ -61,20 +63,21 @@ function TestFirebase() {
     };
 
     const getUsers = async () => {
-        const q = query(collection(db, dbname), where("isrujuk", "==", true));
+        const q = query(fireCollectiom, where("isrujuk", "==", true));
         const querySnapshot = await getDocs(q);
-        let dt = querySnapshot.docs.map((doc) => ({ ...doc.data(), id: doc.id }))
-        dt.map((val, i) => {
-            console.log(`rujukk`, val.isrujuk)
+        let dt = querySnapshot.docs.map((doc) =>  ({ ...doc.data(), id: doc.id }))
+        // dt.map((val, i) => {
+        //     console.log(`rujukk`, val.isrujuk)
 
-        })
+        // })
         // console.log(dt)
         setUsers(dt);
     };
 
     useEffect(async () => {
+        console.log(`F`, F)
         onSnapshot(
-            collection(db, dbname),
+            fireCollectiom,
             where("isrujuk", "==", true),
             (snapshot) => {
                 setUsers([])
@@ -83,9 +86,10 @@ function TestFirebase() {
 
 
         navigator.geolocation.getCurrentPosition(function (position) {
-            console.log("Latitude is :", position.coords.latitude + ', ' + position.coords.longitude);
+            // console.log("Latitude is :", position.coords.latitude + ', ' + position.coords.longitude);
         });
 
+       
     }, []);
 
 
@@ -183,4 +187,4 @@ function TestFirebase() {
     )
 }
 
-export default TestFirebase
+export default TestFirebasePuskesmas
