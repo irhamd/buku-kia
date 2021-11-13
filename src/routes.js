@@ -19,6 +19,7 @@ import PasienRegistrasi from "components/Pasien/PasienRegistrasi";
 import TestFirebasePuskesmas from "components/Test/TestFirebasePuskesmas";
 import { routes_bidan } from "routes/routes_bidan";
 import { routes_dokter } from "routes/routes_dokter";
+import { routes_rs } from "routes/routes_rs";
  
 
 // var role =  _Cache.get(globalText.x_auth_resu)
@@ -36,6 +37,9 @@ switch (role) {
     break;
   case 'bidan':
     dashboardRoutes = routes_bidan
+    break;
+  case 'rs':
+    dashboardRoutes = routes_rs
     break;
 
 }

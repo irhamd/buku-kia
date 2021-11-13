@@ -6,7 +6,7 @@ import AturTindakan from "components/Master/AturTindakan";
 import DataPasien from "components/Pasien/DataPasien";
 import InputPasienBaru from "components/Pasien/InputPasienBaru";
 import LembarKerjaBidan from "components/Pasien/LembarKerjaBidan";
-import PasienRegistrasi from "components/Pasien/PasienRegistrasi copy";
+import PasienRegistrasi from "components/Pasien/PasienRegistrasi";
 import DataPasienRujuk from "components/Pasien/Rujukan/DataPasienRujuk";
 import MonitoringPasienEmergency from "components/Test/MonitoringPasienEmergency";
 import TestFirebasePuskesmas from "components/Test/TestFirebasePuskesmas";
@@ -18,14 +18,7 @@ import Dashboard from "@material-ui/icons/Dashboard";
 
 
 export  const routes_bidan = [
-    {
-      path: "/MonitoringPasienEmergency",
-      name: "Pasien Emergency",
-      icon: Dashboard,
-      component: MonitoringPasienEmergency,
-      layout: "/admin",
-      show : true,
-    },
+    
     {
       path: "/TestMaps",
       name: "TestMaps",

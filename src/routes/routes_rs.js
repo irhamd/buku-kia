@@ -17,38 +17,22 @@ import TestMaps from "components/Test/TestMaps";
 import DashboardPage from "views/Dashboard/Dashboard.js";
 
 
-export const routes_dokter = [
-    {
-      path: "/dashboard",
-      name: "Dashboard",
-      icon: Dashboard,
-      component: DashboardPage,
-      layout: "/admin",
-      show : true,
-    },
-    {
-      path: "/dataPasien",
-      name: "Data Pasien",
-      icon: People,
-      component: DataPasien,
-      layout: "/admin",
-      show : true,
-    },
-    {
-      path: "/PemeriksaanDokter",
-      name: "Pemeriksaan Dokter",
-      icon: PersonAdd,
-      component: PemeriksaanDokter,
-      layout: "/admin",
-      show : true,
-    },
-    {
-      path: "/EvaluasiKesehatanBumil",
-      name: "Evaluasi Kesehatan",
-      icon: PersonAdd,
-      component: EvaluasiKesehatanBumil,
-      layout: "/admin",
-    },
-  
-  ]
-   
+export const routes_rs = [
+  {
+    path: "/dashboard",
+    name: "Dashboard",
+    icon: Dashboard,
+    component: DashboardPage,
+    layout: "/admin",
+    show: true,
+  },
+  {
+    path: "/MonitoringPasienEmergency",
+    name: "Pasien Emergency",
+    icon: Dashboard,
+    component: MonitoringPasienEmergency,
+    layout: "/admin",
+    show: true,
+  },
+
+]

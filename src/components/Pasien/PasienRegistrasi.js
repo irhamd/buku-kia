@@ -181,7 +181,7 @@ function PasienRegistrasi() {
                     <br /> <br />
                     {/* <Spin spinning={loading} size="large" tip="Loading..." > */}
                     <GridContainer>
-                        {pasienRegistrasi.length > 0 ? renderPasienRegister : <NotFound label="Data pasien tidak ditemukan ..!" />}
+                        {pasienRegistrasi.length > 0 ? renderPasienRegister : <NotFound/>}
                     </GridContainer>
                     {/* </Spin> */}
                     <br />

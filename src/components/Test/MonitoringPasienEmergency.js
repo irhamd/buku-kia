@@ -191,8 +191,8 @@ function MonitoringPasienEmergency() {
     return (
         <div>
             <div className="App">
-                {renderPasienEmer}
-                {/* {pasienEmer.length > 0 ? renderPasienEmer : <> <Spin size="large" /> <p style={{ paddingLeft: "30px" }}> Belum ada pasien emergency .! </p> </>} */}
+                {/* {renderPasienEmer} */}
+                {pasienEmer.length > 0 ? renderPasienEmer : <> <Spin size="large" /> <p style={{ paddingLeft: "30px" }}> Belum ada pasien emergency .! </p> </>}
                 <br />
             </div>
 
