@@ -29,7 +29,7 @@ function DetailPasien(pr) {
             <_Row>
                 <_Col sm={3} >
                     <div className=" w100 tengah ">
-                        <Image style={{ borderRadius: "10px 0px" }} className="boxShadow" height={200} src={dataPasien.foto ? dataPasien.foto : src} />
+                        <Image style={{ borderRadius: "10px 0px" }} className="boxShadow" height={200} src={dataPasien ? dataPasien.foto : src} />
                         <br /> <br />
                     </div>
                 </_Col>

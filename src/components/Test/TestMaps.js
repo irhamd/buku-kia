@@ -41,7 +41,9 @@ function TestMaps() {
 
 
     const [map, setMap] = useState(null)
-    const [position, setposition] = useState([-8.600073, 116.114254])
+    // const [position, setposition] = useState([-8.600073, 116.114254])
+    const [position, setposition] = useState([-8.5841873, 116.1057478])
+
     const { Panel } = Collapse;
 
     const usersCollectionRef = collection(db, "position");
@@ -84,7 +86,7 @@ function TestMaps() {
 
         let currPos = [pos._lat, pos._long]
 
-        setposition(currPos)
+        // setposition(currPos)
         posRef.current.click()
 
 
@@ -93,13 +95,13 @@ function TestMaps() {
 
 
     useEffect(() => {
-        onSnapshot(
-            collection(db, "position"),
-            (snapshot) => {
-                getLocation()
-                // gotoLocation()
-            })
-        console.log(map)
+        // onSnapshot(
+        //     collection(db, "position"),
+        //     (snapshot) => {
+        //         getLocation()
+        //         // gotoLocation()
+        //     })
+        // console.log(map)
     }, [])
 
     return (

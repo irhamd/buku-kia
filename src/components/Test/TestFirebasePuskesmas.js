@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 // import { db } from "./firebase-config";
-import { collection, getDocs, addDoc, updateDoc, deleteDoc, onSnapshot, query, doc, where, } from "firebase/firestore";
+import { collection, getDocs, addDoc, setDoc, updateDoc, deleteDoc, onSnapshot, query, doc, where, } from "firebase/firestore";
 import { db } from 'services/firebase/firebase';
 import { _Swall } from 'services/Toastr/Notify/_Toastr';
 import { Detector, Offline, Online } from 'react-detect-offline';
@@ -17,6 +17,7 @@ import { DislikeOutlined, WhatsAppOutlined } from '@ant-design/icons';
 import { dataPegawai } from 'services/Text/GlobalText';
 import { fireCollectiom } from 'services/firebase/UFirebase';
 import { F } from 'services/firebase/UFirebase';
+import { updateFirebase } from 'services/firebase/UFirebase';
 
 function TestFirebasePuskesmas() {
 
@@ -39,7 +40,10 @@ function TestFirebasePuskesmas() {
 
 
     const createUser = async () => {
-        await addDoc(fireCollectiom, { name: newName, age: Number(newAge), isrujuk: true });
+        const cityRef = doc(db, "service", dataPegawai.kodefirebase);
+        setDoc(cityRef, { rand: Math.random() }, { merge: true });
+
+        // await addDoc(fireCollectiom, { name: newName, age: Number(newAge), isrujuk: true });
     };
 
     const updateUser = async (id, age) => {
@@ -65,7 +69,7 @@ function TestFirebasePuskesmas() {
     const getUsers = async () => {
         const q = query(fireCollectiom, where("isrujuk", "==", true));
         const querySnapshot = await getDocs(q);
-        let dt = querySnapshot.docs.map((doc) =>  ({ ...doc.data(), id: doc.id }))
+        let dt = querySnapshot.docs.map((doc) => ({ ...doc.data(), id: doc.id }))
         // dt.map((val, i) => {
         //     console.log(`rujukk`, val.isrujuk)
 
@@ -76,20 +80,29 @@ function TestFirebasePuskesmas() {
 
     useEffect(async () => {
         console.log(`F`, F)
-        onSnapshot(
-            fireCollectiom,
-            where("isrujuk", "==", true),
-            (snapshot) => {
-                setUsers([])
-                getUsers()
-            })
+
+
+
+        // onSnapshot(
+        //     serviceCollection,
+        //     where("isrujuk", "==", true),
+        //     (snapshot) => {
+        //         alert("cek")
+        //         // setUsers([])
+        //         // getUsers()
+        //     })
+
+        onSnapshot(doc(db, F.service, F.faskes), (doc) => {
+            console.log("Current data 111: ", doc.data());
+        });
+
 
 
         navigator.geolocation.getCurrentPosition(function (position) {
             // console.log("Latitude is :", position.coords.latitude + ', ' + position.coords.longitude);
         });
 
-       
+
     }, []);
 
 
@@ -113,7 +126,7 @@ function TestFirebasePuskesmas() {
                     }}
                 />
 
-                <button onClick={createUser}> Create User</button>
+                <button onClick={updateFirebase}> Create User</button>
                 <button onClick={tambahCook}> Add Coockies</button>
                 <button onClick={showCookies}> Tampil</button>
                 <br />   <br />

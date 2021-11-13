@@ -1,5 +1,4 @@
 import Dashboard from "@material-ui/icons/Dashboard";
-import DashboardPage from "views/Dashboard/Dashboard.js";
 import DataPasien from "components/Pasien/DataPasien";
 import { PersonAdd, People } from "@material-ui/icons";
 import InputPasienBaru from "components/Pasien/InputPasienBaru";
@@ -18,6 +17,9 @@ import TestMaps from "components/Test/TestMaps";
 import MonitoringPasienEmergency from "components/Test/MonitoringPasienEmergency";
 import PasienRegistrasi from "components/Pasien/PasienRegistrasi";
 import TestFirebasePuskesmas from "components/Test/TestFirebasePuskesmas";
+import { routes_bidan } from "routes/routes_bidan";
+import { routes_dokter } from "routes/routes_dokter";
+ 
 
 // var role =  _Cache.get(globalText.x_auth_resu)
 
@@ -25,155 +27,15 @@ import TestFirebasePuskesmas from "components/Test/TestFirebasePuskesmas";
 
 var role = userLogin.role
 
-const dokter = [
-  {
-    path: "/dashboard",
-    name: "Dashboard",
-    icon: Dashboard,
-    component: DashboardPage,
-    layout: "/admin",
-    show : true,
-  },
-  {
-    path: "/dataPasien",
-    name: "Data Pasien",
-    icon: People,
-    component: DataPasien,
-    layout: "/admin",
-    show : true,
-  },
-  {
-    path: "/PemeriksaanDokter",
-    name: "Pemeriksaan Dokter",
-    icon: PersonAdd,
-    component: PemeriksaanDokter,
-    layout: "/admin",
-    show : true,
-  },
-  {
-    path: "/EvaluasiKesehatanBumil",
-    name: "Evaluasi Kesehatan",
-    icon: PersonAdd,
-    component: EvaluasiKesehatanBumil,
-    layout: "/admin",
-  },
-
-]
-
-const bidan = [
-  {
-    path: "/MonitoringPasienEmergency",
-    name: "Pasien Emergency",
-    icon: Dashboard,
-    component: MonitoringPasienEmergency,
-    layout: "/admin",
-    show : true,
-  },
-  {
-    path: "/TestMaps",
-    name: "TestMaps",
-    icon: Dashboard,
-    component: TestMaps,
-    layout: "/admin",
-    show : true,
-  },
-  {
-    path: "/TestFirebase",
-    name: "Test Firebase",
-    icon: Dashboard,
-    component: TestFirebasePuskesmas,
-    layout: "/admin",
-    show : true,
-  },
-  {
-    path: "/dashboard",
-    name: "Dashboard",
-    icon: Dashboard,
-    component: DashboardPage,
-    layout: "/admin",
-    show : true,
-  },
-  {
-    path: "/dataPasien",
-    name: "Data Pasien",
-    icon: People,
-    component: DataPasien,
-    layout: "/admin",
-    show : true,
-  },
-  {
-    path: "/PasienRegistrasi",
-    name: "Pasien Registrasi",
-    icon: People,
-    component: PasienRegistrasi,
-    layout: "/admin",
-    show : true,
-  },
-
-  {
-    path: "/InputPasienBaru",
-    name: "Pasien Baru",
-    icon: PersonAdd,
-    component: InputPasienBaru,
-    layout: "/admin",
-    show : true,
-  },
-  {
-    path: "/InputKehamilanSaatIni",
-    name: "DataKehamilan",
-    icon: PersonAdd,
-    component: InputKehamilanSaatIni,
-    layout: "/admin",
-  },
-
-  {
-    path: "/InputKunjungan",
-    name: "Input Kunjungan",
-    icon: PersonAdd,
-    component: InputKunjungan,
-    layout: "/admin",
-  },
-  {
-    path: "/JadwalKunjungan",
-    name: "Jadwal Kunjungan",
-    icon: PersonAdd,
-    component: JadwalKunjungan,
-    layout: "/admin",
-  },
-  {
-    path: "/DataPasienRujuk",
-    name: "Data Pasien Di Rujuk",
-    icon: PersonAdd,
-    component: DataPasienRujuk,
-    layout: "/admin",
-    show : true,
-  },
-  {
-    path: "/LembarKerjaBidan",
-    name: "Lembar Kerja Bidan",
-    icon: PersonAdd,
-    component: LembarKerjaBidan,
-    layout: "/admin",
-  },
-  {
-    path: "/AturTindakan",
-    name: "Atur Tindakan",
-    icon: PersonAdd,
-    component: AturTindakan,
-    layout: "/admin",
-    show : true,
-  },
-
-];
 
 var dashboardRoutes = ""
 
 switch (role) {
   case 'dokter':
-    dashboardRoutes = dokter
+    dashboardRoutes = routes_dokter
     break;
   case 'bidan':
-    dashboardRoutes = bidan
+    dashboardRoutes = routes_bidan
     break;
 
 }

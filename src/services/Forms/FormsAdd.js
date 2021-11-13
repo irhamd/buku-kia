@@ -73,7 +73,7 @@ export function CounterTime() {
         <div style={{ textAlign: 'center' }}>
             {/* <p style={{ marginBottom: "-5px" }}>Count Respond Time</p> */}
             {/* <span>Hari</span>:<span>Jam</span>:<span>Menit</span>:<span>Detik</span> <br /> */}
-            <div style={{ fontSize: '24px', fontWeight: "bold" }}>
+            <div style={{ fontSize: '15px', fontWeight: "bold" }}>
                 <span>{days}</span>:<span>{hours}</span>:<span>{minutes}</span>:<span>{seconds}</span>
             </div>
             {/* <p>{isRunning ? 'Running' : 'Not running'}</p> */}

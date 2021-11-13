@@ -49,9 +49,13 @@ function EvaluasiKesehatanBumil() {
 
 
     const [formKehamilan] = Form.useForm();
+    const [form_kondisi_ibu] = Form.useForm();
 
 
     var data = _Cache.get('x-pacient')
+
+    const [Idd, setIdd] = useState("")
+
     var dataPasien = {}
     if (data) {
         dataPasien = JSON.parse(data)
@@ -91,7 +95,7 @@ function EvaluasiKesehatanBumil() {
         var formpemeriksaankhusus = forms.formpemeriksaankhusus.getFieldsValue()
 
         var obj = {
-            id: "",
+            id: Idd,
             id_pasien: dataPasien.id,
             kunjunganke: dataPasien.kunjunganke,
             ...form_riwayatkehamilan,
@@ -101,8 +105,10 @@ function EvaluasiKesehatanBumil() {
             ...formpemeriksaankhusus,
         }
         _Api.post("evaluasiKesehatanIbuHamil", obj).then(res => {
-            if (res.data.sts == 1)
+            if (res.data.sts == 1) {
+                setIdd(res.data.id_evaluasi)
                 _Swall.success("Suksess .! ")
+            }
             else
                 _Swall.error("Gagal simpan data . ")
 
@@ -188,6 +194,19 @@ function EvaluasiKesehatanBumil() {
         )
     })
 
+    const cekIMT = () => {
+        var fm = form_kondisi_ibu.getFieldsValue()
+        var bb = fm.bb
+        var tb = fm.tb / 100
+        var imt = bb / (tb * tb)
+
+        form_kondisi_ibu.setFieldsValue({
+            imt : imt.toFixed(2)
+        })
+
+    }
+
+
 
     return (
         <div>
@@ -206,18 +225,18 @@ function EvaluasiKesehatanBumil() {
                             </_Col>
                             <_Col sm={5} style={{ background: "white" }}>
                                 <_Label label="Kondisi kesehatan ibu" />
-                                <Form name="kondisiibu"
+                                <Form name="kondisiibu" form={form_kondisi_ibu}
                                     labelCol={{
-                                        span: 8,
+                                        span: 10,
                                     }}
                                     wrapperCol={{
-                                        span: 16,
+                                        span: 12,
                                     }}
                                     autoComplete="off"
                                 >
-                                    <_Input name="tb" addonAfter="cm" label="TB" />
-                                    <_Input name="bb" addonAfter="kg" label="BB" />
-                                    <_Input name="lila" label="Lila" addonAfter="cm" />
+                                    <_Input name="tb" addonAfter="cm" onChange={cekIMT} label="Tinggin Badan (TB)" />
+                                    <_Input name="bb" addonAfter="kg" onChange={cekIMT} label="Bau Badan (BB)" />
+                                    <_Input name="lila" label="Lila"  addonAfter="cm" />
                                     <_Input name="imt" label="IMT" disabled />
 
                                 </Form>
@@ -289,10 +308,10 @@ function EvaluasiKesehatanBumil() {
                                                                 <td width={10} style={{ textAlign: "center" }}>
                                                                     {name + 1}
                                                                 </td>
-                                                                <td width="170" style={{ paddingRight: "4px" }}> <_Input name={[name, 'tahun']} mb="-10px" style={kanan} fieldKey={[fieldKey, 'tahun']} {...restField} /> </td>
-                                                                <td width="170" style={{ paddingRight: "4px" }}> <_Input name={[name, 'berat']} mb="-10px" style={kanan} fieldKey={[fieldKey, 'berat']} {...restField} addonAfter="gram" /> </td>
-                                                                <td width="170" style={{ paddingRight: "4px" }}>  <_Input name={[name, 'persalinan']} mb="-10px" style={kanan} fieldKey={[fieldKey, 'persalinan']} {...restField} /></td>
-                                                                <td width="170" style={{ paddingRight: "4px" }}> <_Input name={[name, 'penolong']} mb="-10px" style={kanan} fieldKey={[fieldKey, 'penolong']} {...restField} /> </td>
+                                                                <td width="170" style={{ paddingRight: "4px" }}> <_Input required name={[name, 'tahun']} mb="-10px" style={kanan} fieldKey={[fieldKey, 'tahun']} {...restField} /> </td>
+                                                                <td width="170" style={{ paddingRight: "4px" }}> <_Input required name={[name, 'berat']} mb="-10px" style={kanan} fieldKey={[fieldKey, 'berat']} {...restField} addonAfter="gram" /> </td>
+                                                                <td width="170" style={{ paddingRight: "4px" }}>  <_Input required name={[name, 'persalinan']} mb="-10px" style={kanan} fieldKey={[fieldKey, 'persalinan']} {...restField} /></td>
+                                                                <td width="170" style={{ paddingRight: "4px" }}> <_Input required name={[name, 'penolong']} mb="-10px" style={kanan} fieldKey={[fieldKey, 'penolong']} {...restField} /> </td>
                                                                 <td width="170" style={{ paddingRight: "4px" }}> <_Input name={[name, 'komplikasi']} mb="-10px" style={kanan} fieldKey={[fieldKey, 'komplikasi']} {...restField} /> </td>
 
                                                                 <td width="5">
@@ -311,7 +330,7 @@ function EvaluasiKesehatanBumil() {
                                             )}
                                         </Form.List>
                                     </Table>
-                                    <_Input multiline name="riwayatkehamilandanpersalinan_lainnya" label="Lainnya" />
+                                    {/* <_Input multiline name="riwayatkehamilandanpersalinan_lainnya" label="Lainnya" /> */}
 
                                     <_Label label="Riwayat Penyakit Keluarga" />
                                     <_Row>

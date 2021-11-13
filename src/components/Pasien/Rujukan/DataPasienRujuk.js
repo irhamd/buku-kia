@@ -17,13 +17,16 @@ import { db } from "services/firebase/firebase";
 import { _Col } from "services/Forms/LayoutBootstrap";
 import { _Swall } from "services/Toastr/Notify/_Toastr";
 import { fireCollectiom } from "services/firebase/UFirebase";
+import { F } from "services/firebase/UFirebase";
+import { updateFirebase } from "services/firebase/UFirebase";
 
 function DataPasienRujuk() {
 
     const [pasienRujuk, setpasienRujuk] = useState([])
     const [loading, setloading] = useState(false);
     const [nohp, setnohp] = useState([]);
-    
+    const [idd, setidd] = useState(null)
+
     // const colPasienRujuk = collection(db, "pasien");
 
     const { TabPane } = Tabs;
@@ -36,6 +39,8 @@ function DataPasienRujuk() {
             // console.log(`res.data`, res.data.data)
             setpasienRujuk(res.data.data)
             setloading(false)
+            setidd(null)
+
         })
     }
 
@@ -68,34 +73,21 @@ function DataPasienRujuk() {
     }
 
     const rujukPasien = async (item) => {
-
+        setidd(item.id)
         setloading(true)
-
-        await addDoc(fireCollectiom,
-            {
-                nama: item.nama,
-                nohp: item.nohp,
-                id_pasien: item.id_pasien,
-                nobuku: item.nobuku,
-                alamat: item.alamat,
-                isrujuk: true,
-                foto: item.foto,
-                status: status,
-                faskes: item.unitkerja,
-                id_pasienrujuk: item.id
-            }
-        );
 
 
         _Api.get(`updateStatusPasienRujuk/${item.id}/${status} `).then(res => {
             if (res.data.sts == 1) {
                 // _Swall.success("Suksess ....")
                 setloading(false)
+                updateFirebase()
                 getData()
             } else {
                 _Swall.error("Gagal .")
             }
         }).catch(err => {
+            setloading(false)
             _Swall.error("Gagal .Err")
 
         })
@@ -105,14 +97,10 @@ function DataPasienRujuk() {
     };
 
     useEffect(() => {
-        onSnapshot(
-            collection(db, "pasien"),
-            where("isrujuk", "==", true),
-            (snapshot) => {
-                getData()
-            }
-        )
+        onSnapshot(doc(db, F.service, F.faskes), (doc) => {
+            getData()
 
+        });
     }, [])
 
     const IconText = ({ icon, text }) => (
@@ -228,7 +216,7 @@ function DataPasienRujuk() {
                                         <_Row>
                                             {!item.status ?
                                                 <>
-                                                    <_Button save label="Rujuk" onClick={() => rujukPasien(item)} block sm={3} />
+                                                    <_Button save label="Rujuk" loading={item.id == idd ? true : false} onClick={() => rujukPasien(item)} block sm={3} />
                                                     <_Button label="Tidak perlu dirujuk" block sm={3} onClick={() => tidakPerluRujuk(item)} color="orangered" cancel />
                                                 </>
                                                 : item.status == status ?

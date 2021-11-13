@@ -102,18 +102,14 @@ export default function AdminNavbarLinks() {
           aria-label="Dashboard"
           className={classes.buttonLink}
         >
-          <Detector
+          {/* <Detector
             render={({ online }) => (
               <>
-
                 {online ? <>  <WifiOutlined /> &nbsp; On </> : <> <PortableWifiOffTwoTone className={classes.icons} /> &nbsp; Off  </>
                 }
               </>
-
-              // <div className={online ? "normal" : "warning"}>
-              // </div>
             )}
-          />
+          /> */}
 
 
           <Hidden mdUp implementation="css">

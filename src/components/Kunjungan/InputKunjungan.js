@@ -44,6 +44,7 @@ function InputKunjungan() {
     const [hasilLab, sethasilLab] = useState([])
     const [letakJanin, setletakJanin] = useState([])
     const [masukpanggul, setmasukpanggul] = useState(false)
+    const [id, setid] = useState("")
     // const data = JSON.parse(Cache.get("datapasien"))
     // const [dataPasien, setdataPasien] = useState(1)
 
@@ -89,11 +90,23 @@ function InputKunjungan() {
     const onFinish = (val) => {
         var obj = {
             ...val,
+            id: id,
             tanggal: moment(val.tanggal).format('YYYY-MM-DD'),
             listKeluhan: arr.keluhan.toString(),
             listHasilLab: arr.hasillab.toString(),
-            id_pasien: dataPasien.id,
+            id_pasien: dataPasien.id_pasien,
+            id_pasienregistrasi: dataPasien.id_pr,
             masukpanggul: val.masukpanggul ? 1 : 0,
+            vaksin1: val.vaksin1,
+            vaksin2: val.vaksin2,
+            vaksin3: val.vaksin3,
+            
+            timbang: val.timbang,
+            linkarlengan: val.linkarlengan,
+            tinggirahim: val.tinggirahim,
+            skreningdokter: val.skreningdokter,
+            // ppia: val.ppia,
+                     
             letakjanin: arr.letakjanin,
             kunjunganke: dataPasien.kunjunganke + 1,
             umurkehamilan1: fitrah.getUmur(dataPasien.hpht),
@@ -105,8 +118,9 @@ function InputKunjungan() {
         _Api.post("saveKunjungan", obj).then(res => {
             if (res.data.sts == 1) {
                 _Swall.success("Suksess .")
+                setid(res.data.id_kunjungan)
                 // console.log(obj)
-                _Api.get("checkPasienDiRujuk?id_pasien=" + dataPasien.id
+                _Api.get("checkPasienDiRujuk?id_pasien=" + dataPasien.id_pasien
                     + "&id_kunjungan=" + res.data.id_kunjungan
                     + "&tinggifundus=" + val.tinggifundus
                     + "&tablettambahdarah=" + val.tablettambahdarah
@@ -236,8 +250,8 @@ function InputKunjungan() {
                             <_Date label="Tanggal" name="tanggal" format="DD / MM / YYYY" required />
                             <_Input label="Berat Badan (BB)" name="beratbadan" addonAfter="kg" required />
                             <_Input label="Timbang" name="timbang" addonAfter="kg" required />
-                            <_Input label="Ukur Lingkar Lengan Atas" name="timbang" addonAfter="kg" required />
-                            <_Input label="Periksa Tinggui Rahim" name="timbang" addonAfter="kg" required />
+                            <_Input label="Ukur Lingkar Lengan Atas" name="linkarlengan" addonAfter="kg" required />
+                            <_Input label="Periksa Tinggi Rahim" name="tinggirahim" addonAfter="kg" required />
                             <_Input label="Tekanan Darah (T.D )" name="tekanandarah" addonAfter="(mmHg)" required />
                             <_Input label="LILA" name="lila" addonAfter="(cm)" required />
                             <_Input label="Tinggi Fundus" name="tinggifundus" addonAfter="(cm)" onChange={() => cekBeratJanin('-')} required />

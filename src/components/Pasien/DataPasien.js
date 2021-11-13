@@ -80,6 +80,25 @@ function DataPasien() {
         })
     }
 
+    const pemeriksaanDokter = () => {
+        if (!selected) {
+            _Swall.error("Silahkan pilih pasien .!")
+            return
+        }
+        _Cache.set(pacient, JSON.stringify(selected))
+        history.push("/admin/PemeriksaanDokter")
+    }
+
+    const evaluasiKesehatanBumil = () => {
+        if (!selected) {
+            _Swall.error("Silahkan pilih pasien .!")
+            return
+        }
+        _Cache.set(pacient, JSON.stringify(selected))
+        history.push("/admin/EvaluasiKesehatanBumil")
+
+    }
+
     const saveRegistrasiPasien = (item) => {
         var id = item ? item.id : selected && selected.id
 
@@ -193,6 +212,12 @@ function DataPasien() {
                             <p> <_Button label="Registrasi" onClick={() => saveRegistrasiPasien(null)} /> </p>
                         </div>
                     }
+                    {cekRole == _role.dokter &&
+                        <_Row>
+                            <_Button label="Pemeriksaan Dokter" block sm={3} color="#da2b8b" onClick={() => pemeriksaanDokter()} icon={<DeploymentUnitOutlined />} />
+                            <_Button label="Evaluasi Kesehatan Ibu Hamil" block sm={5} color="#da2b8b" onClick={() => evaluasiKesehatanBumil()} icon={<DeploymentUnitOutlined />} />
+                        </_Row>
+                    }
                     {/* <Spin spinning={loading} size="large" tip="Loading..." > */}
                     <Table columns={columns} dataSource={dataPasien}
                         rowClassName={(record, index) => record == selected && 'bg-orange'}
@@ -205,8 +230,6 @@ function DataPasien() {
                                 onDoubleClick: event => {
                                     cekRole == _role.bidan && saveRegistrasiPasien(rc)
                                     // saveRegistrasiPasien(rc)
-
-
                                 }, // double click row
                             };
                         }}
