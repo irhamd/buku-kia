@@ -21,6 +21,7 @@ import { F } from 'services/firebase/UFirebase';
 import { updateFirebase } from 'services/firebase/UFirebase';
 import $ from "jquery"
 import { updateFirebaseRS } from 'services/firebase/UFirebase';
+import { cekRefresh } from 'services/Text/GlobalText';
 
 function MonitoringPasienEmergency() {
 
@@ -92,6 +93,8 @@ function MonitoringPasienEmergency() {
     };
 
     useEffect(() => {
+        cekRefresh()
+
         onSnapshot(
             collection(db, F.service),
             (snapshot) => {

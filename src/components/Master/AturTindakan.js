@@ -65,7 +65,7 @@ function AturTindakan() {
 
                         <List
                             size="small"
-                           
+                            loading = {keluhan.length == 0}
                             className="demo-loadmore-list"
                             itemLayout="horizontal"
                             dataSource={keluhan}

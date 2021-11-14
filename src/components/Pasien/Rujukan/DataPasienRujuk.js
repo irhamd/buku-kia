@@ -97,6 +97,8 @@ function DataPasienRujuk() {
     };
 
     useEffect(() => {
+        getData()
+
         onSnapshot(doc(db, F.service, F.faskes), (doc) => {
             getData()
 

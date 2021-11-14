@@ -7,6 +7,9 @@ import { _Row, _Col } from 'services/Forms/LayoutBootstrap'
 import { formatTgl } from 'services/Text/GlobalText'
 import { fitrah } from 'services/Text/GlobalText'
 import src from "assets/img/no_image.jpg"
+import { dataPegawai } from 'services/Text/GlobalText'
+import { _role } from 'services/Text/GlobalText'
+import { userLogin } from 'services/Text/GlobalText'
 
 function DetailPasien(pr) {
 
@@ -43,18 +46,25 @@ function DetailPasien(pr) {
                         contentStyle={{ background: "rgb(64 169 255 / 13%)", fontWeight: "bold" }}
                         labelStyle={{ textAlign: "right" }}
                     >
+                        <Descriptions.Item label="Faskes Pertama : ">{dataPasien && dataPasien.nama}</Descriptions.Item>
                         <Descriptions.Item label="No. Buku : ">{dataPasien && dataPasien.nobuku}</Descriptions.Item>
-                        {/* <Descriptions.Item label="Nama Pasien">{dataPasien && dataPasien.nama}</Descriptions.Item> */}
-                        <Descriptions.Item label="Nama Pasien :">{dataPasien && dataPasien.nama}</Descriptions.Item>
-                        <Descriptions.Item label="No. KTP :">{dataPasien && dataPasien.nik}</Descriptions.Item>
-                        <Descriptions.Item label="Tempat Lahir :">{dataPasien && dataPasien.tempatlahir}</Descriptions.Item>
-                        <Descriptions.Item label="Tanggal Lahir / Umur:">{formatTgl(dataPasien && dataPasien.tgllahir)} / {fitrah.getUmur(dataPasien && dataPasien.tgllahir)} </Descriptions.Item>
-                        {/* <Descriptions.Item label="Tgl Lahir :">{formatTgl("")} /  </Descriptions.Item> */}
+                        {/* <Descriptions.Item label="No. KTP :">{dataPasien && dataPasien.nik}</Descriptions.Item> */}
                         <Descriptions.Item label="HPHT :"> &nbsp;{dataPasien && formatTgl(dataPasien.hpht)}</Descriptions.Item>
-                        <Descriptions.Item label="Kunjungan Ke :"> &nbsp;{dataPasien && dataPasien.kunjunganke + 1}</Descriptions.Item>
-                        <Descriptions.Item label="Umur Kehamilan :"> &nbsp;{dataPasien && fitrah.getUmur(dataPasien.hpht)}</Descriptions.Item>
+                        {/* <Descriptions.Item label="No. JKN"></Descriptions.Item> */}
+                        {/* <Descriptions.Item label="Tempat Lahir :">{dataPasien && dataPasien.tempatlahir}</Descriptions.Item> */}
+                        {/* <Descriptions.Item label="Tanggal Lahir :">{formatTgl(dataPasien && dataPasien.tgllahir)} / {fitrah.getUmur(dataPasien && dataPasien.tgllahir)} </Descriptions.Item> */}
+                        <Descriptions.Item label="UK :"> &nbsp;{dataPasien && fitrah.getUmurKehamilan(dataPasien.hpht, "desc")}</Descriptions.Item>
+                        {/* <Descriptions.Item label="Tgl Lahir :">{formatTgl("")} /  </Descriptions.Item> */}
+                        {userLogin.role == _role.bidan &&
+                            <>
+                                <Descriptions.Item label="Kunjungan Ke :"> &nbsp;{dataPasien && dataPasien.kunjunganke + 1}</Descriptions.Item>
+                            </>
+                        }
+
+                        <Descriptions.Item label="Nama :" >{dataPasien && dataPasien.nama.toUpperCase()}</Descriptions.Item>
+                        <Descriptions.Item label="Umur :">{fitrah.getUmur(dataPasien && dataPasien.tgllahir)} </Descriptions.Item>
                         {/* <Descriptions.Item label=""> &nbsp;</Descriptions.Item> */}
-                        <Descriptions.Item span={3} label="Alamat :">{dataPasien && dataPasien.alamat}</Descriptions.Item>
+                        <Descriptions.Item span={2} label="Alamat :">{dataPasien && dataPasien.alamat}</Descriptions.Item>
                     </Descriptions>
                 </_Col>
             </_Row>

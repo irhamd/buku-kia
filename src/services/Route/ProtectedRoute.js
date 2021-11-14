@@ -15,7 +15,7 @@ function ProtectedRoute({ component: Component, ...rest }) {
         var cek = sessionStorage.getItem(val) != null ? true : author = false;
     });
     Cookies.get(gcookies.kia) ? true : author = false;
-    
+
     const [Auth] = useState(author)
 
     return (
@@ -45,6 +45,7 @@ export const logOut = () => {
     Object.values(globalText).forEach(val => {
         sessionStorage.removeItem(val)
     });
+    Cookies.remove(gcookies.kia)
     _Cache.remove('x-pacient')
 }
 

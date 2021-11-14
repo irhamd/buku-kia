@@ -78,7 +78,7 @@ function JadwalKunjungan(pr) {
 
     const LoadData = () => {
         setLoading(true)
-        _Api.get(`getJadwalKunjungan?id_pasien=${dataPacient.id}`).then(res => {
+        _Api.get(`getJadwalKunjungan?id_pasien=${dataPacient.id_pasien}`).then(res => {
             setDataJadwal(res.data.data)
             setLoading(false)
         })
@@ -105,12 +105,10 @@ function JadwalKunjungan(pr) {
             <Spin spinning={loading} tip="Loading ..." >
                 <div className="col-md-12 weather-grids widget-shadow">
                     <div className="header-top b">
-                        <p>
-                            <h2>  JADWAL KUNJUNGAN</h2>
-                        </p>
+                        
                         <br />
                         <p>
-                            <_Button label="Tutup" cancel onClick={() => pr.onClose()} />
+                            &nbsp; <_Button label="Tutup" cancel onClick={() => pr.onClose()} />
                         </p>
                     </div>
                     <div className="header-bottom" style={{ overflow: "auto", height: "800px" }}>

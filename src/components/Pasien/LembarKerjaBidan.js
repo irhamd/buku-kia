@@ -80,6 +80,8 @@ function LembarKerjaBidan() {
                         <_Button label="Riwayat" icon={<FieldTimeOutlined />} color="orangered" onClick={() => riwayatPasien()} block sm={3} />
                         {/* <_Button label="Data Kehamilan" icon={<NodeIndexOutlined />} color="orangered" onClick={() => dataKehamilan()} block sm={3} /> */}
                         <_Button label="Jadwal Kunjungan" icon={<CalendarOutlined />} color="orangered" block sm={3} onClick={() => setshowJadwal(true)} />
+                        <_Button label="Transaksi" icon={<NodeIndexOutlined />}   block sm={3} />
+
                     </_Row>
 
                     <br />

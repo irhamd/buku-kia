@@ -30,6 +30,20 @@ export const fitrah = {
         if (bulan > 0) return bulan + ' bulan'
         if (hari > 0) return hari + ' hari'
         if (jam > 0) return jam + ' jam'
+    },
+
+    getUmurKehamilan(tgl, desc) {
+        const tahun = parseInt(Math.floor(moment(new Date()).diff(moment(tgl), 'year', true)))
+        const bulan = parseInt(Math.floor(moment(new Date()).diff(moment(tgl), 'month', true)))
+        const minggu = parseInt(Math.floor(moment(new Date()).diff(moment(tgl), 'day', true)) / 7)
+        const hari = parseInt(Math.floor(moment(new Date()).diff(moment(tgl), 'day', true)))
+        const jam = parseInt(Math.floor(moment(new Date()).diff(moment(tgl), 'hours', true)))
+
+        // let cek = tahun > 0 ? tahun : bulan > 0 ? bulan : hari > 0 ? hari : jam > 0 ? jam : ""
+        if (tahun > 0) return desc ?  tahun + ' tahun' : tahun
+        if (minggu > 0) return desc ?  minggu + ' minggu' : minggu
+        if (hari > 0) return desc ?  hari + '  hari' : hari
+        if (jam > 0) return desc ?  jam + ' jam' : jam
     }
 }
 

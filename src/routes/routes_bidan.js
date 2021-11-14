@@ -1,4 +1,4 @@
-import { People, PersonAdd } from "@material-ui/icons";
+import { AirlineSeatFlatAngled, DeveloperBoard, People, PermContactCalendar, PersonAdd, PlaylistAddCheckOutlined } from "@material-ui/icons";
 import InputKehamilanSaatIni from "components/DataKehamilan/InputKehamilanSaatIni";
 import JadwalKunjungan from "components/DataKehamilan/JadwalKunjungan";
 import InputKunjungan from "components/Kunjungan/InputKunjungan";
@@ -46,7 +46,7 @@ export  const routes_bidan = [
     {
       path: "/dataPasien",
       name: "Data Pasien",
-      icon: People,
+      icon: PermContactCalendar,
       component: DataPasien,
       layout: "/admin",
       show : true,
@@ -93,7 +93,7 @@ export  const routes_bidan = [
     {
       path: "/DataPasienRujuk",
       name: "Data Pasien Di Rujuk",
-      icon: PersonAdd,
+      icon: AirlineSeatFlatAngled,
       component: DataPasienRujuk,
       layout: "/admin",
       show : true,
@@ -107,8 +107,8 @@ export  const routes_bidan = [
     },
     {
       path: "/AturTindakan",
-      name: "Atur Tindakan",
-      icon: PersonAdd,
+      name: "Master Keluhan",
+      icon: PlaylistAddCheckOutlined,
       component: AturTindakan,
       layout: "/admin",
       show : true,

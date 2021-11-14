@@ -214,8 +214,9 @@ function DataPasien() {
                     }
                     {cekRole == _role.dokter &&
                         <_Row>
+                            <_Col/>
                             <_Button label="Pemeriksaan Dokter" block sm={3} color="#da2b8b" onClick={() => pemeriksaanDokter()} icon={<DeploymentUnitOutlined />} />
-                            <_Button label="Evaluasi Kesehatan Ibu Hamil" block sm={5} color="#da2b8b" onClick={() => evaluasiKesehatanBumil()} icon={<DeploymentUnitOutlined />} />
+                            <_Button label="Evaluasi Kesehatan Ibu Hamil" block sm={4} color="#da2b8b" onClick={() => evaluasiKesehatanBumil()} icon={<DeploymentUnitOutlined />} />
                         </_Row>
                     }
                     {/* <Spin spinning={loading} size="large" tip="Loading..." > */}

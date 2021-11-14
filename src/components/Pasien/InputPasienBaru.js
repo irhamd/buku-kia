@@ -22,6 +22,7 @@ import { CameraOutlined, RollbackOutlined } from '@ant-design/icons';
 import Webcam from 'react-webcam'
 import _Api from 'services/Api/_Api'
 import { _Swall } from 'services/Toastr/Notify/_Toastr'
+import { _Checkbox } from 'services/Forms/Forms'
 
 
 function InputPasienBaru() {
@@ -84,7 +85,9 @@ function InputPasienBaru() {
                 </CardHeader>
                 <CardBody>
                     <br />
-                    <Form layout="vertical" form={form} onFinish={simpanPasien} size="large" style={{ marginBottom: "10%" }}>
+                    <Form layout="vertical" form={form}
+                    initialValues ={{wargamataram : true}}
+                    onFinish={simpanPasien} size="large" style={{ marginBottom: "10%" }}>
                         <_Row>
                             <_Col sm={7}>
                                 <_Search name="nik" showCount required label="NIK" maxLength={26} />
@@ -96,7 +99,8 @@ function InputPasienBaru() {
                                 <_Input name="nama" label="Nama Lengkap" required />
                                 <_Row>
                                     <_Input name="nohp" label="No HP (Aktif)" required maxLength={13} sm={5} />
-                                    <_Number name="nojkn" label="No. JKN" sm={7} />
+                                    <_Number name="nojkn" label="No. JKN" sm={4} />
+                                    <_Checkbox name="wargamataram" label="Warga Mataram" children ="Ya" sm={3} />
                                 </_Row>
                                 <_Input multiline name="alamat" label="Alamat Lengkap" required />
                                 <_Input name="faskestk1" label="Faskes Pertama" />

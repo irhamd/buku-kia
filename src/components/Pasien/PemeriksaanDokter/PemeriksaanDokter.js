@@ -213,8 +213,8 @@ function PemeriksaanDokter() {
         <div>
             <Card>
                 <CardHeader color="primary">
-                    <p style={{ fontSize: "24px", fontWeight: "bold", fontSize: "20px", marginBottom: "-6px" }}> PEMERIKSAAN DOKTER </p>
-                    <p>Pemeriksaan dilakukan oleh dokter</p>
+                    <p style={{ fontSize: "24px", fontWeight: "bold", fontSize: "20px", marginBottom: "-6px" }}> LEMBAR PEMERIKSAAN DOKTER TERMISTER 3 </p>
+                    <p> <b> ( Usia Kehamilan 32-36 Minggu ) </b></p>
                 </CardHeader>
                 <CardBody>
                     <Form.Provider
@@ -275,7 +275,7 @@ function PemeriksaanDokter() {
                                             width={700}
                                             src={src}
                                         />
-                                            <_Button cancel sm={2} label="Clear" onClick={clearImage} />
+                                            <_Button cancel sm={2} label="Reset" onClick={clearImage} />
                                         </>
                                     }
 

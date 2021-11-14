@@ -56,7 +56,7 @@ export const _Input = (r) => {
                             defaultValue={r.defaultValue} /> :
                         <Input
                             value={r.value}
-                            showCount
+                            // showCount
                             // bordered={false}
                             suffix={r.suffix} size={r.size}
                             disabled={r.disabled}
@@ -161,7 +161,7 @@ export const _Checkbox = (r) => {
             <Form.Item name={r.name} label={r.label ? r.label : ""} style={{ marginBottom: r.mb ? r.mb : "10px" }}
                 rules={[{ required: r.required, message: r.message ? r.message : errMessage }]}
             >
-                <Checkbox >{r.children}</Checkbox>
+                <Checkbox style={{ background :"#de68a94d", width :"100%", padding :"7px", borderRadius :"3px"}} >{r.children}</Checkbox>
 
             </Form.Item>
         </ColB>
@@ -173,7 +173,7 @@ export const _RadioGroup = (r) => {
     let data = !r.options ? [] : r.options
     const render = data.map((item, i) => {
         return (
-            <Radio.Button value={item[r.val ? r.val : 'value']}>{item[r.caption ? r.caption : 'label']}</Radio.Button>
+            <Radio.Button key={i} value={item[r.val ? r.val : 'value']}>{item[r.caption ? r.caption : 'label']}</Radio.Button>
             // <option key={i} value={r.withJeson ? JSON.stringify(item) : item[r.val]} > {item[r.caption]} </option>
         )
     })
@@ -220,7 +220,7 @@ export const _Search = (r) => {
             <Form.Item name={r.name} label={r.label ? r.label : ""} style={{ marginBottom: "10px" }}
                 rules={[{ required: r.required, message: r.message ? r.message : errMessage }]}
             >
-                <Search maxLength={r.maxLength} showCount allowClear placeholder={r.placeholder} size={r.size} onChange={r.onChange} onSearch={r.onSearch} enterButton loading={r.loading} />
+                <Search maxLength={r.maxLength}  allowClear placeholder={r.placeholder} size={r.size} onChange={r.onChange} onSearch={r.onSearch} enterButton loading={r.loading} />
             </Form.Item>
         </ColB>
     )
