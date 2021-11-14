@@ -140,6 +140,7 @@ export const _Switch = (r) => {
                 <Switch checkedChildren={!r.titleCheck ? <CheckOutlined /> : r.titleCheck}
                     onChange={r.onChange}
                     disabled={r.disabled}
+                    loading={r.loading}
                     size={r.size}
                     // onClick={r.onClick}
                     unCheckedChildren={!r.titleUnCheck ? <CloseOutlined /> : r.titleUnCheck}

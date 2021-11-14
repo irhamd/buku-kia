@@ -20,6 +20,7 @@ import { fireCollectiom } from 'services/firebase/UFirebase';
 import { F } from 'services/firebase/UFirebase';
 import { updateFirebase } from 'services/firebase/UFirebase';
 import $ from "jquery"
+import { updateFirebaseRS } from 'services/firebase/UFirebase';
 
 function MonitoringPasienEmergency() {
 
@@ -51,14 +52,14 @@ function MonitoringPasienEmergency() {
 
 
 
-    const updateDB = (id_pasienrujuk, sts) => {
+    const updateDB = (id_pasienrujuk, sts, kodefirebase) => {
         setloading(true)
         setidd(id_pasienrujuk)
         _Api.get(`updateStatusPasienRujuk/${id_pasienrujuk}/${sts} `).then(res => {
             if (res.data.sts == 1) {
                 // _Swall.success("suksess ...")
                 getUsers()
-                updateFirebase()
+                updateFirebaseRS(kodefirebase)
             } else {
                 _Swall.error("Gagal .")
             }
@@ -67,15 +68,6 @@ function MonitoringPasienEmergency() {
 
         })
     }
-
-
-    const deleteUser = async (id) => {
-        const userDoc = doc(db, dbname, id);
-        await deleteDoc(userDoc);
-    };
-
-
-
 
     const getUsers = () => {
         // setloading(false)
@@ -100,10 +92,13 @@ function MonitoringPasienEmergency() {
     };
 
     useEffect(() => {
-        onSnapshot(doc(db, F.service, F.faskes), (doc) => {
-            // console.log("Current data 111: ", doc.data());
-            getUsers()
-        });
+        onSnapshot(
+            collection(db, F.service),
+            (snapshot) => {
+                getUsers()
+            })
+
+
 
 
         navigator.geolocation.getCurrentPosition(function (position) {
@@ -145,17 +140,17 @@ function MonitoringPasienEmergency() {
                                 {/* <p> {JSON.stringify(item)} </p> */}
                                 {item.status == "request" || !item.status ?
                                     <_Button size="large" label="Konfirmasi" loading={item.id == idd ? true : false} icon={<FallOutlined />} sm={4} block color="green" onClick={() => {
-                                        updateDB(item.id, "konfirm")
+                                        updateDB(item.id, "konfirm", item.kodefirebase)
                                     }} /> :
                                     <_Button size="large" label="Commit" loading={item.id == idd ? true : false} icon={<SisternodeOutlined />} sm={4} block color="#17a2b8" onClick={() => {
-                                        updateDB(item.id, "commit")
+                                        updateDB(item.id, "commit", item.kodefirebase)
                                     }} />
                                 }
 
                                 <Popconfirm
                                     title="Are you sure to delete this task?"
                                     onConfirm={() => {
-                                        updateDB(item.id, "ditolak");
+                                        updateDB(item.id, "ditolak", item.kodefirebase);
                                     }}
                                     okText="Ya, Tolak"
                                     cancelText="Batal"
@@ -191,8 +186,8 @@ function MonitoringPasienEmergency() {
     return (
         <div>
             <div className="App">
-                {/* {renderPasienEmer} */}
-                {pasienEmer.length > 0 ? renderPasienEmer : <> <Spin size="large" /> <p style={{ paddingLeft: "30px" }}> Belum ada pasien emergency .! </p> </>}
+                {renderPasienEmer}
+                {/* {pasienEmer.length > 0 ? renderPasienEmer : <> <Spin size="large" /> <p style={{ paddingLeft: "30px" }}> Belum ada pasien emergency .! </p> </>} */}
                 <br />
             </div>
 

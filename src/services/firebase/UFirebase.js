@@ -24,8 +24,15 @@ export const fireCollectiom = collection(db, F.root, F.app, F.faskes);
 
 
 export const updateFirebase = async () => {
-    const cityRef = doc(db, "service", dataPegawai.kodefirebase);
-    setDoc(cityRef, { rand: Math.random() }, { merge: true });
+    const kiaRef = doc(db, F.service, dataPegawai.kodefirebase);
+    setDoc(kiaRef, { rand: Math.random() }, { merge: true });
+
+    // await addDoc(fireCollectiom, { name: newName, age: Number(newAge), isrujuk: true });
+};
+
+export const updateFirebaseRS = async (kdfire) => {
+    const kiaRef = doc(db, F.service, kdfire);
+    setDoc(kiaRef, { rand: Math.random() }, { merge: true });
 
     // await addDoc(fireCollectiom, { name: newName, age: Number(newAge), isrujuk: true });
 };

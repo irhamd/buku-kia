@@ -33,6 +33,7 @@ ReactDOM.render(
       />
       <ProtectedRoute path="/admin" component={Admin} />
       <Redirect from="/material-dashboard-react" to="/login" />
+      <Redirect from="/" to="/login" />
     </Switch>
   </BrowserRouter>,
   document.getElementById("root")
