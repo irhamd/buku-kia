@@ -180,13 +180,13 @@ function DataPasienRujuk() {
                                             title={<div style={gaya.title} >{item.nama && item.nama.toUpperCase()}</div>}
                                             description={<div>
 
-                                                <span style={gaya.diskripsi}> <b> {item.nobuku} </b> </span>
+                                                <span style={gaya.diskripsi}> <small> No. Buku </small> : <b> {item.nobuku} <small> No. Hp </small> : {item.nohp} </b> </span>
                                                 <br />
                                                 <b> {item.alamat} </b>
                                             </div>}
                                         />
                                         <_Row>
-                                            <_Col sm={8}>
+                                            <_Col>
                                                 <p style={{ background: "#df132726", borderRadius: "5px", padding: "10px" }}>
                                                     <p> Alasan :  </p>
                                                     {
@@ -207,13 +207,13 @@ function DataPasienRujuk() {
                                                     }
                                                 </p>
                                             </_Col>
-                                            <_Col sm={3}>
+                                            {/* <_Col sm={3}>
                                                 <_Input label="Nomor HP yang bisa dihubungi" onChange={(e) => {
                                                     array[idx] = e.target.value.toString()
                                                     console.log(array)
                                                     setnohp(array)
                                                 }} />
-                                            </_Col>
+                                            </_Col> */}
                                         </_Row>
                                         <_Row>
                                             {!item.status ?

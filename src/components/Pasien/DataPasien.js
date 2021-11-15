@@ -144,7 +144,7 @@ function DataPasien() {
             width: '150px',
 
             render: (rc) => (<div className="tengah">
-                <Image src={rc.foto ? rc.foto : src} width={100} style={{ borderRadius: "10% 0px 10%" }} />
+                <Image src={rc.foto ? rc.foto : src} width={80} style={{ borderRadius: "10% 0px 10%" }} />
             </div>),
         },
         {
@@ -152,7 +152,7 @@ function DataPasien() {
             width: '230px',
             sorter: (a, b) => a.nama.length - b.nama.length,
             render: (rc) => (<div style={{ fontWeight: "bold", color: "#961f60" }}>
-                <b> {rc.nama.toUpperCase()} </b>
+                <b> {rc.nama} </b>
             </div>),
         },
         {
@@ -212,13 +212,7 @@ function DataPasien() {
                             <p> <_Button label="Registrasi" onClick={() => saveRegistrasiPasien(null)} /> </p>
                         </div>
                     }
-                    {cekRole == _role.dokter &&
-                        <_Row>
-                            <_Col/>
-                            <_Button label="Pemeriksaan Dokter" block sm={3} color="#da2b8b" onClick={() => pemeriksaanDokter()} icon={<DeploymentUnitOutlined />} />
-                            <_Button label="Evaluasi Kesehatan Ibu Hamil" block sm={4} color="#da2b8b" onClick={() => evaluasiKesehatanBumil()} icon={<DeploymentUnitOutlined />} />
-                        </_Row>
-                    }
+
                     {/* <Spin spinning={loading} size="large" tip="Loading..." > */}
                     <Table columns={columns} dataSource={dataPasien}
                         rowClassName={(record, index) => record == selected && 'bg-orange'}
@@ -235,6 +229,15 @@ function DataPasien() {
                             };
                         }}
                     />
+                    <br />
+                    {cekRole == _role.dokter &&
+                        <_Row>
+                            <_Col />
+                            <_Button label="Pemeriksaan Dokter" block sm={3} color="#da2b8b" onClick={() => pemeriksaanDokter()} icon={<DeploymentUnitOutlined />} />
+                            <_Button label="Evaluasi Kesehatan Ibu Hamil" block sm={4} color="#da2b8b" onClick={() => evaluasiKesehatanBumil()} icon={<DeploymentUnitOutlined />} />
+                        </_Row>
+                    }
+
                     <GridContainer>
                         {dataRiwayat && <RiwayatKunjungan loading={loading} dataRiwayat={dataRiwayat} visible={showRiwayat} onClose={() => setshowRiwayat(false)} />}
                         {/* {dataPasien.length > 0 ? renderPasien : <NotFound label="Data pasien tidak ditemukan ..!" />} */}

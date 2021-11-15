@@ -41,6 +41,7 @@ function PemeriksaanDokter() {
     const [pasienRujuk, setpasienRujuk] = useState([])
     const [loading, setloading] = useState(false);
     const [src, setsrc] = useState(null);
+    const [idd, setidd] = useState("");
     const [formKehamilan] = Form.useForm();
 
 
@@ -140,6 +141,32 @@ function PemeriksaanDokter() {
         setFileList([])
     }
 
+    const initform = {
+        id: "202111150840005550350045",
+        sklera: "normal",
+        kulit: "normal",
+        leher: "normal",
+        gigimulut: "normal",
+        tht: "normal",
+        datajantung: "normal",
+        paru: "normal",
+        perut: "normal",
+        tungkkai: "normal",
+        kedaanumum: "dddddddds",
+        id_pasien: 38,
+        kunjunganke: 1,
+    }
+
+    const unitusg = {
+        gs: "435",
+        crl: "453",
+        djj: "345",
+        usiakehamilan: "34",
+        letakjanin: "34",
+        htp: moment(),
+
+    }
+
     const submitProvider = (name, info) => {
 
         if (!src) {
@@ -152,6 +179,7 @@ function PemeriksaanDokter() {
         var valuePemeriksaan = form.formpemeriksaan.getFieldsValue()
 
         let obj = {
+            id: idd,
             ...valueUsg,
             ...valuePemeriksaan,
             id_pasien: dataPasien && dataPasien.id,
@@ -178,6 +206,7 @@ function PemeriksaanDokter() {
         })
             .then(function (res) {
                 if (res.data && res.data.sts == 1) {
+                    setidd(res.data.lastinsertid)
                     _Swall.success("Sukses ..")
                 } else {
                     _Swall.error("Gagal ...")
@@ -223,17 +252,18 @@ function PemeriksaanDokter() {
                         <_Row>
                             <_Col sm={5} style={{ background: "white" }}>
                                 <_Label label="Pemeriksaan Fisik" />
-                                <Form size="small" name="formpemeriksaan"
+                                <Form name="formpemeriksaan"
                                     labelCol={{
                                         span: 8,
                                     }}
                                     wrapperCol={{
                                         span: 16,
                                     }}
+
                                     // onFinish={onFinish} form={formKehamilan}
                                     autoComplete="off"
                                 >
-                                    <_Input name="keadaanumum" multiline label="Keadaan Umum" />
+                                    <_Input name="kedaanumum" multiline label="Keadaan Umum" />
                                     <_RadioGroup options={opsi} label="Sklera" name="sklera" />
                                     <_RadioGroup options={opsi} label="kulit" name="kulit" />
                                     <_RadioGroup options={opsi} label="Leher" name="leher" />
@@ -245,10 +275,11 @@ function PemeriksaanDokter() {
                                     <_RadioGroup options={opsi} label="Tungkai" name="tungkkai" />
                                 </Form>
                                 <_Label label="USG" />
-                                <Form size="small" name="formusg"
+                                <Form name="formusg"
                                     labelCol={{
                                         span: 12,
                                     }}
+
                                     wrapperCol={{
                                         span: 12,
                                     }}

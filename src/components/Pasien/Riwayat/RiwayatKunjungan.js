@@ -11,12 +11,15 @@ function RiwayatKunjungan(pr) {
 
     const columns = [
         {
-            title: 'Kunnjungan Ke ',
-            dataIndex: 'kunjunganke',
+            title: 'No',
+            render: (rc, i, j) => (<>
+                <b> {j + 1} </b>
+            </>),
             sorter: true,
-            fixed: 'left',
-            width: '100px',
+            // fixed: 'left',
+            width: '70px',
         },
+
         {
             title: 'Tanggal',
             render: (rc) => (<>
@@ -24,14 +27,23 @@ function RiwayatKunjungan(pr) {
             </>),
             sorter: true,
             width: '130px',
-            fixed: 'left',
+            // fixed: 'left',
         },
         {
             title: 'Faskes',
-            dataIndex: 'unitkerja',
+            render: (rc) => (<>
+                <Tag color="blue" > <b> {rc.unitkerja} </b> </Tag>
+            </>),
             sorter: true,
-            fixed: 'left',
+            // fixed: 'left',
             width: '200px',
+        },
+        {
+            title: 'Kunnjungan Ke ',
+            dataIndex: 'kunjke',
+            sorter: true,
+            // fixed: 'left',
+            width: '100px',
         },
         {
             title: 'Petugas Pelaksana',
@@ -48,7 +60,7 @@ function RiwayatKunjungan(pr) {
                     {
                         rc.keluhan && rc.keluhan.map((item, i) => {
                             return (
-                                <li key={i}> <b> {item.keluhan} </b> </li>
+                                <li key={i}> <b>  <b> {item.keluhan} </b>   </b></li>
                             )
                         })
                     }
@@ -146,7 +158,7 @@ function RiwayatKunjungan(pr) {
                 onClose={pr.onClose}
                 width={"100%"}
                 height={"100%"}
-                
+
                 visible={pr.visible}
                 getContainer={false}
             >

@@ -100,13 +100,13 @@ function InputKunjungan() {
             vaksin1: val.vaksin1,
             vaksin2: val.vaksin2,
             vaksin3: val.vaksin3,
-            
+
             timbang: val.timbang,
             linkarlengan: val.linkarlengan,
             tinggirahim: val.tinggirahim,
             skreningdokter: val.skreningdokter,
             // ppia: val.ppia,
-                     
+
             letakjanin: arr.letakjanin,
             kunjunganke: dataPasien.kunjunganke + 1,
             umurkehamilan1: fitrah.getUmur(dataPasien.hpht),
@@ -282,6 +282,9 @@ function InputKunjungan() {
                                     <small> Silahkan centang salah satu keluhan pasien  </small>
                                     <br /> <br />
                                     {renderKeluhan}
+                                    <p className="w100">
+                                        <_Input label="" sm={12} />
+                                    </p>
                                 </Panel>
                             </Collapse>
 

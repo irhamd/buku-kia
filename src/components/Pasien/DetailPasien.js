@@ -43,8 +43,8 @@ function DetailPasien(pr) {
                         size={"small"}
                         column={pr.column ? pr.column : 2}
                         style={{ width: "100%" }}
-                        contentStyle={{ background: "rgb(64 169 255 / 13%)", fontWeight: "bold" }}
-                        labelStyle={{ textAlign: "right" }}
+                        contentStyle={{ background: "rgb(64 169 255 / 13%)", fontWeight: "bold", width :"200px" }}
+                        labelStyle={{ textAlign: "right", width :"150px" }}
                     >
                         <Descriptions.Item label="Faskes Pertama : ">{dataPasien && dataPasien.nama}</Descriptions.Item>
                         <Descriptions.Item label="No. Buku : ">{dataPasien && dataPasien.nobuku}</Descriptions.Item>
@@ -61,10 +61,10 @@ function DetailPasien(pr) {
                             </>
                         }
 
-                        <Descriptions.Item label="Nama :" >{dataPasien && dataPasien.nama.toUpperCase()}</Descriptions.Item>
                         <Descriptions.Item label="Umur :">{fitrah.getUmur(dataPasien && dataPasien.tgllahir)} </Descriptions.Item>
-                        {/* <Descriptions.Item label=""> &nbsp;</Descriptions.Item> */}
+                        <Descriptions.Item span={2} label="Nama :" >{dataPasien && dataPasien.nama}</Descriptions.Item>
                         <Descriptions.Item span={2} label="Alamat :">{dataPasien && dataPasien.alamat}</Descriptions.Item>
+                        {/* <Descriptions.Item label=""> &nbsp;</Descriptions.Item> */}
                     </Descriptions>
                 </_Col>
             </_Row>

@@ -1,5 +1,5 @@
 import { CloseCircleOutlined, CloudDownloadOutlined, DeliveredProcedureOutlined, DownloadOutlined, FilterOutlined, FolderAddOutlined, RollbackOutlined, SaveOutlined, SearchOutlined } from "@ant-design/icons"
-import { Button, Col, DatePicker, Empty, Form, Input, InputNumber, Mentions, Radio, Row, Select, Space, Switch, TimePicker } from "antd"
+import { Button, Col, DatePicker, Empty, Form, Input, InputNumber, Mentions, Popover, Radio, Row, Select, Space, Switch, TimePicker } from "antd"
 import { mainColor } from "../Color"
 import { Col as ColB } from 'react-bootstrap';
 import { CloseOutlined, CheckOutlined } from '@ant-design/icons';
@@ -161,7 +161,7 @@ export const _Checkbox = (r) => {
             <Form.Item name={r.name} label={r.label ? r.label : ""} style={{ marginBottom: r.mb ? r.mb : "10px" }}
                 rules={[{ required: r.required, message: r.message ? r.message : errMessage }]}
             >
-                <Checkbox style={{ background :"#de68a94d", width :"100%", padding :"7px", borderRadius :"3px"}} >{r.children}</Checkbox>
+                <Checkbox style={{ background: "#de68a94d", width: "100%", padding: "7px", borderRadius: "3px" }} >{r.children}</Checkbox>
 
             </Form.Item>
         </ColB>
@@ -220,7 +220,7 @@ export const _Search = (r) => {
             <Form.Item name={r.name} label={r.label ? r.label : ""} style={{ marginBottom: "10px" }}
                 rules={[{ required: r.required, message: r.message ? r.message : errMessage }]}
             >
-                <Search maxLength={r.maxLength}  allowClear placeholder={r.placeholder} size={r.size} onChange={r.onChange} onSearch={r.onSearch} enterButton loading={r.loading} />
+                <Search maxLength={r.maxLength} allowClear placeholder={r.placeholder} size={r.size} onChange={r.onChange} onSearch={r.onSearch} enterButton loading={r.loading} />
             </Form.Item>
         </ColB>
     )
@@ -362,6 +362,7 @@ export const _ButtonFilter = (props) => {
     )
 }
 export const _Button = (r) => {
+
     return (
         <ColB sm={r.sm ? r.sm : 12} style={{ marginBottom: "5px" }}>
             <Button className={r.className}
@@ -379,10 +380,9 @@ export const _Button = (r) => {
                 icon={r.save ? <DownloadOutlined /> : r.find ? <SearchOutlined /> : r.cancel ? <RollbackOutlined /> : r.add ? <FolderAddOutlined /> : r.icon}>
                 {r.title} {r.label}
             </Button>
-        </ColB>
+        </ColB >
     )
 }
-
 export function NotFound(pr) {
     return (
         <p style={{ width: "100%" }}>

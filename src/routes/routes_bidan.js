@@ -25,7 +25,7 @@ export  const routes_bidan = [
       icon: Dashboard,
       component: TestMaps,
       layout: "/admin",
-      show : true,
+      // show : true,
     },
     {
       path: "/TestFirebase",
@@ -33,7 +33,7 @@ export  const routes_bidan = [
       icon: Dashboard,
       component: TestFirebasePuskesmas,
       layout: "/admin",
-      show : true,
+      // show : true,
     },
     {
       path: "/dashboard",

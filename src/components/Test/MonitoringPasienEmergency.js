@@ -9,7 +9,7 @@ import Countdown from 'react-countdown';
 import { _Button } from 'services/Forms/Forms';
 import { _Row } from 'services/Forms/LayoutBootstrap';
 import src from "assets/img/no_image.jpg"
-import { Image, Modal, Spin, Tag, Button, Popconfirm } from 'antd';
+import { Image, Modal, Spin, Tag, Button, Popconfirm, Popover } from 'antd';
 import { _Col } from 'services/Forms/LayoutBootstrap';
 import { HighlightOutlined, PhonelinkOutlined, PhoneOutlined } from '@material-ui/icons';
 import { CounterTime } from 'services/Forms/FormsAdd';
@@ -145,26 +145,26 @@ function MonitoringPasienEmergency() {
                                     <_Button size="large" label="Konfirmasi" loading={item.id == idd ? true : false} icon={<FallOutlined />} sm={4} block color="green" onClick={() => {
                                         updateDB(item.id, "konfirm", item.kodefirebase)
                                     }} /> :
-                                    <_Button size="large" label="Commit" loading={item.id == idd ? true : false} icon={<SisternodeOutlined />} sm={4} block color="#17a2b8" onClick={() => {
+                                    <_Button size="large" label="Commit" loading={item.id == idd ? true : false} icon={<SisternodeOutlined spin />} sm={4} block color="#17a2b8" onClick={() => {
                                         updateDB(item.id, "commit", item.kodefirebase)
                                     }} />
                                 }
 
                                 <Popconfirm
-                                    title="Are you sure to delete this task?"
+                                    title="TOLAK PERMINTAAN EMERGENCY PASIEN !?"
                                     onConfirm={() => {
                                         updateDB(item.id, "ditolak", item.kodefirebase);
                                     }}
                                     okText="Ya, Tolak"
                                     cancelText="Batal"
                                 >
-                                    <_Button label="Tolak" size="large" color="orange" loading={item.id == idd ? true : false} sm={3} block icon={<DislikeOutlined />}
-
+                                    <_Button size="large" color="orange" loading={item.id == idd ? true : false} sm={1} block icon={<DislikeOutlined />}
                                     />
+
                                 </Popconfirm>
 
 
-                                <_Button label="Track Lokasi" size="large" color="orangered" sm={3} block icon={<EnvironmentOutlined />}
+                                <_Button size="large" color="orangered" sm={1} icon={<EnvironmentOutlined />}
                                     onClick={() => gotoLokasi([-8.600073, 116.114254])}
                                 />
                             </_Row>

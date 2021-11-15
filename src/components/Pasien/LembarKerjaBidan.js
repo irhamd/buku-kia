@@ -41,7 +41,7 @@ function LembarKerjaBidan() {
 
     useEffect(() => {
         let cekPasien = _Cache.get("datapasien")
-        console.log(`dataPacient`, dataPacient)
+        // console.log(`dataPacient`, dataPacient)
         cekPasien ? setdataPasien(JSON.parse(cekPasien)) : ""
         // _Cache.remove(pacient)
     }, [])
@@ -52,7 +52,7 @@ function LembarKerjaBidan() {
         // console.log(data)
         // _Cache.set(pacient, JSON.stringify(data))
         setloading(true)
-        await _Api.get("getKunjunganByPasien?id_pasien=" + dataPacient.id).then(res => {
+        await _Api.get("getKunjunganByPasien?id_pasien=" + dataPacient.id_pasien).then(res => {
             setdataRiwayat(res.data.data)
             // console.log(res.data.data)
             setloading(false)
