@@ -177,14 +177,14 @@ function PemeriksaanDokter() {
 
         var valueUsg = form.formusg.getFieldsValue()
         var valuePemeriksaan = form.formpemeriksaan.getFieldsValue()
-
+        console.log(`valuePemeriksaan`, valueUsg)
         let obj = {
             id: idd,
             ...valueUsg,
             ...valuePemeriksaan,
             id_pasien: dataPasien && dataPasien.id,
             kunjunganke: dataPasien && dataPasien.kunjunganke + 1,
-            htp: moment(valuePemeriksaan.htp).format('YYYY-MM-DD')
+            htp: valueUsg.htp ? moment(valueUsg.htp).format('YYYY-MM-DD') : ""
         }
 
         var bod = new FormData();

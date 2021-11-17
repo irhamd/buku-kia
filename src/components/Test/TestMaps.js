@@ -89,8 +89,6 @@ function TestMaps() {
         // setposition(currPos)
         posRef.current.click()
 
-
-
     };
 
 
@@ -110,8 +108,10 @@ function TestMaps() {
                 <Collapse ghost style={{ height: "5px" }} defaultActiveKey={['1']}>
                     <Panel header="Reminder" key="1">
 
-                        <div className="blink-bg">
-                            <_Label label="Cewek" />
+                        <div className="blink-bg tengah" style={{ padding: "15px" }}>
+                            <_Label label="Pasien" />
+                            <b> <h4> SITI ROZAKOH</h4> </b>
+                            <p style={{ marginTop: "-10px" }}> <b> <h3>0878645996</h3> </b> </p>
                             <CounterTime />
                             <_Row>
                                 <_Button sm={5} color="green" style={{ marginTop: "3px" }} label="Proses" />
@@ -128,7 +128,7 @@ function TestMaps() {
                 />
                 <Marker position={position} icon={grenIcon}>
                     <Popup>
-                        I am a green leaf
+                        SITI ROZAKOH
                     </Popup>
                 </Marker>
 

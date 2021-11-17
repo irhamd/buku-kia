@@ -7,7 +7,7 @@ import React, { useEffect, useState } from 'react'
 import avatar from "assets/img/faces/marc.jpg";
 import Button from "components/CustomButtons/Button.js";
 import GridContainer from 'components/Grid/GridContainer'
-import { Image, Spin, Form, Empty } from 'antd'
+import { Image, Spin, Form, Tag } from 'antd'
 import _Api from 'services/Api/_Api'
 import src from "assets/img/no_image.jpg"
 import { _Row } from 'services/Forms/LayoutBootstrap'
@@ -41,9 +41,14 @@ function PasienRegistrasi() {
 
     const loadData = (val) => {
 
-        // console.log(`object`, object)
+        console.log(`object`, moment(val.tglAwal).format('YYYY-MM-DD'))
+        let obj = {
+            ...val,
+            tglAwal: moment(val.tglAwal).format('YYYY-MM-DD'),
+            tglAkhir: moment(val.tglAkhir).format('YYYY-MM-DD'),
+        }
         setloading(true)
-        _Api.get("daftarRegistrasiPasien", { params: val }).then(res => {
+        _Api.get("daftarRegistrasiPasien", { params: obj }).then(res => {
             // console.log(res.data)
             setpasienRegistrasi(res.data)
             // _Cache.set("datapasien", JSON.stringify(res.data))
@@ -113,7 +118,6 @@ function PasienRegistrasi() {
                         <_Col sm={2} >
                             <div style={{ textAlign: "center" }}>
                                 <a href="#pablo" onClick={(e) => e.preventDefault()}>
-                                    
                                     <Image width={150} style={{ borderRadius: "15px 0px", marginTop: "10px", boxShadow: "0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(171, 71, 188, 0.32)" }}
                                         src={item.foto ? item.foto : src}
                                     />
@@ -137,10 +141,11 @@ function PasienRegistrasi() {
                                         </>
                                     }
                                     <_Button label="Data Kehamilan" icon={<NodeIndexOutlined />} color="orangered" onClick={() => dataKehamilan(item)} block sm={3} />
-
+                                    <_Col sm={3}>
+                                        <Tag size="small" color="blue">  <small> {moment(item && item.tanggal).fromNow()} </small> </Tag>
+                                    </_Col>
                                 </_Row>
-                                {/* <hr />
-                                <_Button label="Data Kehamilan" icon={<NodeIndexOutlined />} color="orangered" block sm={3} /> */}
+
                             </div>
                         </_Col>
 
@@ -168,7 +173,7 @@ function PasienRegistrasi() {
                 </CardHeader>
                 <CardBody>
                     <br />
-                    <Form layout="vertical" onFinish={loadData} form={formRegistrasi} initialValues={{ tglAwal: moment(), tglAkhir: moment() }} >
+                    <Form layout="vertical" onFinish={loadData} form={formRegistrasi} initialValues={{ tglAwal: moment(new Date()), tglAkhir: moment(new Date()) }} >
                         <_Row>
                             {/* <_Search placeholder="Cari nomor buku  ...." loading={loading} onSearch={cariPasien} sm={3} /> */}
                             <_Input name="nama" placeholder="Nama Pasien" sm={3} />
@@ -182,7 +187,7 @@ function PasienRegistrasi() {
                     <br /> <br />
                     {/* <Spin spinning={loading} size="large" tip="Loading..." > */}
                     <GridContainer>
-                        {pasienRegistrasi.length > 0 ? renderPasienRegister : <NotFound/>}
+                        {pasienRegistrasi.length > 0 ? renderPasienRegister : <NotFound />}
                     </GridContainer>
                     {/* </Spin> */}
                     <br />

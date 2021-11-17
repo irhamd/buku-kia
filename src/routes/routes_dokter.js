@@ -40,7 +40,7 @@ export const routes_dokter = [
       icon: PersonAdd,
       component: PemeriksaanDokter,
       layout: "/admin",
-      show : true,
+      // show : true,
     },
     {
       path: "/EvaluasiKesehatanBumil",

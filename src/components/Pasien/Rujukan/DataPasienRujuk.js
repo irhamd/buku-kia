@@ -19,6 +19,7 @@ import { _Swall } from "services/Toastr/Notify/_Toastr";
 import { fireCollectiom } from "services/firebase/UFirebase";
 import { F } from "services/firebase/UFirebase";
 import { updateFirebase } from "services/firebase/UFirebase";
+import PasienDitolak from "./PasienDitolak";
 
 function DataPasienRujuk() {
 
@@ -139,7 +140,7 @@ function DataPasienRujuk() {
                         </_Row>
                     </Form>
 
-                    <Tabs defaultActiveKey="1" type="card">
+                    <Tabs defaultActiveKey="1" type="card" style={{background :"#ec77ac14"}}>
                         <TabPane tab="Rekomendasi Pasien Rujuk" key="1">
                             <List
                                 itemLayout="vertical"
@@ -238,14 +239,11 @@ function DataPasienRujuk() {
                         <TabPane tab="Data Pasien Dirujuk" key="2">
                             Content of card tab 2
                         </TabPane>
-                        <TabPane tab="Card Tab 3" key="3">
-                            Content of card tab 3
+                        <TabPane tab="Pasien Ditolak RS" key="3">
+                            <PasienDitolak />
                         </TabPane>
                     </Tabs>
 
-
-                    <p> {JSON.stringify(array)} </p>
-                    {/* <p> <_Button label="Rujuk" /> </p> */}
                 </CardBody>
             </Card>
         </div>
