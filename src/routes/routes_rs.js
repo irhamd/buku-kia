@@ -5,6 +5,7 @@ import InputKehamilanSaatIni from "components/DataKehamilan/InputKehamilanSaatIn
 import JadwalKunjungan from "components/DataKehamilan/JadwalKunjungan";
 import InputKunjungan from "components/Kunjungan/InputKunjungan";
 import AturTindakan from "components/Master/AturTindakan";
+import MonitoringPasienEB from "components/Monitoring/MonitoringPasienEB";
 import DataPasien from "components/Pasien/DataPasien";
 import InputPasienBaru from "components/Pasien/InputPasienBaru";
 import LembarKerjaBidan from "components/Pasien/LembarKerjaBidan";
@@ -12,6 +13,7 @@ import EvaluasiKesehatanBumil from "components/Pasien/PemeriksaanDokter/Evaluasi
 import PemeriksaanDokter from "components/Pasien/PemeriksaanDokter/PemeriksaanDokter";
 import DataPasienRujuk from "components/Pasien/Rujukan/DataPasienRujuk";
 import MonitoringPasienEmergency from "components/Test/MonitoringPasienEmergency";
+import MonitoringPasienEmergencyEB from "components/Test/MonitoringPasienEmergencyEB";
 import TestFirebasePuskesmas from "components/Test/TestFirebasePuskesmas";
 import TestMaps from "components/Test/TestMaps";
 import DashboardPage from "views/Dashboard/Dashboard.js";
@@ -34,5 +36,13 @@ export const routes_rs = [
     layout: "/admin",
     show: true,
   },
-
+  {
+    path: "/MonitoringPasienEmergencyEB",
+    name: "Pasien Emergency Button",
+    icon: Dashboard,
+    component: MonitoringPasienEmergencyEB,
+    layout: "/admin",
+    show: true,
+  },
+  
 ]

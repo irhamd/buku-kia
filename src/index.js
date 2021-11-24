@@ -13,11 +13,13 @@ import RTL from "layouts/RTL.js";
 import "assets/css/material-dashboard-react.css?v=1.10.0";
 import "assets/css/antd/dist/antd.css";
 import "assets/css/style.css";
- 
+
 import "./App.less"
 import AttemptLogin from "components/Auth/AttemptLogin";
 import ProtectedRoute from "services/Route/ProtectedRoute";
 import moment from "moment";
+import MonitoringPasienEB from "components/Monitoring/MonitoringPasienEB";
+import MonitoringPasienEmergencyEB from "components/Test/MonitoringPasienEmergencyEB";
 // import ProtectedRoute from "services/Route/ProtectedRoute";
 
 var idLocale = require('moment/locale/id');
@@ -30,6 +32,10 @@ ReactDOM.render(
       <Route
         path="/login"
         component={AttemptLogin}
+      />
+      <ProtectedRoute
+        path="/Monitoring"
+        component={MonitoringPasienEmergencyEB}
       />
       <ProtectedRoute path="/admin" component={Admin} />
       <Redirect from="/material-dashboard-react" to="/login" />

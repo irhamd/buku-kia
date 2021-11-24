@@ -19,14 +19,38 @@ License URL: http://creativecommons.org/licenses/by/3.0/
 }
 
 
+.background3gradient {
+    height: 100vh;
+    overflow: auto;
+    background-repeat: no-repeat;
+    background-size: 100%;
+    background-image: url("images/bg.jpg");
+    /* background-image: linear-gradient(to top, #d59148, #df9d42, #e6ab3a, #ecb932, #efc828, #f1cf2b, #f3d52e, #f4dc31, #f6db3f, #f8da4a, #fada55, #fbd95f); */
+}
 
 .blink-bg {
     color: #fff;
-    padding: 10px;
+    /* padding: 10px; */
     /* display: inline-block; */
     border-radius: 5px;
     animation: blinkingBackground 2s infinite;
 }
+
+
+.body {
+    font: 0.95em "Trebuchet MS", "Arial", Helvetica, "Helvetica Neue", sans-serif;
+    margin: 0px;
+    font-weight: bolder;
+    height: 70px;
+    padding: 0px;
+    /* change_this_theme */
+    background: linear-gradient(181deg, #f08519 0%, rgb(44 37 34 / 0%) 10%, #f08519 50%);
+    /* background: linear-gradient(177.5deg, rgba(244, 255, 177, 1) 0%, rgba(254, 204, 177, 1) 10%, rgba(241, 116, 50, 1) 50%, rgba(234, 85, 7, 1) 51%, rgba(251, 109, 64, 1) 100%); */
+    /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+    background-size: 100% 80px;
+    background-repeat: no-repeat;
+}
+
 
 @keyframes blinkingBackground {
     0% {

@@ -19,14 +19,17 @@ export const _grid = (r) => {
 
 export const _Row = (props) => {
     return (
-        <Row style={{...props.style,margin :"0px"}}>
+        <Row style={{ ...props.style, margin: "0px" }}>
             {props.children}
         </Row>
     )
 }
 export const _Col = (r) => {
     return (
-        <Col sm={r.sm} style={{ ...r.style, marginLeft :"10px" }}>
+        <Col sm={r.sm} style={{
+            ...r.style,
+            // marginLeft: "10px"
+        }}>
             {r.children}
         </Col>
     )
