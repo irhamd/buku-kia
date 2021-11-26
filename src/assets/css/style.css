@@ -18,13 +18,18 @@ License URL: http://creativecommons.org/licenses/by/3.0/
     user-select: none;
 }
 
+.leaflet-control-zoom,
+.leaflet-bar {
+    display: none;
+}
 
 .background3gradient {
     height: 100vh;
     overflow: auto;
     background-repeat: no-repeat;
     background-size: 100%;
-    background-image: url("images/bg.jpg");
+    background: orange;
+    /* background-image: url("images/bg.jpg"); */
     /* background-image: linear-gradient(to top, #d59148, #df9d42, #e6ab3a, #ecb932, #efc828, #f1cf2b, #f3d52e, #f4dc31, #f6db3f, #f8da4a, #fada55, #fbd95f); */
 }
 
@@ -44,7 +49,7 @@ License URL: http://creativecommons.org/licenses/by/3.0/
     text-align: center;
     background: #fafafa;
     border: 1px solid #ebedf0;
-  }
+}
 
 
 .body {
@@ -54,7 +59,8 @@ License URL: http://creativecommons.org/licenses/by/3.0/
     height: 60px;
     padding: 0px;
     /* change_this_theme */
-    background: linear-gradient(177.5deg, rgb(242 147 49) 0%, rgb(242 147 49) 10%, rgba(241, 116, 50, 1) 50%, rgba(234, 85, 7, 1) 51%, rgba(251, 109, 64, 1) 100%);
+    background: linear-gradient(17deg, var(--yellow) 0%, var(--warning) 10%, var(--warning) 30%, rgb(230 24 33) 35%, rgba(251, 109, 64, 1) 100%);
+    /* background: linear-gradient(17deg, rgb(242 147 49) 0%, rgb(242 147 49) 10%, rgba(241, 116, 50, 1) 50%, rgba(234, 85, 7, 1) 51%, rgba(251, 109, 64, 1) 100%); */
     /* background: linear-gradient(181deg, #f08519 0%, rgb(44 37 34 / 0%) 10%, #f08519 50%); */
     /* background: linear-gradient(177.5deg, rgba(244, 255, 177, 1) 0%, rgba(254, 204, 177, 1) 10%, rgba(241, 116, 50, 1) 50%, rgba(234, 85, 7, 1) 51%, rgba(251, 109, 64, 1) 100%); */
     /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
@@ -65,7 +71,7 @@ License URL: http://creativecommons.org/licenses/by/3.0/
 
 @keyframes blinkingBackground {
     0% {
-        background-color: #e6ccaf;
+        background-color: #b46242;
     }
 
     25% {
@@ -81,7 +87,7 @@ License URL: http://creativecommons.org/licenses/by/3.0/
     }
 
     100% {
-        background-color: #e6ccaf;
+        background-color: #b46242;
     }
 }
 
@@ -1660,8 +1666,9 @@ h4.title {
 /*--map--*/
 .map {
     /* padding: 1em; */
-    height: 92vh;
+    height: 93vh;
     overflow: hidden;
+    padding: 15px;
     /* margin: -50px; */
     /* margin: -100px -30px -30px -20px; */
     margin-top: -21px;

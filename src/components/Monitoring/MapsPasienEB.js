@@ -2,7 +2,7 @@ import React, { createRef, useEffect, useRef, useState } from 'react'
 // import { MapContainer, Marker, Popup, TileLayer } from 'react-leaflet'
 
 import 'leaflet/dist/leaflet.css';
-import { collection, getDocs, addDoc, updateDoc, deleteDoc, onSnapshot, query, doc, where, } from "firebase/firestore";
+import { collection, getDocs, collectionGroup, updateDoc, deleteDoc, onSnapshot, query, doc, where, } from "firebase/firestore";
 
 // import leafGreen from '../../assets/css/images/marker-icon-2x.png';
 import leafGreen from '../../assets/css/images/icon.gif';
@@ -14,7 +14,7 @@ import { TileLayer, Popup, MapContainer, Marker } from 'react-leaflet';
 import { _Button } from 'services/Forms/Forms';
 import { db } from 'services/firebase/firebase';
 // import Marker from 'react-leaflet-animated-marker';
-import { Collapse } from 'antd';
+import { Avatar, Collapse } from 'antd';
 import { _Label } from 'services/Forms/Forms';
 import { _Row } from 'services/Forms/LayoutBootstrap';
 import { CounterTime } from 'services/Forms/FormsAdd';
@@ -22,7 +22,7 @@ import { collectionEB } from 'services/firebase/UFirebaseEB';
 import { useSuara } from 'services/Sound/UseSuara';
 import sirine from "./../../assets/sound/sirine1.m4a"
 import { PhoneOutlined } from '@material-ui/icons';
-import { DownloadOutlined, EnvironmentOutlined, LoginOutlined } from '@ant-design/icons';
+import { DownloadOutlined, EnvironmentOutlined, LoadingOutlined, LoginOutlined } from '@ant-design/icons';
 import { _Col } from 'services/Forms/LayoutBootstrap';
 import _Api from 'services/Api/_Api';
 
@@ -32,6 +32,7 @@ function MapsPasienEB(pr) {
 
     const [pasienEmer, setPasienEmer] = useState([]);
     // const [playing, toggle] = useSuara(true);
+    const [idd, setidd] = useState(null)
 
 
     const grenIcon = L.icon({
@@ -50,9 +51,10 @@ function MapsPasienEB(pr) {
 
 
 
+
     const [map, setMap] = useState(null)
     // const [position, setposition] = useState([-8.600073, 116.114254])
-    const [position, setposition] = useState([-8.5841873, 116.1057478])
+    const [position, setposition] = useState([-8.5996529, 116.1137956])
 
     const { Panel } = Collapse;
 
@@ -60,13 +62,13 @@ function MapsPasienEB(pr) {
     const posRef = useRef(null)
 
     const gotoLocation = (loc) => {
-        try {
-            // console.log(`loc`, loc)
-            var lok = [loc.lokasi._lat, loc.lokasi._long]
-            console.log(`lok`, loc.lokasi)
-            map.flyTo(loc ? lok : position, 18)
-        } catch (error) {
-        }
+
+        // console.log(`loc`, loc)
+        var lok = [loc.location._lat, loc.location._long]
+        // console.log(`lok`, loc.location)
+        // console.log(`lok`, loc)
+        map.flyTo(loc ? lok : position, 18)
+
     }
 
     let audio = new Audio(sirine)
@@ -108,25 +110,34 @@ function MapsPasienEB(pr) {
         // console.log(`object`, data.docs.map((doc) => ({ ...doc.data(), id: doc.id })))
     }
 
+    const deleteDataFirebase = async (id) => {
+        const userDoc = doc(db, "pannic_user", id);
+        await deleteDoc(userDoc);
+    };
 
 
     const savePasienEB = (itm) => {
-        console.log(`itm`, itm)
-
+        // console.log(`itm`, itm)
+        setidd(itm.uid)
         var obj = {
-            nama: "Mira",
-            phone: "08748343",
-            lokasiterakhir: JSON.stringify(itm.lokasi)
+            nama: itm.name,
+            phone: itm.phone,
+            lokasiterakhir: JSON.stringify(itm.location)
         }
         _Api.post(`eb-savePasienNewEB`, obj).then(res => {
-            console.log(`res`, res)
+            // console.log(`res`, res)
+            if (res.data.sts == 1) {
+                deleteDataFirebase(itm.uid)
+
+            }
+
+
         })
     }
 
 
     useEffect(() => {
 
-        // audio.play()
 
         onSnapshot(
             collection(db, "pannic_user"),
@@ -142,10 +153,9 @@ function MapsPasienEB(pr) {
 
     const renderPasienEB = pasienEmer.map((item, i) => {
         return (
-            <Marker key={i} position={item.lokasi ? [item.lokasi._lat, item.lokasi._long] : position} icon={grenIcon}>
+            <Marker key={i} position={item.location ? [item.location._lat, item.location._long] : position} icon={grenIcon}>
                 <Popup>
-                    {item.name} &nbsp; {item.phone}
-
+                   <h1> {item.name} &nbsp; {item.phone} </h1>
                 </Popup>
             </Marker>
         )
@@ -153,13 +163,13 @@ function MapsPasienEB(pr) {
 
     const renderPasienEBDet = pasienEmer.map((item, i) => {
         return (
-            <div className="blink-bg tengah" style={{ padding: "5px" }}>
-                <b> <h4> {item.name}</h4> </b>
-                <p style={{ marginTop: "-8px", color: "white", fontWeight: "bolder", marginBottom: "-10px" }}> <b> <h5> {item.phone} </h5> </b> </p>
+            <div className="blink-bg tengah" style={{ padding: "5px", marginBottom: "3px" }}>
+                <b> <h4 style={{ color: "yellow" }}> {item.name && item.name.toUpperCase()}</h4> </b>
+                <p style={{ marginTop: "-8px", color: "yellow", fontWeight: "bolder", marginBottom: "-5px", fontSize: "20px" }}> <b>{item.phone}  </b> </p>
                 <CounterTime />
                 <_Row>
                     <_Col sm={2} />
-                    <_Button sm={5} color="green" style={{ marginTop: "3px" }} label=" _" onClick={() => savePasienEB(item)} icon={<PhoneOutlined />} block />
+                    <_Button sm={5} color="green" loading={item.uid == idd ? true : false} style={{ marginTop: "3px" }} label=" _" onClick={() => savePasienEB(item)} icon={<PhoneOutlined />} block />
                     {/* <_Button sm={5} color="#38c038" style={{ marginTop: "3px" }} label="IN" icon={<LoginOutlined />} block /> */}
                     <_Button sm={4} color="orange" style={{ marginTop: "3px" }} label=" _" icon={<EnvironmentOutlined />} block onClick={() => gotoLocation(item)} />
                 </_Row>
@@ -170,11 +180,24 @@ function MapsPasienEB(pr) {
     return (
         <div>
 
-
-            <div style={{ position: "absolute", zIndex: 1000, width: "200px", right: "10px", top: "5px" }}>
+            <div style={{ position: "absolute", zIndex: 1000, width: "200px", right: "20px", top: "0px" }}>
                 <Collapse ghost style={{ height: "5px" }} defaultActiveKey={['1']}>
-                    <Panel header="Pasien EB" key="1">
-                        {renderPasienEBDet}
+                    <Panel header={"Pasien Emergency"} key="1">
+                        {
+                            pasienEmer.length <= 0 &&
+                            <div className="tengah" style={{ padding: "5px" }}>
+                                <b> <LoadingOutlined size="large" style={{ fontSize: "80px" }} spin /> <h4> Waiting ... </h4> </b>
+                            </div>
+                        }
+                        <h1 style={{ background: "red", textAlign: "center", borderRadius: " 20%", margin: "0px 60px 0px 60px" }}>
+                            <b> {pasienEmer.length} </b> </h1>
+                        <small> Menunggu </small>
+                        {/* <Avatar style={{ fontSize :"20px", background :"red",  verticalAlign: 'middle' }} size="large">
+                            <h1> {45} </h1>
+                        </Avatar> */}
+                        <div style={{ height: "700px", overflow: "auto" }}>
+                            {renderPasienEBDet}
+                        </div>
                     </Panel>
 
                 </Collapse>
