@@ -9,11 +9,11 @@ import Countdown from 'react-countdown';
 import { _Button } from 'services/Forms/Forms';
 import { _Row } from 'services/Forms/LayoutBootstrap';
 import src from "assets/img/no_image.jpg"
-import { Image, Modal, Spin, Tag, Button, Popconfirm, Popover, Drawer } from 'antd';
+import { Image, Modal, Spin, Tag, Button, Popconfirm, Popover, Drawer, Steps } from 'antd';
 import { _Col } from 'services/Forms/LayoutBootstrap';
 import { HighlightOutlined, PhonelinkOutlined, PhoneOutlined } from '@material-ui/icons';
 import { CounterTime } from 'services/Forms/FormsAdd';
-import { DislikeOutlined, EnvironmentOutlined, FallOutlined, QuestionCircleOutlined, SisternodeOutlined, WhatsAppOutlined } from '@ant-design/icons';
+import { DislikeOutlined, EnvironmentOutlined, FallOutlined, LoadingOutlined, QuestionCircleOutlined, SisternodeOutlined, SmileOutlined, SolutionOutlined, UserOutlined, WhatsAppOutlined } from '@ant-design/icons';
 import _Api from 'services/Api/_Api';
 import { fireCollectiom } from 'services/firebase/UFirebase';
 import { F } from 'services/firebase/UFirebase';
@@ -46,7 +46,7 @@ function MonitoringPasienEB() {
     const dbname = "pasien"
     const usersCollectionRef = fireCollectiom;
 
-
+    const { Step } = Steps;
 
     const gotoLokasi = (post) => {
         setShowpeta(true)
@@ -165,26 +165,39 @@ function MonitoringPasienEB() {
             <div className="background3gradient">
 
                 <div className="body">
-                    <div style={{ width: "100%", textAlign: "center" }}>
-                        <p style={{
-                            fontWeight: "bolder", fontSize: "20px", padding: "5px",
-                            borderColor: "rgb(236 88 14)", textAlign: "center", marginBottom: "0px"
-                        }}>  Monitoring Emergency Button
-                        </p>
-                        <Image src={logo} preview={false} onClick={() => setshowMenu(true)} style={{ marginTop: "-40px", marginLeft: "-200px" }} width={70} />
-                        <p style={{
-                            fontWeight: "bolder", fontSize: "30px", background: "#f29331",
-                            marginTop: "-40px", textAlign: "center", fontFamily: "Arial, Helvetica, sans-serif"
-                        }}> RSUD KOTA MATARAM </p>
+                    <_Row style={{ width: "100%" }}>
 
-                    </div>
+
+
+                        <_Col sm={4} style={{ marginLeft: "80px" }}>
+                            <p style={{
+                                fontWeight: "bolder", fontSize: "20px", padding: "5px",
+                                borderColor: "rgb(236 88 14)", marginBottom: "0px"
+                            }}>  Monitoring Emergency Button
+                            </p>
+                            <Image src={logo} preview={false}
+                                onClick={() => setshowMenu(true)} style={{ marginTop: "-40px", marginLeft: "-70px" }} width={70} />
+                            <p style={{
+                                fontSize: "30px",
+                                marginTop: "-45px", fontFamily: "BrothersCircus, Arial, serif"
+                            }}> RSUD KOTA MATARAM </p>
+                        </_Col>
+
+                        <_Col sm={5}>
+                            {/* <Steps style={{ background: "yellow" }} size="large">
+                                <Step status="finish" title="83" description="Pasien Emergency" icon={<UserOutlined />} />
+                                <Step status="finish" title="73" description="Commit" icon={<SolutionOutlined />} />
+                                <Step status="process" title="Pay" icon={<LoadingOutlined />} />
+                            </Steps> */}
+                        </_Col>
+                    </_Row>
                 </div>
 
 
                 <div style={{ paddingLeft: "5px" }} className="site-drawer-render-in-current-wrapper">
 
                     <Drawer
-                        placement="top"
+                        placement="left"
                         visible={showMenu}
                         onClose={() => setshowMenu(false)}
                         getContainer={false}
@@ -195,6 +208,9 @@ function MonitoringPasienEB() {
                     <br />
 
                     <MapsPasienEB />
+
+
+
                     {/* <_Row>
                         {renderPasienEmer}
 
