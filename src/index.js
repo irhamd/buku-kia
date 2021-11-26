@@ -20,6 +20,8 @@ import ProtectedRoute from "services/Route/ProtectedRoute";
 import moment from "moment";
 import MonitoringPasienEB from "components/Monitoring/MonitoringPasienEB";
 import MonitoringPasienEmergencyEB from "components/Test/MonitoringPasienEmergencyEB";
+import TestMaps from "components/Test/TestMaps";
+import TestSound from "components/Test/TestSound";
 // import ProtectedRoute from "services/Route/ProtectedRoute";
 
 var idLocale = require('moment/locale/id');
@@ -33,9 +35,17 @@ ReactDOM.render(
         path="/login"
         component={AttemptLogin}
       />
-      <ProtectedRoute
+      <Route
+        path="/TestSound"
+        component={TestSound}
+      />
+      <Route
         path="/Monitoring"
-        component={MonitoringPasienEmergencyEB}
+        component={MonitoringPasienEB}
+      />
+      <ProtectedRoute
+        path="/TestMaps"
+        component={TestMaps}
       />
       <ProtectedRoute path="/admin" component={Admin} />
       <Redirect from="/material-dashboard-react" to="/login" />

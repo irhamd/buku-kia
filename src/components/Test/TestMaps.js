@@ -72,7 +72,7 @@ function TestMaps() {
             lat: 35.772790,
             lng: -78.652305,
         },
-        zoom: 13
+        zoom: 11
     }
 
     const getLocation = async () => {
@@ -104,12 +104,12 @@ function TestMaps() {
 
     return (
         <div>
-            <div style={{ position: "absolute", zIndex: 1000, width: "200px", right: "10px", top: "5px" }}>
+            <div style={{ position: "absolute", zIndex: 1000, width: "200px", left: "10px", top: "55px" }}>
                 <Collapse ghost style={{ height: "5px" }} defaultActiveKey={['1']}>
                     <Panel header="Reminder" key="1">
 
                         <div className="blink-bg tengah" style={{ padding: "15px" }}>
-                            <_Label label="Pasien" />
+                            {/* <_Label label="Pasien" /> */}
                             <b> <h4> SITI ROZAKOH</h4> </b>
                             <p style={{ marginTop: "-10px" }}> <b> <h3>0878645996</h3> </b> </p>
                             <CounterTime />
@@ -132,9 +132,24 @@ function TestMaps() {
                     </Popup>
                 </Marker>
 
+
+                <Marker position={[-8.410979, 116.360512]} icon={grenIcon}>
+                    <Popup>
+                        SITI ROZAKOH
+                    </Popup>
+                </Marker>
+
+                <Marker position={[-8.757245, 115.972557]} icon={grenIcon}>
+                    <Popup>
+                        SITI ROZAKOH
+                    </Popup>
+                </Marker>
+
+
+
             </MapContainer>
 
-            <button type="button" ref={posRef} style={{ zIndex: 4000 }} onClick={gotoLocation}> Gooo </button>
+            {/* <button type="button" ref={posRef} style={{ zIndex: 4000 }} onClick={gotoLocation}> Gooo </button> */}
 
         </div>
     )

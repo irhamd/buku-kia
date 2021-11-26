@@ -24,6 +24,7 @@ import { updateFirebaseRS } from 'services/firebase/UFirebase';
 import { cekRefresh } from 'services/Text/GlobalText';
 
 import logo from "./../../assets/css/images/icon.png"
+import TestMaps from './TestMaps';
 function MonitoringPasienEmergencyEB() {
 
 
@@ -94,7 +95,7 @@ function MonitoringPasienEmergencyEB() {
     };
 
     useEffect(() => {
-        cekRefresh()
+        // cekRefresh()
 
         onSnapshot(
             collection(db, F.service),
@@ -115,18 +116,7 @@ function MonitoringPasienEmergencyEB() {
         return (
             <_Col sm={2}>
                 <div className="blink-bg" style={{ marginBottom: "5px", paddingTop: "10px" }}>
-                    <_Row>
-                        <_Col style={{ textAlign: "center" }}>
-                            <Image className="kotakShadow" src={item.foto ? item.foto : src} height={100} style={{ borderRadius: " 20% 0%" }} />
-                            <p style={styl.label}>  Nomor HP :  </p>
-                            <Tag color="red"> <div style={{ fontSize: "25px", fontWeight: "bold", padding: "10px" }} > {item.nohp} </div> </Tag>
-                            <CounterTime />
-                            <p style={styl.label}> Nama Pasien : </p>
-                            <div style={styl.caption}> {item.nama.substring(0, 15)}.</div>
 
-                        </_Col>
-
-                    </_Row>
 
 
                     <_Row>
@@ -191,10 +181,11 @@ function MonitoringPasienEmergencyEB() {
                 <br />
                 <div style={{ paddingLeft: "5px" }}>
 
-                    <_Row>
+                    <TestMaps />
+                    {/* <_Row>
                         {renderPasienEmer}
 
-                    </_Row>
+                    </_Row> */}
 
                 </div>
 

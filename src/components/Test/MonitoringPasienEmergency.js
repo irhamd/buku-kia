@@ -93,7 +93,7 @@ function MonitoringPasienEmergency() {
     };
 
     useEffect(() => {
-        cekRefresh()
+        // cekRefresh()
 
         onSnapshot(
             collection(db, F.service),
