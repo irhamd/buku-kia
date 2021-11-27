@@ -9,11 +9,11 @@ import Countdown from 'react-countdown';
 import { _Button } from 'services/Forms/Forms';
 import { _Row } from 'services/Forms/LayoutBootstrap';
 import src from "assets/img/no_image.jpg"
-import { Image, Modal, Spin, Tag, Button, Popconfirm, Popover, Drawer, Steps } from 'antd';
+import { Image, Modal, Menu, Tag, Button, Popconfirm, Popover, Drawer, Steps } from 'antd';
 import { _Col } from 'services/Forms/LayoutBootstrap';
-import { HighlightOutlined, PhonelinkOutlined, PhoneOutlined } from '@material-ui/icons';
+import { HighlightOutlined, MailOutlined, PhonelinkOutlined, PhoneOutlined } from '@material-ui/icons';
 import { CounterTime } from 'services/Forms/FormsAdd';
-import { DislikeOutlined, EnvironmentOutlined, FallOutlined, LoadingOutlined, QuestionCircleOutlined, SisternodeOutlined, SmileOutlined, SolutionOutlined, UserOutlined, WhatsAppOutlined } from '@ant-design/icons';
+import { AppstoreOutlined, DislikeOutlined, EnvironmentOutlined, FallOutlined, LoadingOutlined, QuestionCircleOutlined, SettingOutlined, SisternodeOutlined, SmileOutlined, SolutionOutlined, UserOutlined, WhatsAppOutlined } from '@ant-design/icons';
 import _Api from 'services/Api/_Api';
 import { fireCollectiom } from 'services/firebase/UFirebase';
 import { F } from 'services/firebase/UFirebase';
@@ -23,6 +23,12 @@ import { updateFirebaseRS } from 'services/firebase/UFirebase';
 import { cekRefresh } from 'services/Text/GlobalText';
 
 import logo from "./../../assets/css/images/icon.png"
+import ambulance from "./../../assets/css/images/ambulance.png"
+import call from "./../../assets/css/images/call.png"
+import siren from "./../../assets/css/images/siren.png"
+import block from "./../../assets/css/images/block.png"
+import stop from "./../../assets/css/images/stop.png"
+import menu from "./../../assets/css/images/menu.png"
 import MapsPasienEB from './MapsPasienEB';
 import { useSuara } from 'services/Sound/UseSuara';
 import { collectionEB } from 'services/firebase/UFirebaseEB';
@@ -53,7 +59,7 @@ function MonitoringPasienEB() {
         setposition(post)
     }
 
-
+    const { SubMenu } = Menu;
 
     const updateDB = (id_pasienrujuk, sts, kodefirebase) => {
         // setloading(true)
@@ -160,36 +166,128 @@ function MonitoringPasienEB() {
         );
     })
 
+
+    const style = {
+        value: { fontFamily: "BrothersCircus, Arial, serif", position: "absolute", top: "-13px" },
+        div: { background: "orange", padding: "10px", fontFamily: "BrothersCircus, Arial, serif" },
+        small: { position: "absolute", top: "35px", left: "-43px" }
+    }
     return (
         <div>
             <div className="background3gradient">
 
-                <div className="body">
+                <div className=" body">
                     <_Row style={{ width: "100%" }}>
-
-
-
                         <_Col sm={4} style={{ marginLeft: "80px" }}>
                             <p style={{
                                 fontWeight: "bolder", fontSize: "20px", padding: "5px",
                                 borderColor: "rgb(236 88 14)", marginBottom: "0px"
                             }}>  Monitoring Emergency Button
                             </p>
-                            <Image src={logo} preview={false}
-                                onClick={() => setshowMenu(true)} style={{ marginTop: "-40px", marginLeft: "-70px" }} width={70} />
+                            <Image src={logo} preview={false} style={{ marginTop: "-40px", marginLeft: "-70px" }} width={70} />
                             <p style={{
                                 fontSize: "30px",
-                                marginTop: "-45px", fontFamily: "BrothersCircus, Arial, serif"
+                                marginTop: "-45px", fontFamily: "BrothersCircus, Arial, serif", color: "#7d2017"
                             }}> RSUD KOTA MATARAM </p>
                         </_Col>
 
-                        <_Col sm={5}>
-                            {/* <Steps style={{ background: "yellow" }} size="large">
-                                <Step status="finish" title="83" description="Pasien Emergency" icon={<UserOutlined />} />
-                                <Step status="finish" title="73" description="Commit" icon={<SolutionOutlined />} />
-                                <Step status="process" title="Pay" icon={<LoadingOutlined />} />
-                            </Steps> */}
+                        <_Col sm={6}>
+                            <_Row>
+                                <_Col sm={2} style={style.div}>
+                                    <_Row>
+                                        <_Col>
+                                            <Image src={siren} preview={false} width={40} />
+                                        </_Col>
+                                        <_Col>
+                                            <b> <h1 style={style.value}> 30 </h1> </b>
+                                        </_Col>
+                                        <_Col>
+                                            <small style={style.small}> Pasien EB </small>
+                                        </_Col>
+                                    </_Row>
+                                </_Col> &nbsp;
+
+                                <_Col sm={2} style={style.div}>
+                                    <_Row>
+                                        <_Col>
+                                            <Image src={ambulance} preview={false} width={40} />
+                                        </_Col>
+                                        <_Col>
+                                            <b> <h1 style={style.value}> 5 </h1> </b>
+                                        </_Col>
+                                        <_Col>
+                                            <small style={style.small}> Ambulance </small>
+                                        </_Col>
+                                    </_Row>
+                                </_Col> &nbsp;
+
+                                <_Col sm={2} style={style.div}>
+                                    <_Row>
+                                        <_Col>
+                                            <Image src={call} preview={false} width={40} />
+                                        </_Col>
+                                        <_Col>
+                                            <b> <h1 style={style.value}> 23 </h1> </b>
+                                        </_Col>
+                                        <_Col>
+                                            <small style={style.small}> Follow Up </small>
+                                        </_Col>
+                                    </_Row>
+                                </_Col> &nbsp;
+
+
+                                <_Col sm={2} style={style.div}>
+                                    <_Row>
+                                        <_Col>
+                                            <Image src={stop} preview={false} width={40} />
+                                        </_Col>
+                                        <_Col>
+                                            <b> <h1 style={style.value}> 7 </h1> </b>
+                                        </_Col>
+                                        <_Col>
+                                            <small style={style.small}> Pasien Ditolak </small>
+                                        </_Col>
+                                    </_Row>
+                                </_Col> &nbsp;
+
+                                <_Col sm={2} style={style.div}>
+                                    <_Row>
+                                        <_Col>
+                                            <Image src={block} preview={false} width={40} />
+                                        </_Col>
+                                        <_Col>
+                                            <b> <h1 style={style.value}> 2 </h1> </b>
+                                        </_Col>
+                                        <_Col>
+                                            <small style={style.small}> Pasien Dianulir </small>
+                                        </_Col>
+                                    </_Row>
+                                </_Col> &nbsp;
+
+
+
+
+                            </_Row>
                         </_Col>
+                        <_Col>
+                            <_Row>
+                                <_Col style={{ ...style.div, cursor: "pointer", background: "#ffa500ba" }} onClick={() => setshowMenu(true)}>
+                                    <_Row>
+                                        <_Col>
+                                            <Image src={menu} preview={false} width={40} />
+                                        </_Col>
+                                        <_Col>
+                                            <b> <h1 style={style.value}> MENU </h1> </b>
+                                        </_Col>
+                                        <_Col>
+                                            <small style={style.small}> Pasien EB </small>
+                                        </_Col>
+                                    </_Row>
+                                </_Col> &nbsp;
+
+                            </_Row>
+                        </_Col>
+
                     </_Row>
                 </div>
 
@@ -197,13 +295,34 @@ function MonitoringPasienEB() {
                 <div style={{ paddingLeft: "5px" }} className="site-drawer-render-in-current-wrapper">
 
                     <Drawer
-                        placement="left"
+                        placement="top"
+                        bodyStyle={{ background: "#ffc107", padding: "5px 0px" }}
                         visible={showMenu}
+                        height={60}
                         onClose={() => setshowMenu(false)}
                         getContainer={false}
                         style={{ position: 'absolute' }}
                     >
-                        <p>Some contents...</p>
+                        <Menu mode="horizontal" style={{ background: "#ffc107", fontWeight :"bolder" }}>
+                            <Menu.Item key="mail" icon={<MailOutlined />}>
+                                Pasien EB
+                            </Menu.Item>
+                            <Menu.Item key="app" icon={<AppstoreOutlined />}>
+                                Users
+                            </Menu.Item>
+                            <SubMenu key="SubMenu" icon={<SettingOutlined />} title="Laporan - Laporan">
+                                
+                                    <Menu.Item key="setting:1">Laporan Emergency1</Menu.Item>
+                                    <Menu.Item key="setting:2">Riwayat Pasien</Menu.Item>
+                                    <Menu.Item key="setting:3">Timeline</Menu.Item>
+                                 
+                            </SubMenu>
+                            <Menu.Item key="alipay">
+                                <a target="_blank" rel="noopener noreferrer">
+                                    SIMRS
+                                </a>
+                            </Menu.Item>
+                        </Menu>
                     </Drawer>
                     <br />
 

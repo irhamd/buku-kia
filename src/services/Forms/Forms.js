@@ -191,7 +191,7 @@ export const _RadioGroup = (r) => {
                     size={r.size}
                 /> */}
 
-                <Radio.Group buttonStyle="solid" defaultValue={r.defaultValue} onChange={e => console.log(e)}>
+                <Radio.Group buttonStyle="solid" style={r.style} defaultValue={r.defaultValue} onChange={e => console.log(e)}>
                     <Space direction={r.direction ? r.direction : "horizontal"} >
                         {render}
                     </Space>

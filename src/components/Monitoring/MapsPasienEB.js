@@ -14,26 +14,31 @@ import { TileLayer, Popup, MapContainer, Marker } from 'react-leaflet';
 import { _Button } from 'services/Forms/Forms';
 import { db } from 'services/firebase/firebase';
 // import Marker from 'react-leaflet-animated-marker';
-import { Avatar, Collapse } from 'antd';
+import { Avatar, Collapse, Modal, Form } from 'antd';
 import { _Label } from 'services/Forms/Forms';
 import { _Row } from 'services/Forms/LayoutBootstrap';
 import { CounterTime } from 'services/Forms/FormsAdd';
 import { collectionEB } from 'services/firebase/UFirebaseEB';
 import { useSuara } from 'services/Sound/UseSuara';
 import sirine from "./../../assets/sound/sirine1.m4a"
-import { PhoneOutlined } from '@material-ui/icons';
-import { DownloadOutlined, EnvironmentOutlined, LoadingOutlined, LoginOutlined } from '@ant-design/icons';
+import { PhoneOutlined, StopOutlined } from '@material-ui/icons';
+import { AlertOutlined, DislikeOutlined, DownloadOutlined, EnvironmentOutlined, LoadingOutlined, LoginOutlined, SisternodeOutlined } from '@ant-design/icons';
 import { _Col } from 'services/Forms/LayoutBootstrap';
 import _Api from 'services/Api/_Api';
+import { _Input } from 'services/Forms/Forms';
+import { _RadioGroup } from 'services/Forms/Forms';
 
 
 
 function MapsPasienEB(pr) {
 
     const [pasienEmer, setPasienEmer] = useState([]);
-    // const [playing, toggle] = useSuara(true);
+    const [show, setshow] = useState(false);
+    const [loading, setloading] = useState(false);
     const [idd, setidd] = useState(null)
+    const [tempt, settempt] = useState(null)
 
+    const [formDetail] = Form.useForm()
 
     const grenIcon = L.icon({
         iconUrl: leafGreen,
@@ -97,8 +102,7 @@ function MapsPasienEB(pr) {
         var arr = data.docs.map((doc) => ({ ...doc.data(), uid: doc.id }))
 
         if (arr.length > 0) {
-            // audio.play()
-            console.log(`ddd`)
+            audio.play()
         }
         else {
             audio.currentTime = 0
@@ -116,46 +120,77 @@ function MapsPasienEB(pr) {
     };
 
 
-    const savePasienEB = (itm) => {
-        // console.log(`itm`, itm)
-        setidd(itm.uid)
-        var obj = {
+    const respondpasien = (itm) => {
+        settempt(itm)
+        setshow(true)
+        formDetail.setFieldsValue({
             nama: itm.name,
-            phone: itm.phone,
-            lokasiterakhir: JSON.stringify(itm.location)
+            phone: itm.phone
+        })
+
+        // console.log(`itm`, itm)
+
+        // setidd(itm.uid)
+        // var obj = {
+        //     nama: itm.name,
+        //     phone: itm.phone,
+        //     lokasiterakhir: JSON.stringify(itm.location)
+        // }
+        // _Api.post(`eb-savePasienNewEB`, obj).then(res => {
+        //     // console.log(`res`, res)
+        //     if (res.data.sts == 1) {
+        //         deleteDataFirebase(itm.uid)
+
+        //     }
+        // })
+    }
+
+    const savePasienEB = (val) => {
+
+        setloading(true)
+        // console.log(`val`, val)
+        var obj = {
+            ...tempt,
+            ...val,
+            lat: tempt.location._lat,
+            long: tempt.location._long
         }
+
         _Api.post(`eb-savePasienNewEB`, obj).then(res => {
             // console.log(`res`, res)
             if (res.data.sts == 1) {
-                deleteDataFirebase(itm.uid)
-
+                deleteDataFirebase(tempt.uid)
+                setshow(false)
+                setloading(false)
             }
-
-
         })
+
     }
+
+    const jenisKelamin = [
+        { value: "L", label: "L" },
+        { value: "P", label: "P" },
+    ]
+
+    const followUp = [
+        { value: "cm", label: "Commit" },
+        { value: "rj", label: "Reject" },
+    ]
 
 
     useEffect(() => {
-
-
         onSnapshot(
             collection(db, "pannic_user"),
             (snapshot) => {
                 getdatapasienEB()
-                // audio.play()
-                // console.log(`audio`, audio.currentTime)
             })
-
-
-
     }, [])
 
     const renderPasienEB = pasienEmer.map((item, i) => {
         return (
             <Marker key={i} position={item.location ? [item.location._lat, item.location._long] : position} icon={grenIcon}>
                 <Popup>
-                   <h1> {item.name} &nbsp; {item.phone} </h1>
+                    <h1> {item.name} &nbsp; {item.phone} </h1>
                 </Popup>
             </Marker>
         )
@@ -169,9 +204,9 @@ function MapsPasienEB(pr) {
                 <CounterTime />
                 <_Row>
                     <_Col sm={2} />
-                    <_Button sm={5} color="green" loading={item.uid == idd ? true : false} style={{ marginTop: "3px" }} label=" _" onClick={() => savePasienEB(item)} icon={<PhoneOutlined />} block />
+                    <_Button sm={5} color="green" loading={loading} style={{ marginTop: "3px" }} label=" _" onClick={() => respondpasien(item)} icon={<PhoneOutlined />} block />
                     {/* <_Button sm={5} color="#38c038" style={{ marginTop: "3px" }} label="IN" icon={<LoginOutlined />} block /> */}
-                    <_Button sm={4} color="orange" style={{ marginTop: "3px" }} label=" _" icon={<EnvironmentOutlined />} block onClick={() => gotoLocation(item)} />
+                    <_Button sm={4} color="orange" style={{ marginTop: "3px" }} loading={loading} label=" _" icon={<EnvironmentOutlined />} block onClick={() => gotoLocation(item)} />
                 </_Row>
             </div>
         )
@@ -179,6 +214,28 @@ function MapsPasienEB(pr) {
 
     return (
         <div>
+            <Modal bodyStyle={{ background: "#ffc107" }} visible={show} footer={[]}>
+                <br />
+                <Form labelCol={{ span: 5 }}
+                    wrapperCol={{ span: 18 }}
+                    onFinish={savePasienEB}
+                    form={formDetail} >
+                    <_Input label="No. HP" required name="phone" disabled block />
+                    <_Input label="Nama" required block name="nama" />
+                    <_Input label="Alamat" multiline block name="alamat" />
+                    <_Input label="Kecamatan" block name="kecamatan" />
+                    <_RadioGroup options={jenisKelamin} label="Jenis Kelamin" name="jeniskelamin" />
+                    <hr />
+                    <_RadioGroup required options={followUp} label="Follow Up" name="status" size="large" />
+
+                    <br />
+                    <_Row>
+                        <_Button label="OK" loading={loading} color="green" submit block size="large" icon={<AlertOutlined />} />
+                        {/* <_Button label="Rollbak" color="red" sm={6} block icon={<DislikeOutlined />} />
+                        <_Button label="Update / Tutup" color="orangered" submit sm={6} block icon={<DislikeOutlined />} /> */}
+                    </_Row>
+                </Form>
+            </Modal>
 
             <div style={{ position: "absolute", zIndex: 1000, width: "200px", right: "20px", top: "0px" }}>
                 <Collapse ghost style={{ height: "5px" }} defaultActiveKey={['1']}>
@@ -215,7 +272,7 @@ function MapsPasienEB(pr) {
 
             {/* <button type="button" ref={posRef} style={{ zIndex: 4000 }} onClick={gotoLocation}> Gooo </button> */}
 
-        </div>
+        </div >
     )
 }
 

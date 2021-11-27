@@ -17,10 +17,10 @@ export const _grid = (r) => {
     )
 }
 
-export const _Row = (props) => {
+export const _Row = (pr) => {
     return (
-        <Row style={{ ...props.style, margin: "0px" }}>
-            {props.children}
+        <Row style={{ ...pr.style, margin: "0px" }} onClick={pr.onClick}>
+            {pr.children}
         </Row>
     )
 }
@@ -29,7 +29,7 @@ export const _Col = (r) => {
         <Col sm={r.sm} style={{
             ...r.style,
             // marginLeft: "10px"
-        }}>
+        }} onClick={r.onClick}>
             {r.children}
         </Col>
     )
