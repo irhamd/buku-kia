@@ -153,7 +153,10 @@ function MapsPasienEB(pr) {
             ...tempt,
             ...val,
             lat: tempt.location._lat,
-            long: tempt.location._long
+            long: tempt.location._long,
+            status: 3,
+            alamat: "",
+            kecamatan: "",
         }
 
         _Api.post(`eb-savePasienNewEB`, obj).then(res => {
@@ -204,9 +207,9 @@ function MapsPasienEB(pr) {
                 <CounterTime />
                 <_Row>
                     <_Col sm={2} />
-                    <_Button sm={5} color="green" loading={loading} style={{ marginTop: "3px" }} label=" _" onClick={() => respondpasien(item)} icon={<PhoneOutlined />} block />
+                    <_Button sm={5} color="green" style={{ marginTop: "3px" }} label=" _" onClick={() => respondpasien(item)} icon={<PhoneOutlined />} block />
                     {/* <_Button sm={5} color="#38c038" style={{ marginTop: "3px" }} label="IN" icon={<LoginOutlined />} block /> */}
-                    <_Button sm={4} color="orange" style={{ marginTop: "3px" }} loading={loading} label=" _" icon={<EnvironmentOutlined />} block onClick={() => gotoLocation(item)} />
+                    <_Button sm={4} color="orange" style={{ marginTop: "3px" }} label=" _" icon={<EnvironmentOutlined />} block onClick={() => gotoLocation(item)} />
                 </_Row>
             </div>
         )

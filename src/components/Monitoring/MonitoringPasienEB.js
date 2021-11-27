@@ -271,7 +271,7 @@ function MonitoringPasienEB() {
                         </_Col>
                         <_Col>
                             <_Row>
-                                <_Col style={{ ...style.div, cursor: "pointer", background: "#ffa500ba" }} onClick={() => setshowMenu(true)}>
+                                <_Col style={{ ...style.div, cursor: "pointer", background: "#ffa500ba" }} onClick={() => setshowMenu(!showMenu)}>
                                     <_Row>
                                         <_Col>
                                             <Image src={menu} preview={false} width={40} />
