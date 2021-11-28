@@ -25,7 +25,7 @@ License URL: http://creativecommons.org/licenses/by/3.0/
 
 .background3gradient {
     height: 100vh;
-    overflow: auto;
+    overflow: hidden;
     background-repeat: no-repeat;
     background-size: 100%;
     background: orange;
@@ -1658,6 +1658,11 @@ h4.title {
 
 .bg-orange {
     background-color: #fac1ed;
+    cursor: pointer;
+}
+
+.bg-red {
+    background-color: #ffcfd4;
     cursor: pointer;
 }
 

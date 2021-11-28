@@ -19,7 +19,7 @@ export const _grid = (r) => {
 
 export const _Row = (pr) => {
     return (
-        <Row style={{ ...pr.style, margin: "0px" }} onClick={pr.onClick}>
+        <Row style={{ ...pr.style, margin: "0px", cursor: pr.onClick && 'pointer', }} onClick={pr.onClick}>
             {pr.children}
         </Row>
     )

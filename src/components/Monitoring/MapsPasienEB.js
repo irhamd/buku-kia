@@ -27,6 +27,8 @@ import { _Col } from 'services/Forms/LayoutBootstrap';
 import _Api from 'services/Api/_Api';
 import { _Input } from 'services/Forms/Forms';
 import { _RadioGroup } from 'services/Forms/Forms';
+import { _Switch } from 'services/Forms/Forms';
+import { cekRefresh } from 'services/Text/GlobalText';
 
 
 
@@ -69,10 +71,13 @@ function MapsPasienEB(pr) {
     const gotoLocation = (loc) => {
 
         // console.log(`loc`, loc)
-        var lok = [loc.location._lat, loc.location._long]
+
+
+        var lok = loc.location ? [loc.location._lat, loc.location._long] : position
         // console.log(`lok`, loc.location)
         // console.log(`lok`, loc)
-        map.flyTo(loc ? lok : position, 18)
+
+        map.flyTo(lok, 18)
 
     }
 
@@ -102,7 +107,7 @@ function MapsPasienEB(pr) {
         var arr = data.docs.map((doc) => ({ ...doc.data(), uid: doc.id }))
 
         if (arr.length > 0) {
-            audio.play()
+            // audio.play()
         }
         else {
             audio.currentTime = 0
@@ -110,6 +115,7 @@ function MapsPasienEB(pr) {
         }
 
         setPasienEmer(arr);
+        pr.setjumlahEB(arr.length)
 
         // console.log(`object`, data.docs.map((doc) => ({ ...doc.data(), id: doc.id })))
     }
@@ -152,11 +158,9 @@ function MapsPasienEB(pr) {
         var obj = {
             ...tempt,
             ...val,
-            lat: tempt.location._lat,
-            long: tempt.location._long,
-            status: 3,
-            alamat: "",
-            kecamatan: "",
+            lat: tempt.location && tempt.location._lat,
+            long: tempt.location && tempt.location._long,
+
         }
 
         _Api.post(`eb-savePasienNewEB`, obj).then(res => {
@@ -165,6 +169,7 @@ function MapsPasienEB(pr) {
                 deleteDataFirebase(tempt.uid)
                 setshow(false)
                 setloading(false)
+                pr.getData()
             }
         })
 
@@ -182,6 +187,11 @@ function MapsPasienEB(pr) {
 
 
     useEffect(() => {
+        formDetail.setFieldsValue({
+            nama: "",
+            status: ""
+        })
+        cekRefresh
         onSnapshot(
             collection(db, "pannic_user"),
             (snapshot) => {
@@ -230,6 +240,7 @@ function MapsPasienEB(pr) {
                     <_RadioGroup options={jenisKelamin} label="Jenis Kelamin" name="jeniskelamin" />
                     <hr />
                     <_RadioGroup required options={followUp} label="Follow Up" name="status" size="large" />
+                    <_Switch label="Ambulance" block name="isambulance" />
 
                     <br />
                     <_Row>

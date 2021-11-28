@@ -1,25 +1,12 @@
 import React, { useState, useEffect } from 'react'
 // import { db } from "./firebase-config";
-import { collection, getDocs, addDoc, updateDoc, deleteDoc, onSnapshot, query, doc, where, } from "firebase/firestore";
-import { db } from 'services/firebase/firebase';
 import { _Swall } from 'services/Toastr/Notify/_Toastr';
 import { Detector, Offline, Online } from 'react-detect-offline';
-import Cookies from 'js-cookie';
-import Countdown from 'react-countdown';
 import { _Button } from 'services/Forms/Forms';
 import { _Row } from 'services/Forms/LayoutBootstrap';
-import src from "assets/img/no_image.jpg"
-import { Image, Modal, Menu, Tag, Button, Popconfirm, Popover, Drawer, Steps } from 'antd';
+import { Image, Modal, Menu, Tag, Button, Popconfirm, Popover, Drawer, Steps, Spin } from 'antd';
 import { _Col } from 'services/Forms/LayoutBootstrap';
-import { HighlightOutlined, MailOutlined, PhonelinkOutlined, PhoneOutlined } from '@material-ui/icons';
-import { CounterTime } from 'services/Forms/FormsAdd';
-import { AppstoreOutlined, DislikeOutlined, EnvironmentOutlined, FallOutlined, LoadingOutlined, QuestionCircleOutlined, SettingOutlined, SisternodeOutlined, SmileOutlined, SolutionOutlined, UserOutlined, WhatsAppOutlined } from '@ant-design/icons';
 import _Api from 'services/Api/_Api';
-import { fireCollectiom } from 'services/firebase/UFirebase';
-import { F } from 'services/firebase/UFirebase';
-import { updateFirebase } from 'services/firebase/UFirebase';
-import $ from "jquery"
-import { updateFirebaseRS } from 'services/firebase/UFirebase';
 import { cekRefresh } from 'services/Text/GlobalText';
 
 import logo from "./../../assets/css/images/icon.png"
@@ -30,141 +17,49 @@ import block from "./../../assets/css/images/block.png"
 import stop from "./../../assets/css/images/stop.png"
 import menu from "./../../assets/css/images/menu.png"
 import MapsPasienEB from './MapsPasienEB';
-import { useSuara } from 'services/Sound/UseSuara';
-import { collectionEB } from 'services/firebase/UFirebaseEB';
+import MenuUtama from './DataPasienEB/MenuUtama';
+import { addToFirebase } from 'services/firebase/UFirebaseEB';
+import RiwayatEmergencyButton from './DataPasienEB/RiwayatEmergencyButton';
+
 
 
 function MonitoringPasienEB() {
 
 
-    const [newName, setNewName] = useState("");
-    const [newAge, setNewAge] = useState(0);
-    const [position, setposition] = useState(null)
-    const [showpeta, setShowpeta] = useState(false)
-    const [loading, setloading] = useState(false)
-    const [idd, setidd] = useState(null)
+    const [jumlahEB, setjumlahEB] = useState(0)
     const [showMenu, setshowMenu] = useState(false)
+    const [datas, setdatas] = useState([])
+    const [loading, setloading] = useState(false)
+    const [ambul, setambul] = useState(0)
+    const [pasienanulir, setpasienanulir] = useState(0)
+    const [showDPEB, setshowDPEB] = useState(false)
+ 
 
 
 
-    const [pasienEmer, setPasienEmer] = useState([]);
-    const [pasienEB, setpasienEB] = useState([]);
-    const dbname = "pasien"
-    const usersCollectionRef = fireCollectiom;
 
-    const { Step } = Steps;
-
-    const gotoLokasi = (post) => {
-        setShowpeta(true)
-        setposition(post)
-    }
-
-    const { SubMenu } = Menu;
-
-    const updateDB = (id_pasienrujuk, sts, kodefirebase) => {
-        // setloading(true)
-        // setidd(id_pasienrujuk)
-        // _Api.get(`updateStatusPasienRujuk/${id_pasienrujuk}/${sts} `).then(res => {
-        //     if (res.data.sts == 1) {
-        //         // _Swall.success("suksess ...")
-        //         getUsers()
-        //         updateFirebaseRS(kodefirebase)
-        //     } else {
-        //         _Swall.error("Gagal .")
-        //     }
-        // }).catch(err => {
-        //     _Swall.error("Gagal .Err")
-
-        // })
-    }
-
-    const getUsers = () => {
-        // setloading(false)
-
-        // const q = query(fireCollectiom,
-        //     where("isrujuk", "==", true)
-        // );
-        // const querySnapshot = await getDocs(q);
-        // let dt = querySnapshot.docs.map((doc) => ({ ...doc.data(), id: doc.id }))
-        var dt = []
-        _Api.get(`getPasienRujukRS`).then(res => {
-            dt = res.data.data
-            setPasienEmer(dt);
+    const getData = () => {
+        setloading(true)
+        _Api.get(`eb-getDataDashboard`).then(res => {
             setloading(false)
-            setidd(null)
-
-            // console.log(`dt`, dt)
-            if (dt.length > 0) {
-
-            }
+            setdatas(res.data.data)
+            setambul(res.data.ambulance)
+            setpasienanulir(res.data.pasienanulir)
         })
     };
 
 
 
     useEffect(() => {
-
-
-        onSnapshot(
-            collection(db, F.service),
-            (snapshot) => {
-                // getUsers()
-            }
-        )
-
-
-
-
-        // navigator.geolocation.getCurrentPosition(function (position) {
-        //     console.log("Latitude is :", position.coords.latitude + ', ' + position.coords.longitude);
-        // });
-
+        getData()
+        cekRefresh()
+        // onSnapshot(
+        //     collection(db, F.service),
+        //     (snapshot) => {
+        //         getUsers()
+        //     }
+        // )
     }, []);
-
-    const renderPasienEmer = pasienEmer.map((item) => {
-        return (
-            <_Col sm={2}>
-                <div className="blink-bg" style={{ marginBottom: "5px", paddingTop: "10px" }}>
-
-
-                    <_Row>
-                        <_Col sm={1} />
-                        {/* <p> {JSON.stringify(item)} </p> */}
-                        {item.status == "request" || !item.status ?
-                            <_Button size="large" loading={item.id == idd ? true : false} icon={<PhoneOutlined />} sm={4} block color="green" onClick={() => {
-                                updateDB(item.id, "konfirm", item.kodefirebase)
-                            }} /> :
-                            <_Button size="large" label="Commit" loading={item.id == idd ? true : false} icon={<SisternodeOutlined spin />} sm={4} block color="#17a2b8" onClick={() => {
-                                updateDB(item.id, "commit", item.kodefirebase)
-                            }} />
-                        }
-
-                        <Popconfirm
-                            title="TOLAK PERMINTAAN EMERGENCY PASIEN !?"
-                            onConfirm={() => {
-                                updateDB(item.id, "ditolak", item.kodefirebase);
-                            }}
-                            okText="Ya, Tolak"
-                            cancelText="Batal"
-                        >
-                            <_Button size="large" color="orange" loading={item.id == idd ? true : false} sm={2} block icon={<DislikeOutlined />}
-                            />
-
-                        </Popconfirm>
-
-
-                        <_Button size="large" color="orangered" sm={1} icon={<EnvironmentOutlined />}
-                            onClick={() => gotoLokasi([-8.600073, 116.114254])}
-                        />
-                    </_Row>
-                    <br />
-
-
-                </div>
-            </_Col>
-
-        );
-    })
 
 
     const style = {
@@ -184,7 +79,7 @@ function MonitoringPasienEB() {
                                 borderColor: "rgb(236 88 14)", marginBottom: "0px"
                             }}>  Monitoring Emergency Button
                             </p>
-                            <Image src={logo} preview={false} style={{ marginTop: "-40px", marginLeft: "-70px" }} width={70} />
+                            <Image src={logo} preview={false} style={{ marginTop: "-40px", marginLeft: "-70px" }} width={70} onClick={addToFirebase} />
                             <p style={{
                                 fontSize: "30px",
                                 marginTop: "-45px", fontFamily: "BrothersCircus, Arial, serif", color: "#7d2017"
@@ -192,95 +87,106 @@ function MonitoringPasienEB() {
                         </_Col>
 
                         <_Col sm={6}>
-                            <_Row>
-                                <_Col sm={2} style={style.div}>
-                                    <_Row>
-                                        <_Col>
-                                            <Image src={siren} preview={false} width={40} />
-                                        </_Col>
-                                        <_Col>
-                                            <b> <h1 style={style.value}> 30 </h1> </b>
-                                        </_Col>
-                                        <_Col>
-                                            <small style={style.small}> Pasien EB </small>
-                                        </_Col>
-                                    </_Row>
-                                </_Col> &nbsp;
+                            <Spin spinning={loading} >
+                                <_Row>
+                                    <_Col sm={2} style={style.div}>
+                                        <_Row>
+                                            <_Col>
+                                                <Image src={siren} preview={false} width={40} />
+                                            </_Col>
+                                            <_Col>
+                                                <h1 style={style.value}>
+                                                    {datas.length > 0 ? (datas[0].total + jumlahEB + datas[1].total) : jumlahEB}
+                                                </h1>
+                                            </_Col>
+                                            <_Col>
+                                                <small style={style.small}> Pasien EB </small>
+                                            </_Col>
+                                        </_Row>
+                                    </_Col> &nbsp;
 
-                                <_Col sm={2} style={style.div}>
-                                    <_Row>
-                                        <_Col>
-                                            <Image src={ambulance} preview={false} width={40} />
-                                        </_Col>
-                                        <_Col>
-                                            <b> <h1 style={style.value}> 5 </h1> </b>
-                                        </_Col>
-                                        <_Col>
-                                            <small style={style.small}> Ambulance </small>
-                                        </_Col>
-                                    </_Row>
-                                </_Col> &nbsp;
+                                    <_Col sm={2} style={style.div}>
+                                        <_Row>
+                                            <_Col>
+                                                <Image src={ambulance} preview={false} width={40} />
+                                            </_Col>
+                                            <_Col>
+                                                <b> <h1 style={style.value}> {ambul} </h1> </b>
+                                            </_Col>
+                                            <_Col>
+                                                <small style={style.small}> Ambulance </small>
+                                            </_Col>
+                                        </_Row>
+                                    </_Col> &nbsp;
 
-                                <_Col sm={2} style={style.div}>
-                                    <_Row>
-                                        <_Col>
-                                            <Image src={call} preview={false} width={40} />
-                                        </_Col>
-                                        <_Col>
-                                            <b> <h1 style={style.value}> 23 </h1> </b>
-                                        </_Col>
-                                        <_Col>
-                                            <small style={style.small}> Follow Up </small>
-                                        </_Col>
-                                    </_Row>
-                                </_Col> &nbsp;
-
-
-                                <_Col sm={2} style={style.div}>
-                                    <_Row>
-                                        <_Col>
-                                            <Image src={stop} preview={false} width={40} />
-                                        </_Col>
-                                        <_Col>
-                                            <b> <h1 style={style.value}> 7 </h1> </b>
-                                        </_Col>
-                                        <_Col>
-                                            <small style={style.small}> Pasien Ditolak </small>
-                                        </_Col>
-                                    </_Row>
-                                </_Col> &nbsp;
-
-                                <_Col sm={2} style={style.div}>
-                                    <_Row>
-                                        <_Col>
-                                            <Image src={block} preview={false} width={40} />
-                                        </_Col>
-                                        <_Col>
-                                            <b> <h1 style={style.value}> 2 </h1> </b>
-                                        </_Col>
-                                        <_Col>
-                                            <small style={style.small}> Pasien Dianulir </small>
-                                        </_Col>
-                                    </_Row>
-                                </_Col> &nbsp;
+                                    <_Col sm={2} style={style.div}>
+                                        <_Row>
+                                            <_Col>
+                                                <Image src={call} preview={false} width={40} />
+                                            </_Col>
+                                            <_Col>
+                                                <b> <h1 style={style.value}> {datas.length > 0 && datas[0].total} </h1> </b>
+                                            </_Col>
+                                            <_Col>
+                                                <small style={style.small}> Follow Up ({datas.length > 0 && datas[0].status}) </small>
+                                            </_Col>
+                                        </_Row>
+                                    </_Col> &nbsp;
 
 
+                                    <_Col sm={2} style={style.div}>
+                                        <_Row>
+                                            <_Col>
+                                                <Image src={stop} preview={false} width={40} />
+                                            </_Col>
+                                            <_Col>
+                                                <b> <h1 style={style.value}> {datas.length > 0 && datas[1].total} </h1> </b>
+                                            </_Col>
+                                            <_Col>
+                                                <small style={style.small}> Pasien Ditolak ({datas.length > 0 && datas[1].status}) </small>
+                                            </_Col>
+                                        </_Row>
+                                    </_Col> &nbsp;
 
-
-                            </_Row>
+                                    <_Col sm={2} style={style.div}>
+                                        <_Row onClick={() => setshowDPEB(!showDPEB)}>
+                                            <_Col>
+                                                <Image src={block} preview={false} width={40} />
+                                            </_Col>
+                                            <_Col>
+                                                <b > <h1 style={style.value}> {pasienanulir} </h1> </b>
+                                            </_Col>
+                                            <_Col>
+                                                <small style={style.small}> Pasien Dianulir </small>
+                                            </_Col>
+                                        </_Row>
+                                    </_Col> &nbsp;
+                                </_Row>
+                            </Spin>
                         </_Col>
                         <_Col>
                             <_Row>
                                 <_Col style={{ ...style.div, cursor: "pointer", background: "#ffa500ba" }} onClick={() => setshowMenu(!showMenu)}>
                                     <_Row>
                                         <_Col>
+                                            {/* < WifiOutlined style={{ fontSize: "40px" }} /> */}
                                             <Image src={menu} preview={false} width={40} />
                                         </_Col>
                                         <_Col>
                                             <b> <h1 style={style.value}> MENU </h1> </b>
                                         </_Col>
                                         <_Col>
-                                            <small style={style.small}> Pasien EB </small>
+                                            <small style={style.small}>
+                                                <Detector
+                                                    render={({ online }) => (
+                                                        <>
+                                                            {online ? <> &nbsp; Online </> : <> &nbsp; Offline  </>
+                                                            }
+                                                        </>
+                                                    )}
+                                                />
+
+                                            </small>
                                         </_Col>
                                     </_Row>
                                 </_Col> &nbsp;
@@ -292,7 +198,7 @@ function MonitoringPasienEB() {
                 </div>
 
 
-                <div style={{ paddingLeft: "5px" }} className="site-drawer-render-in-current-wrapper">
+                <div style={{ paddingLeft: "5px", overflow: "hidden" }} className="site-drawer-render-in-current-wrapper">
 
                     <Drawer
                         placement="top"
@@ -303,32 +209,26 @@ function MonitoringPasienEB() {
                         getContainer={false}
                         style={{ position: 'absolute' }}
                     >
-                        <Menu mode="horizontal" style={{ background: "#ffc107", fontWeight :"bolder" }}>
-                            <Menu.Item key="mail" icon={<MailOutlined />}>
-                                Pasien EB
-                            </Menu.Item>
-                            <Menu.Item key="app" icon={<AppstoreOutlined />}>
-                                Users
-                            </Menu.Item>
-                            <SubMenu key="SubMenu" icon={<SettingOutlined />} title="Laporan - Laporan">
-                                
-                                    <Menu.Item key="setting:1">Laporan Emergency1</Menu.Item>
-                                    <Menu.Item key="setting:2">Riwayat Pasien</Menu.Item>
-                                    <Menu.Item key="setting:3">Timeline</Menu.Item>
-                                 
-                            </SubMenu>
-                            <Menu.Item key="alipay">
-                                <a target="_blank" rel="noopener noreferrer">
-                                    SIMRS
-                                </a>
-                            </Menu.Item>
-                        </Menu>
+                        <MenuUtama showPasien={() => setshowDPEB(!showDPEB)} />
                     </Drawer>
                     <br />
 
-                    <MapsPasienEB />
+                    <MapsPasienEB setjumlahEB={setjumlahEB} getData={getData} />
 
+                    <Drawer
+                        placement="top"
+                        bodyStyle={{ background: "#ffc107", padding: "15px 5px" }}
+                        visible={showDPEB}
+                        height={640}
+                        onClose={() => setshowDPEB(false)}
+                        getContainer={false}
+                        style={{ position: 'absolute' }}
+                    >
 
+                        {/* <DataPasienEB /> */}
+                        <RiwayatEmergencyButton />
+
+                    </Drawer>
 
                     {/* <_Row>
                         {renderPasienEmer}

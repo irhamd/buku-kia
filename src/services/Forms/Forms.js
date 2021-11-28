@@ -161,7 +161,7 @@ export const _Checkbox = (r) => {
             <Form.Item name={r.name} label={r.label ? r.label : ""} style={{ marginBottom: r.mb ? r.mb : "10px" }}
                 rules={[{ required: r.required, message: r.message ? r.message : errMessage }]}
             >
-                <Checkbox style={{ background: "#de68a94d", width: "100%", padding: "7px", borderRadius: "3px" }} >{r.children}</Checkbox>
+                <Checkbox onChange = {r.onChange} style={{ background: "#de68a94d", width: "100%", padding: "7px", borderRadius: "3px" }} >{r.children}</Checkbox>
 
             </Form.Item>
         </ColB>

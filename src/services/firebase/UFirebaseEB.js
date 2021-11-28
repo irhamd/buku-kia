@@ -8,3 +8,18 @@ export const EB = {
 }
 
 export const collectionEB = collection(db, EB.root);
+
+
+// const usersCollectionRef = collection(db, "users");
+// const createUser = async () => {
+//   await addDoc(usersCollectionRef, { name: newName, age: Number(newAge) });
+// };
+
+
+export const addToFirebase = async () => {
+
+    var obj = {
+        name: "Jaka Tingkir", phone: "+6285566332214", status: "rq",}
+    await addDoc(collectionEB, obj);
+
+};
