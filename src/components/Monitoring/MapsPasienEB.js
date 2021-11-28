@@ -29,6 +29,7 @@ import { _Input } from 'services/Forms/Forms';
 import { _RadioGroup } from 'services/Forms/Forms';
 import { _Switch } from 'services/Forms/Forms';
 import { cekRefresh } from 'services/Text/GlobalText';
+import moment from 'moment';
 
 
 
@@ -37,7 +38,7 @@ function MapsPasienEB(pr) {
     const [pasienEmer, setPasienEmer] = useState([]);
     const [show, setshow] = useState(false);
     const [loading, setloading] = useState(false);
-    const [idd, setidd] = useState(null)
+    const [fu, setfu] = useState("cm")
     const [tempt, settempt] = useState(null)
 
     const [formDetail] = Form.useForm()
@@ -129,26 +130,15 @@ function MapsPasienEB(pr) {
     const respondpasien = (itm) => {
         settempt(itm)
         setshow(true)
-        formDetail.setFieldsValue({
+
+        var val = {
             nama: itm.name,
-            phone: itm.phone
-        })
-
-        // console.log(`itm`, itm)
-
-        // setidd(itm.uid)
-        // var obj = {
-        //     nama: itm.name,
-        //     phone: itm.phone,
-        //     lokasiterakhir: JSON.stringify(itm.location)
-        // }
-        // _Api.post(`eb-savePasienNewEB`, obj).then(res => {
-        //     // console.log(`res`, res)
-        //     if (res.data.sts == 1) {
-        //         deleteDataFirebase(itm.uid)
-
-        //     }
-        // })
+            phone: itm.phone,
+            status: "cl",
+            uid: itm.uid
+        }
+        formDetail.setFieldsValue(val)
+        _Api.post(`eb-savePasienNewEB`, val)
     }
 
     const savePasienEB = (val) => {
@@ -160,7 +150,7 @@ function MapsPasienEB(pr) {
             ...val,
             lat: tempt.location && tempt.location._lat,
             long: tempt.location && tempt.location._long,
-
+            status: fu
         }
 
         _Api.post(`eb-savePasienNewEB`, obj).then(res => {
@@ -189,9 +179,9 @@ function MapsPasienEB(pr) {
     useEffect(() => {
         formDetail.setFieldsValue({
             nama: "",
-            status: ""
+            status: "cm"
         })
-        cekRefresh
+        // cekRefresh
         onSnapshot(
             collection(db, "pannic_user"),
             (snapshot) => {
@@ -239,12 +229,19 @@ function MapsPasienEB(pr) {
                     <_Input label="Kecamatan" block name="kecamatan" />
                     <_RadioGroup options={jenisKelamin} label="Jenis Kelamin" name="jeniskelamin" />
                     <hr />
-                    <_RadioGroup required options={followUp} label="Follow Up" name="status" size="large" />
-                    <_Switch label="Ambulance" block name="isambulance" />
+                    <_RadioGroup required options={followUp} label="Follow Up"
+                        onChange={(e) => setfu(e.target.value)} name="status" size="large" />
+                    {
+                        fu == "cm" ? <_Switch label="Ambulance" block name="isambulance" /> :
+                            <_Input label="Alasan" multiline block name="alasan" />
+                    }
+
+
 
                     <br />
                     <_Row>
-                        <_Button label="OK" loading={loading} color="green" submit block size="large" icon={<AlertOutlined />} />
+                        <_Button label="OK" loading={loading} color="green" submit block size="large" sm={9} icon={<AlertOutlined />} />
+                        <_Button label="Batal" color="red" sm={3} block size="large" icon={<AlertOutlined />} onClick={() => setshow(false)} />
                         {/* <_Button label="Rollbak" color="red" sm={6} block icon={<DislikeOutlined />} />
                         <_Button label="Update / Tutup" color="orangered" submit sm={6} block icon={<DislikeOutlined />} /> */}
                     </_Row>

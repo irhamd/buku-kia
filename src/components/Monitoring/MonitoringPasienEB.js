@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react'
-// import { db } from "./firebase-config";
 import { _Swall } from 'services/Toastr/Notify/_Toastr';
 import { Detector, Offline, Online } from 'react-detect-offline';
 import { _Button } from 'services/Forms/Forms';
@@ -33,7 +32,7 @@ function MonitoringPasienEB() {
     const [ambul, setambul] = useState(0)
     const [pasienanulir, setpasienanulir] = useState(0)
     const [showDPEB, setshowDPEB] = useState(false)
- 
+
 
 
 
@@ -52,13 +51,8 @@ function MonitoringPasienEB() {
 
     useEffect(() => {
         getData()
-        cekRefresh()
-        // onSnapshot(
-        //     collection(db, F.service),
-        //     (snapshot) => {
-        //         getUsers()
-        //     }
-        // )
+        // cekRefresh
+
     }, []);
 
 

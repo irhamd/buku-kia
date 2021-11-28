@@ -130,9 +130,6 @@ function RiwayatEmergencyButton() {
         if (val) {
             param = { ...param, ...val }
         }
-
-        console.log(`object`, param)
-
         _Api.get(`eb-getRiwayatLengkapPasien`, { params: param }).then(res => {
             setpasienEB(res.data.data)
             setloading(false)
