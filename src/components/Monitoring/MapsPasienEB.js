@@ -14,7 +14,7 @@ import { TileLayer, Popup, MapContainer, Marker } from 'react-leaflet';
 import { _Button } from 'services/Forms/Forms';
 import { db } from 'services/firebase/firebase';
 // import Marker from 'react-leaflet-animated-marker';
-import { Avatar, Collapse, Modal, Form } from 'antd';
+import { Avatar, Collapse, Tag, Form, Spin } from 'antd';
 import { _Label } from 'services/Forms/Forms';
 import { _Row } from 'services/Forms/LayoutBootstrap';
 import { CounterTime } from 'services/Forms/FormsAdd';
@@ -30,6 +30,7 @@ import { _RadioGroup } from 'services/Forms/Forms';
 import { _Switch } from 'services/Forms/Forms';
 import { cekRefresh } from 'services/Text/GlobalText';
 import moment from 'moment';
+import { _Checkbox } from 'services/Forms/Forms';
 
 
 
@@ -40,6 +41,9 @@ function MapsPasienEB(pr) {
     const [loading, setloading] = useState(false);
     const [fu, setfu] = useState("cm")
     const [tempt, settempt] = useState(null)
+    const [ambu, setambu] = useState(false)
+    const [riwayat, setriwayat] = useState([])
+    const [block, setblock] = useState(false)
 
     const [formDetail] = Form.useForm()
 
@@ -127,27 +131,37 @@ function MapsPasienEB(pr) {
     };
 
 
-    const respondpasien = (itm) => {
+    const respondpasien = async (itm) => {
         settempt(itm)
         setshow(true)
+        setfu("cm")
+        setambu(false)
+        setloading(true)
+        await _Api.get(`eb-cekDataPasienEB?phone=${itm.phone}`).then(res => {
+            // console.log(`res.data`, res.data)
+            setriwayat(res.data.riwayat)
+            var val = {
+                ...res.data.data,
+                status: "cl"
+            }
+            formDetail.setFieldsValue({ ...res.data.data, status: "cm" })
+            _Api.post(`eb-savePasienNewEB`, val)
+            setloading(false)
 
-        var val = {
-            nama: itm.name,
-            phone: itm.phone,
-            status: "cl",
-            uid: itm.uid
-        }
-        formDetail.setFieldsValue(val)
-        _Api.post(`eb-savePasienNewEB`, val)
+
+        })
+
+
     }
 
     const savePasienEB = (val) => {
 
-        setloading(true)
-        // console.log(`val`, val)
+        // setloading(true)
+        console.log(`val`, val)
         var obj = {
             ...tempt,
             ...val,
+            block: block ? true : "",
             lat: tempt.location && tempt.location._lat,
             long: tempt.location && tempt.location._long,
             status: fu
@@ -159,6 +173,7 @@ function MapsPasienEB(pr) {
                 deleteDataFirebase(tempt.uid)
                 setshow(false)
                 setloading(false)
+                setblock(false)
                 pr.getData()
             }
         })
@@ -215,38 +230,18 @@ function MapsPasienEB(pr) {
         )
     })
 
+    const renderRiwayat = riwayat && riwayat.map((item, i) => {
+        return (
+            <div key={i}>
+                <b>   <p> {i + 1} . {moment(item.created_at).format("DD-MM-YYYY HH:mm")}
+                    &nbsp;  {moment(item.created_at).fromNow()} &nbsp; <Tag color={item.kode == "rj" ? "red" : "green"}> {item.status} </Tag>  </p>
+                </b>
+            </div>
+        )
+    })
+
     return (
         <div>
-            <Modal bodyStyle={{ background: "#ffc107" }} visible={show} footer={[]}>
-                <br />
-                <Form labelCol={{ span: 5 }}
-                    wrapperCol={{ span: 18 }}
-                    onFinish={savePasienEB}
-                    form={formDetail} >
-                    <_Input label="No. HP" required name="phone" disabled block />
-                    <_Input label="Nama" required block name="nama" />
-                    <_Input label="Alamat" multiline block name="alamat" />
-                    <_Input label="Kecamatan" block name="kecamatan" />
-                    <_RadioGroup options={jenisKelamin} label="Jenis Kelamin" name="jeniskelamin" />
-                    <hr />
-                    <_RadioGroup required options={followUp} label="Follow Up"
-                        onChange={(e) => setfu(e.target.value)} name="status" size="large" />
-                    {
-                        fu == "cm" ? <_Switch label="Ambulance" block name="isambulance" /> :
-                            <_Input label="Alasan" multiline block name="alasan" />
-                    }
-
-
-
-                    <br />
-                    <_Row>
-                        <_Button label="OK" loading={loading} color="green" submit block size="large" sm={9} icon={<AlertOutlined />} />
-                        <_Button label="Batal" color="red" sm={3} block size="large" icon={<AlertOutlined />} onClick={() => setshow(false)} />
-                        {/* <_Button label="Rollbak" color="red" sm={6} block icon={<DislikeOutlined />} />
-                        <_Button label="Update / Tutup" color="orangered" submit sm={6} block icon={<DislikeOutlined />} /> */}
-                    </_Row>
-                </Form>
-            </Modal>
 
             <div style={{ position: "absolute", zIndex: 1000, width: "200px", right: "20px", top: "0px" }}>
                 <Collapse ghost style={{ height: "5px" }} defaultActiveKey={['1']}>
@@ -269,6 +264,54 @@ function MapsPasienEB(pr) {
                     </Panel>
 
                 </Collapse>
+
+            </div>
+
+            <div style={{
+                position: "absolute", zIndex: 1000, width: "500px", borderColor: "orange", borderWidth: "3px",
+                height: "auto", backgroundColor: "transparant", left: "20px", top: "10px", display: !show && "none", textAlign: "left"
+            }}>
+                <Collapse defaultActiveKey={['1']} style={{ backgroundColor: "#e2ac09c4", padding: "10px", borderRadius: "10px" }} ghost>
+                    <Panel header="Follow Up Pasien" size="small" key="1" >
+                        <Spin spinning={loading}>
+                            <br />
+                            <Form labelCol={{ span: 6 }}
+                                wrapperCol={{ span: 18 }}
+                                onFinish={savePasienEB}
+                                form={formDetail} >
+                                <_Input label="No. HP" required name="phone" disabled block />
+                                <_Input label="Nama" required block name="nama" />
+                                <_Input label="Alamat" multiline block name="alamat" />
+                                {/* <_Input label="Kecamatan" block name="id_kecamatan" /> */}
+                                <_RadioGroup options={jenisKelamin} label="Jenis Kelamin" name="jeniskelamin" />
+                                <hr />
+
+
+                                <_RadioGroup button required options={followUp} label="Follow Up"
+                                    onChange={(e) => setfu(e.target.value)} name="status" size="large" />
+                                {
+                                    fu == "cm" ? <_Switch label="Ambulance" defaultChecked={ambu} checked={ambu} onChange={(e) => setambu(e)} block name="isambulance" /> :
+                                        <_Input label="Alasan" multiline block name="alasan" />
+                                }
+
+                                <_Checkbox checked={block} onChange={() => setblock(!block)} button name="block" sm={12} size="large" > <b> Block No. HP </b> </_Checkbox>
+                                <br />
+                                <_Row>
+                                    <_Button label="Follow Up" loading={loading} color="green" submit block size="large" sm={9} icon={<AlertOutlined />} />
+                                    <_Button label="Batal" color="red" sm={3} block size="large" icon={<AlertOutlined />} onClick={() => setshow(false)} />
+                                    {/* <_Button label="Rollbak" color="red" sm={6} block icon={<DislikeOutlined />} />
+                        <_Button label="Update / Tutup" color="orangered" submit sm={6} block icon={<DislikeOutlined />} /> */}
+                                </_Row>
+                            </Form>
+
+                            <hr />
+                            {renderRiwayat}
+
+
+                        </Spin>
+                    </Panel>
+
+                </Collapse>,
 
             </div>
 

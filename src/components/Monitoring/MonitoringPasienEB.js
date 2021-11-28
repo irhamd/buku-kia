@@ -171,14 +171,14 @@ function MonitoringPasienEB() {
                                         </_Col>
                                         <_Col>
                                             <small style={style.small}>
-                                                <Detector
+                                                {/* <Detector
                                                     render={({ online }) => (
                                                         <>
                                                             {online ? <> &nbsp; Online </> : <> &nbsp; Offline  </>
                                                             }
                                                         </>
                                                     )}
-                                                />
+                                                /> */}
 
                                             </small>
                                         </_Col>
@@ -196,7 +196,7 @@ function MonitoringPasienEB() {
 
                     <Drawer
                         placement="top"
-                        bodyStyle={{ background: "#ffc107", padding: "5px 0px" }}
+                        bodyStyle={{ background: "#ffc107", padding: "5px 0px", paddingLeft: "50%" }}
                         visible={showMenu}
                         height={60}
                         onClose={() => setshowMenu(false)}
