@@ -64,7 +64,9 @@ function DataPasienEB() {
 
 
     const getPasienEB = () => {
+        setloading(true)
         _Api.get(`eb-getDataPasienEB`).then(res => {
+            setloading(false)
             setpasienEB(res.data)
         })
     }
@@ -77,20 +79,20 @@ function DataPasienEB() {
     return (
         <div>
             <_Label label="DATA PASIEN EMERGENCY BUTTON " center />
-            <Form layout="vertical" onFinish={getPasienEB} form={cariPasien} initialValues={{ tglAwal: moment(new Date()), tglAkhir: moment(new Date()) }} >
+            <Form layout="vertical" onFinish={getPasienEB} form={cariPasien} >
                 <_Row>
                     {/* <_Search placeholder="Cari nomor buku  ...." loading={loading} onSearch={cariPasien} sm={3} /> */}
                     <_Input name="nama" placeholder="Nama Pasien" sm={2} />
                     <_Input name="phone" placeholder="Nomor HP" sm={2} />
-                    <_Input name="status" placeholder="Status" sm={2} />
+                    <_Switch name="block" sm={1} />
                     {/* <_Date name="tglAwal" placeholder="Tanggal" sm={2} format="DD-MM-YYYY" />
                     <_Date name="tglAkhir" placeholder=" s/d " sm={2} format="DD-MM-YYYY" /> */}
-                    <Button type="primary" icon={<DownloadOutlined />} htmlType="submit"> Refresh </Button>
+                    <Button type="primary" icon={<DownloadOutlined />} htmlType="submit" loading={loading}> Refresh </Button>
                 </_Row>
             </Form>
             <Table columns={columns} dataSource={pasienEB}
                 // rowClassName={(record, index) => record == selected && 'bg-orange'}
-                pagination={{ pageSize: 50 }} scroll={{ x: 1400 }}
+                pagination={{ pageSize: 50 }} scroll={{ x: 1400, y: 400 }}
                 onRow={(rc, i) => {
                     return {
                         onClick: event => {

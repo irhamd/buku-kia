@@ -14,7 +14,7 @@ import { TileLayer, Popup, MapContainer, Marker } from 'react-leaflet';
 import { _Button } from 'services/Forms/Forms';
 import { db } from 'services/firebase/firebase';
 // import Marker from 'react-leaflet-animated-marker';
-import { Avatar, Collapse, Tag, Form, Spin } from 'antd';
+import { Avatar, Collapse, Tag, Form, Spin, Timeline } from 'antd';
 import { _Label } from 'services/Forms/Forms';
 import { _Row } from 'services/Forms/LayoutBootstrap';
 import { CounterTime } from 'services/Forms/FormsAdd';
@@ -22,7 +22,7 @@ import { collectionEB } from 'services/firebase/UFirebaseEB';
 import { useSuara } from 'services/Sound/UseSuara';
 import sirine from "./../../assets/sound/sirine1.m4a"
 import { PhoneOutlined, StopOutlined } from '@material-ui/icons';
-import { AlertOutlined, DislikeOutlined, DownloadOutlined, EnvironmentOutlined, LoadingOutlined, LoginOutlined, SisternodeOutlined } from '@ant-design/icons';
+import { AlertOutlined, ClockCircleOutlined, DislikeOutlined, DownloadOutlined, EnvironmentOutlined, LoadingOutlined, LoginOutlined, RollbackOutlined, SisternodeOutlined } from '@ant-design/icons';
 import { _Col } from 'services/Forms/LayoutBootstrap';
 import _Api from 'services/Api/_Api';
 import { _Input } from 'services/Forms/Forms';
@@ -112,7 +112,7 @@ function MapsPasienEB(pr) {
         var arr = data.docs.map((doc) => ({ ...doc.data(), uid: doc.id }))
 
         if (arr.length > 0) {
-            // audio.play()
+            audio.play()
         }
         else {
             audio.currentTime = 0
@@ -132,20 +132,25 @@ function MapsPasienEB(pr) {
 
 
     const respondpasien = async (itm) => {
+        formDetail.setFieldsValue({ "nama": "", phone: "", fu: "cm", jeniskelamin: "" })
         settempt(itm)
         setshow(true)
         setfu("cm")
         setambu(false)
         setloading(true)
         await _Api.get(`eb-cekDataPasienEB?phone=${itm.phone}`).then(res => {
-            // console.log(`res.data`, res.data)
+            console.log(`res.data`, res.data)
+
             setriwayat(res.data.riwayat)
             var val = {
                 ...res.data.data,
                 status: "cl"
             }
-            formDetail.setFieldsValue({ ...res.data.data, status: "cm" })
-            _Api.post(`eb-savePasienNewEB`, val)
+            if (!res.data.data) {
+                formDetail.setFieldsValue({ ...itm, nama: itm.name, status: "cm" })
+            } else
+                formDetail.setFieldsValue({ ...res.data.data, status: "cm" })
+            // _Api.post(`eb-savePasienNewEB`, val)
             setloading(false)
 
 
@@ -181,8 +186,8 @@ function MapsPasienEB(pr) {
     }
 
     const jenisKelamin = [
-        { value: "L", label: "L" },
-        { value: "P", label: "P" },
+        { value: "L", label: "Laki-laki" },
+        { value: "P", label: "Perampuan" },
     ]
 
     const followUp = [
@@ -232,11 +237,16 @@ function MapsPasienEB(pr) {
 
     const renderRiwayat = riwayat && riwayat.map((item, i) => {
         return (
-            <div key={i}>
-                <b>   <p> {i + 1} . {moment(item.created_at).format("DD-MM-YYYY HH:mm")}
-                    &nbsp;  {moment(item.created_at).fromNow()} &nbsp; <Tag color={item.kode == "rj" ? "red" : "green"}> {item.status} </Tag>  </p>
-                </b>
-            </div>
+            <Timeline.Item key={i}
+                color={item.kode == "rj" ? "red" : "green"}
+                label={` ${i + 1}.  ${moment(item.created_at).format("dddd, DD-MM-YYYY HH:mm")}`}>
+                <Tag color={item.kode == "rj" ? "red" : "green"}>{moment(item.created_at).fromNow()} &nbsp;  </Tag>
+            </Timeline.Item>
+            // <div key={i}>
+            //     <b>   <p> {i + 1} . {moment(item.created_at).format("DD-MM-YYYY HH:mm")}
+            //         &nbsp;  {moment(item.created_at).fromNow()} &nbsp; <Tag color={item.kode == "rj" ? "red" : "green"}> {item.status} </Tag>  </p>
+            //     </b>
+            // </div>
         )
     })
 
@@ -268,7 +278,7 @@ function MapsPasienEB(pr) {
             </div>
 
             <div style={{
-                position: "absolute", zIndex: 1000, width: "500px", borderColor: "orange", borderWidth: "3px",
+                position: "absolute", zIndex: 1000, width: "500px", borderColor: "orange", borderWidth: "3px", fontWeight: "bold",
                 height: "auto", backgroundColor: "transparant", left: "20px", top: "10px", display: !show && "none", textAlign: "left"
             }}>
                 <Collapse defaultActiveKey={['1']} style={{ backgroundColor: "#e2ac09c4", padding: "10px", borderRadius: "10px" }} ghost>
@@ -298,14 +308,17 @@ function MapsPasienEB(pr) {
                                 <br />
                                 <_Row>
                                     <_Button label="Follow Up" loading={loading} color="green" submit block size="large" sm={9} icon={<AlertOutlined />} />
-                                    <_Button label="Batal" color="red" sm={3} block size="large" icon={<AlertOutlined />} onClick={() => setshow(false)} />
+                                    <_Button label="Batal" color="red" sm={3} block size="large" icon={<RollbackOutlined />} onClick={() => setshow(false)} />
                                     {/* <_Button label="Rollbak" color="red" sm={6} block icon={<DislikeOutlined />} />
                         <_Button label="Update / Tutup" color="orangered" submit sm={6} block icon={<DislikeOutlined />} /> */}
                                 </_Row>
                             </Form>
 
                             <hr />
-                            {renderRiwayat}
+                            <Timeline mode="left">
+                                {renderRiwayat}
+
+                            </Timeline>
 
 
                         </Spin>

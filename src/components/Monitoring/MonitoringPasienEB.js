@@ -19,6 +19,7 @@ import MapsPasienEB from './MapsPasienEB';
 import MenuUtama from './DataPasienEB/MenuUtama';
 import { addToFirebase } from 'services/firebase/UFirebaseEB';
 import RiwayatEmergencyButton from './DataPasienEB/RiwayatEmergencyButton';
+import DataPasienEB from './DataPasienEB/DataPasienEB';
 
 
 
@@ -32,6 +33,8 @@ function MonitoringPasienEB() {
     const [ambul, setambul] = useState(0)
     const [pasienanulir, setpasienanulir] = useState(0)
     const [showDPEB, setshowDPEB] = useState(false)
+    const [visibleDrawer, setvisibleDrawer] = useState(false)
+    const [showHP, setshowHP] = useState(false)
 
 
 
@@ -52,8 +55,35 @@ function MonitoringPasienEB() {
     useEffect(() => {
         getData()
         // cekRefresh
+        // KETIKAN TEKAN ESCAPE
+        const listener = event => {
+            if (event.code === "Escape") {
+                setvisibleDrawer(false)
+                setshowMenu(false)
+                setshowDPEB(false)
+                setshowHP(false)
+                event.preventDefault();
+                // callMyFunction();
+            }
+        };
+        document.addEventListener("keydown", listener);
+        return () => {
+            document.removeEventListener("keydown", listener);
+        };
 
     }, []);
+
+    const clickRiwayatPasienEB = () => {
+        setvisibleDrawer(!visibleDrawer)
+        setshowDPEB(true)
+        setshowHP(false)
+    }
+
+    const clickListNoHP = () => {
+        setvisibleDrawer(!visibleDrawer)
+        setshowDPEB(false)
+        setshowHP(true)
+    }
 
 
     const style = {
@@ -81,86 +111,85 @@ function MonitoringPasienEB() {
                         </_Col>
 
                         <_Col sm={6}>
-                            <Spin spinning={loading} >
-                                <_Row>
-                                    <_Col sm={2} style={style.div}>
-                                        <_Row>
-                                            <_Col>
-                                                <Image src={siren} preview={false} width={40} />
-                                            </_Col>
-                                            <_Col>
-                                                <h1 style={style.value}>
-                                                    {datas.length > 0 ? (datas[0].total + jumlahEB + datas[1].total) : jumlahEB}
-                                                </h1>
-                                            </_Col>
-                                            <_Col>
-                                                <small style={style.small}> Pasien EB </small>
-                                            </_Col>
-                                        </_Row>
-                                    </_Col> &nbsp;
+                            <_Row>
+                                <_Col sm={2} style={style.div}>
+                                    <_Row onClick={clickRiwayatPasienEB}>
+                                        <_Col>
+                                            <Image src={siren} preview={false} width={40} />
+                                        </_Col>
+                                        <_Col>
+                                            <h1 style={style.value}>
+                                                {datas.length > 0 ? (datas[0].total + jumlahEB + datas[1].total) : jumlahEB}
+                                            </h1>
+                                        </_Col>
+                                        <_Col>
+                                            <small style={style.small}> Pasien EB </small>
+                                        </_Col>
+                                    </_Row>
+                                </_Col> &nbsp;
 
-                                    <_Col sm={2} style={style.div}>
-                                        <_Row>
-                                            <_Col>
-                                                <Image src={ambulance} preview={false} width={40} />
-                                            </_Col>
-                                            <_Col>
-                                                <b> <h1 style={style.value}> {ambul} </h1> </b>
-                                            </_Col>
-                                            <_Col>
-                                                <small style={style.small}> Ambulance </small>
-                                            </_Col>
-                                        </_Row>
-                                    </_Col> &nbsp;
+                                <_Col sm={2} style={style.div}>
+                                    <_Row>
+                                        <_Col>
+                                            <Image src={ambulance} preview={false} width={40} />
+                                        </_Col>
+                                        <_Col>
+                                            <b> <h1 style={style.value}> {ambul} </h1> </b>
+                                        </_Col>
+                                        <_Col>
+                                            <small style={style.small}> Ambulance </small>
+                                        </_Col>
+                                    </_Row>
+                                </_Col> &nbsp;
 
-                                    <_Col sm={2} style={style.div}>
-                                        <_Row>
-                                            <_Col>
-                                                <Image src={call} preview={false} width={40} />
-                                            </_Col>
-                                            <_Col>
-                                                <b> <h1 style={style.value}> {datas.length > 0 && datas[0].total} </h1> </b>
-                                            </_Col>
-                                            <_Col>
-                                                <small style={style.small}> Follow Up ({datas.length > 0 && datas[0].status}) </small>
-                                            </_Col>
-                                        </_Row>
-                                    </_Col> &nbsp;
+                                <_Col sm={2} style={style.div}>
+                                    <_Row>
+                                        <_Col>
+                                            <Image src={call} preview={false} width={40} />
+                                        </_Col>
+                                        <_Col>
+                                            <b> <h1 style={style.value}> {datas.length > 0 && datas[0].total} </h1> </b>
+                                        </_Col>
+                                        <_Col>
+                                            <small style={style.small}> Follow Up ({datas.length > 0 && datas[0].status}) </small>
+                                        </_Col>
+                                    </_Row>
+                                </_Col> &nbsp;
 
 
-                                    <_Col sm={2} style={style.div}>
-                                        <_Row>
-                                            <_Col>
-                                                <Image src={stop} preview={false} width={40} />
-                                            </_Col>
-                                            <_Col>
-                                                <b> <h1 style={style.value}> {datas.length > 0 && datas[1].total} </h1> </b>
-                                            </_Col>
-                                            <_Col>
-                                                <small style={style.small}> Pasien Ditolak ({datas.length > 0 && datas[1].status}) </small>
-                                            </_Col>
-                                        </_Row>
-                                    </_Col> &nbsp;
+                                <_Col sm={2} style={style.div}>
+                                    <_Row>
+                                        <_Col>
+                                            <Image src={stop} preview={false} width={40} />
+                                        </_Col>
+                                        <_Col>
+                                            <b> <h1 style={style.value}> {datas.length > 0 && datas[1].total} </h1> </b>
+                                        </_Col>
+                                        <_Col>
+                                            <small style={style.small}> Pasien Ditolak ({datas.length > 0 && datas[1].status}) </small>
+                                        </_Col>
+                                    </_Row>
+                                </_Col> &nbsp;
 
-                                    <_Col sm={2} style={style.div}>
-                                        <_Row onClick={() => setshowDPEB(!showDPEB)}>
-                                            <_Col>
-                                                <Image src={block} preview={false} width={40} />
-                                            </_Col>
-                                            <_Col>
-                                                <b > <h1 style={style.value}> {pasienanulir} </h1> </b>
-                                            </_Col>
-                                            <_Col>
-                                                <small style={style.small}> Pasien Dianulir </small>
-                                            </_Col>
-                                        </_Row>
-                                    </_Col> &nbsp;
-                                </_Row>
-                            </Spin>
+                                <_Col sm={2} style={style.div}>
+                                    <_Row onClick={clickListNoHP}>
+                                        <_Col>
+                                            <Image src={block} preview={false} width={40} />
+                                        </_Col>
+                                        <_Col>
+                                            <b > <h1 style={style.value}> {pasienanulir} </h1> </b>
+                                        </_Col>
+                                        <_Col>
+                                            <small style={style.small}> No. HP Diblock </small>
+                                        </_Col>
+                                    </_Row>
+                                </_Col> &nbsp;
+                            </_Row>
                         </_Col>
                         <_Col>
                             <_Row>
-                                <_Col style={{ ...style.div, cursor: "pointer", background: "#ffa500ba" }} onClick={() => setshowMenu(!showMenu)}>
+                                <_Col style={{ ...style.div, cursor: "pointer", background: "#ffa500ba" }}
+                                    onClick={() => setshowMenu(!showMenu)}>
                                     <_Row>
                                         <_Col>
                                             {/* < WifiOutlined style={{ fontSize: "40px" }} /> */}
@@ -203,7 +232,7 @@ function MonitoringPasienEB() {
                         getContainer={false}
                         style={{ position: 'absolute' }}
                     >
-                        <MenuUtama showPasien={() => setshowDPEB(!showDPEB)} />
+                        <MenuUtama showPasien={clickRiwayatPasienEB} showPasienHP={clickListNoHP} />
                     </Drawer>
                     <br />
 
@@ -212,15 +241,16 @@ function MonitoringPasienEB() {
                     <Drawer
                         placement="top"
                         bodyStyle={{ background: "#ffc107", padding: "15px 5px" }}
-                        visible={showDPEB}
-                        height={640}
-                        onClose={() => setshowDPEB(false)}
+                        visible={visibleDrawer}
+                        height={660}
+                        onClose={() => setvisibleDrawer(false)}
                         getContainer={false}
                         style={{ position: 'absolute' }}
                     >
 
                         {/* <DataPasienEB /> */}
-                        <RiwayatEmergencyButton />
+                        {showDPEB && <RiwayatEmergencyButton />}
+                        {showHP && <DataPasienEB />}
 
                     </Drawer>
 

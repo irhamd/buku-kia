@@ -129,6 +129,7 @@ function RiwayatEmergencyButton() {
 
         if (val) {
             param = { ...param, ...val }
+            console.log(`param`, param)
         }
         _Api.get(`eb-getRiwayatLengkapPasien`, { params: param }).then(res => {
             setpasienEB(res.data.data)
@@ -173,6 +174,7 @@ function RiwayatEmergencyButton() {
                         }, // double click row
                     };
                 }}
+                footer={() => <b> Count( {pasienEB.length} ) Pasien </b>}
             />
         </div>
     )
