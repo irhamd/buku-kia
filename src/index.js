@@ -11,7 +11,8 @@ import Admin from "layouts/Admin.js";
 import RTL from "layouts/RTL.js";
 
 import "assets/css/material-dashboard-react.css?v=1.10.0";
-import "assets/css/antd/dist/antd.css";
+// import "assets/css/antd/dist/antd.css";
+import 'antd/dist/antd.css';
 import "assets/css/style.css";
 import "assets/font/font.css";
 

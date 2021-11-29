@@ -242,7 +242,7 @@ function MonitoringPasienEB() {
                         placement="top"
                         bodyStyle={{ background: "#ffc107", padding: "15px 5px" }}
                         visible={visibleDrawer}
-                        height={660}
+                        height={860}
                         onClose={() => setvisibleDrawer(false)}
                         getContainer={false}
                         style={{ position: 'absolute' }}

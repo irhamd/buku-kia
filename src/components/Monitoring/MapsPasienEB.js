@@ -122,7 +122,7 @@ function MapsPasienEB(pr) {
         // var arr = data.docs.map((doc) => ({ ...doc.data(), uid: doc.id }))
 
         if (dataFire.length > 0) {
-            audio.play()
+            // audio.play()
         }
         else {
             audio.currentTime = 0
@@ -159,15 +159,16 @@ function MapsPasienEB(pr) {
         setloading(true)
         await _Api.get(`eb-cekDataPasienEB?phone=${itm.phone}`).then(res => {
             setriwayat(res.data.riwayat)
-            var val = {
-                ...res.data.data,
-                status: "cl"
-            }
             if (!res.data.data) {
                 formDetail.setFieldsValue({ ...itm, nama: itm.name, status: "cm", alamat: "" })
             } else
                 formDetail.setFieldsValue({ ...res.data.data, status: "cm" })
-            // _Api.post(`eb-savePasienNewEB`, val)
+
+            var val = {
+                ...itm,
+                waktutekan: moment(itm.time.toDate()).format('YYYY-MM-DD HH:mm:ss'),
+            }
+            _Api.post(`eb-getWaktuTekan`, val)
             setloading(false)
 
 
@@ -179,7 +180,6 @@ function MapsPasienEB(pr) {
     const savePasienEB = (val) => {
 
         // setloading(true)
-        console.log(`val`, val)
         var obj = {
             ...tempt,
             ...val,
@@ -188,9 +188,9 @@ function MapsPasienEB(pr) {
             long: tempt.location && tempt.location._long,
             status: fu
         }
+        // console.log(`obj`, obj)
 
         _Api.post(`eb-savePasienNewEB`, obj).then(res => {
-            // console.log(`res`, res)
             if (res.data.sts == 1) {
                 updateStatus(tempt.uid, "cm")
                 // deleteDataFirebase(tempt.uid)

@@ -40,6 +40,7 @@ export const _Input = (r) => {
                         value={r.value}
                         placeholder={r.placeholder}
                         style={{ ...r.style }}
+                        allowClear
                         addonBefore={r.addonBefore}
 
 
@@ -51,6 +52,7 @@ export const _Input = (r) => {
                             disabled={r.disabled}
                             placeholder={r.placeholder}
                             value={r.value}
+                            allowClear
                             rows={r.rows} size={r.size}
                             style={{ ...r.style }}
                             defaultValue={r.defaultValue} /> :
@@ -58,6 +60,7 @@ export const _Input = (r) => {
                             value={r.value}
                             // showCount
                             // bordered={false}
+                            allowClear
                             suffix={r.suffix} size={r.size}
                             disabled={r.disabled}
                             onChange={r.onChange}

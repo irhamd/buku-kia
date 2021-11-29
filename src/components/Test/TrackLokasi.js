@@ -50,7 +50,7 @@ function TrackLokasi(pr) {
 
     const gotoLocation = () => {
         try {
-            map.flyTo(position, 13)
+            map.flyTo(position, 18)
         } catch (error) {
         }
     }
@@ -61,7 +61,12 @@ function TrackLokasi(pr) {
     const zoom = 11
 
     useEffect(() => {
-        gotoLocation()
+
+        setTimeout(
+            () =>  map && map.flyTo(position, 18),
+            3000
+        );
+
     }, [])
 
 
