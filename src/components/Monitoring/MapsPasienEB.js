@@ -73,6 +73,8 @@ function MapsPasienEB(pr) {
 
     const posRef = useRef(null)
 
+
+
     const gotoLocation = (loc) => {
 
         // console.log(`loc`, loc)
@@ -108,10 +110,18 @@ function MapsPasienEB(pr) {
 
 
     const getdatapasienEB = async () => {
-        const data = await getDocs(collectionEB);
-        var arr = data.docs.map((doc) => ({ ...doc.data(), uid: doc.id }))
 
-        if (arr.length > 0) {
+        const q = query(collectionEB, where("status", "in", ["rq", "cl"]));
+        const querySnapshot = await getDocs(q);
+        let dataFire = querySnapshot.docs.map((doc) => ({ ...doc.data(), uid: doc.id }))
+
+        // console.log(`dt`, dt)
+
+        // const data = await getDocs(collectionEB);
+
+        // var arr = data.docs.map((doc) => ({ ...doc.data(), uid: doc.id }))
+
+        if (dataFire.length > 0) {
             audio.play()
         }
         else {
@@ -119,8 +129,8 @@ function MapsPasienEB(pr) {
             audio.pause()
         }
 
-        setPasienEmer(arr);
-        pr.setjumlahEB(arr.length)
+        setPasienEmer(dataFire);
+        pr.setjumlahEB(dataFire.length)
 
         // console.log(`object`, data.docs.map((doc) => ({ ...doc.data(), id: doc.id })))
     }
@@ -130,24 +140,31 @@ function MapsPasienEB(pr) {
         await deleteDoc(userDoc);
     };
 
+    const updateStatus = async (id, sts) => {
+        const userDoc = doc(db, "pannic_user", id);
+        const newFields = { status: sts };
+        await updateDoc(userDoc, newFields);
+    };
+
+
 
     const respondpasien = async (itm) => {
+        setriwayat([])
         formDetail.setFieldsValue({ "nama": "", phone: "", fu: "cm", jeniskelamin: "" })
         settempt(itm)
         setshow(true)
         setfu("cm")
         setambu(false)
+        updateStatus(itm.uid, "cl")
         setloading(true)
         await _Api.get(`eb-cekDataPasienEB?phone=${itm.phone}`).then(res => {
-            console.log(`res.data`, res.data)
-
             setriwayat(res.data.riwayat)
             var val = {
                 ...res.data.data,
                 status: "cl"
             }
             if (!res.data.data) {
-                formDetail.setFieldsValue({ ...itm, nama: itm.name, status: "cm" })
+                formDetail.setFieldsValue({ ...itm, nama: itm.name, status: "cm", alamat: "" })
             } else
                 formDetail.setFieldsValue({ ...res.data.data, status: "cm" })
             // _Api.post(`eb-savePasienNewEB`, val)
@@ -175,7 +192,8 @@ function MapsPasienEB(pr) {
         _Api.post(`eb-savePasienNewEB`, obj).then(res => {
             // console.log(`res`, res)
             if (res.data.sts == 1) {
-                deleteDataFirebase(tempt.uid)
+                updateStatus(tempt.uid, "cm")
+                // deleteDataFirebase(tempt.uid)
                 setshow(false)
                 setloading(false)
                 setblock(false)
@@ -315,10 +333,12 @@ function MapsPasienEB(pr) {
                             </Form>
 
                             <hr />
-                            <Timeline mode="left">
-                                {renderRiwayat}
-
-                            </Timeline>
+                            <div style={{ height: " 180px", overflowX: "hidden" }}>
+                                <br />
+                                <Timeline mode="left">
+                                    {renderRiwayat}
+                                </Timeline>
+                            </div>
 
 
                         </Spin>
